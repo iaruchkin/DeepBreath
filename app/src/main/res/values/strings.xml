@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Deep breath</string>
+    <string name="error_message">Loading was unsuccsessful</string>
+    <string name="action_retry">retry</string>
+
+    <string name="cancel_work">Cancel</string>
+</resources>
