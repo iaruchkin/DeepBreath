@@ -20,18 +20,18 @@ import io.reactivex.disposables.Disposable;
 
 import static com.iaruchkin.deepbreath.service.NetworkUtils.CancelReceiver.ACTION_CANCEL;
 
-public class NewsRequestService extends Worker {
-    private static final String TAG = NewsRequestService.class.getName();
-    public static final String WORK_TAG = "News download";
+public class WeatherRequestService extends Worker {
+    private static final String TAG = WeatherRequestService.class.getName();
+    public static final String WORK_TAG = "Data download";
 
-    private static final String CHANNEL_ID = "CHANNEL_UPDATE_NEWS";
+    private static final String CHANNEL_ID = "CHANNEL_UPDATE_AQI";
     private static final int UPDATE_NOTIFICATION_ID = 3447;
 
     private NotificationManager notificationManager;
 
     private Disposable downloadDisposable;
 
-    public NewsRequestService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public WeatherRequestService(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
@@ -59,7 +59,7 @@ public class NewsRequestService extends Worker {
         if (success)
             notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                     .setSmallIcon(R.drawable.art_clouds)
-                    .setContentTitle("News app")
+                    .setContentTitle("Aqi app")
                     .setContentText("Data succesfully downloaded to DB")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true)
@@ -69,7 +69,7 @@ public class NewsRequestService extends Worker {
             notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                     .setSmallIcon(R.drawable.vec_error)
                     .setContentTitle("Download failed")
-                    .setContentText("Error while downloading news")
+                    .setContentText("Error while downloading data")
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setAutoCancel(true);
         if (notificationManager == null)

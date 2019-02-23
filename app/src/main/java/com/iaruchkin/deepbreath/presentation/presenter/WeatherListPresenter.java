@@ -10,7 +10,7 @@ import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.AqiResponse;
 import com.iaruchkin.deepbreath.network.NetworkSilngleton;
 import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
-import com.iaruchkin.deepbreath.room.ConverterNews;
+import com.iaruchkin.deepbreath.room.ConverterData;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 
 import java.util.ArrayList;
@@ -34,50 +34,72 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
         this.restApi = instance;
     }
 
-    @Override
-    protected void onFirstViewAttach() {
-        loadFromDb(DEFAULT_LOCATION);
-    }
+//    @Override
+//    protected void onFirstViewAttach() {
+//        loadFromDb(DEFAULT_LOCATION);
+//    }
 
     public void loadData(String location){
-//        loadFromDb(location);
-        loadDummy();
+//        loadItems(location);
+        loadFromDb(location);
+//        loadDummy();
 
     }
 
     public void forceLoadData(String location){
-//        loadFromNet(location);
-        loadDummy();
+//        loadItems(location);
+        loadFromNet(location);
+//        loadDummy();
     }
 
     private void loadDummy(){
-        List<WeatherEntity> newsEntities = new ArrayList<>();
+        List<WeatherEntity> weatherEntities = new ArrayList<>();
         WeatherEntity dummy = new WeatherEntity();
-        dummy.setLocation("here");
+        dummy.setLocation("Moscow");
         dummy.setId("1qwe");
         dummy.setDate("02/03/2019");
         dummy.setAqi("351");
 
-        newsEntities.add(dummy);
-        newsEntities.add(dummy);
+        weatherEntities.add(dummy);
+        weatherEntities.add(dummy);
 
-        getViewState().showData(newsEntities);
+        getViewState().showData(weatherEntities);
+    }
+
+    private void loadItems(@NonNull String location){
+        final Disposable disposable = NetworkSilngleton.getInstance()
+                .airQuality()
+                .get(location)
+//                .map(response -> Mapper.map(response.getNews()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::update, this::handleError);
+        disposeOnDestroy(disposable);
+
+    }
+
+    private void update(AqiResponse data) {
+        Log.e(WEATHER_LIST_TAG,"Город : " + data.getData().getCity().getName());
+        getViewState().setData(data);
+
     }
 
     private void loadFromDb(String location){
         getViewState().showState(State.Loading);
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterNews
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterData
                 .loadDataFromDb(context, location))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(news -> updateData(news, location), this::handleError);
+                .subscribe(data -> updateData(data, location), this::handleError);
         disposeOnDestroy(loadFromDb);
+        Log.e(WEATHER_LIST_TAG,"Load from db presenter");
+
     }
 
     private void updateData(@Nullable List<WeatherEntity> data, String location) {
         if (data.size()==0){
             loadFromNet(location);
-            Log.i(WEATHER_LIST_TAG, "there is no data in location : " + location);
+            Log.i(WEATHER_LIST_TAG, "there is no data for location : " + location);
         }else {
             getViewState().showData(data);
             getViewState().showState(State.HasData);
@@ -87,6 +109,8 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
     }
 
     private void loadFromNet(@NonNull String location){
+        Log.e(WEATHER_LIST_TAG,"Load from net start presenter");
+
         getViewState().showState(State.Loading);
         final Disposable disposable = NetworkSilngleton.getInstance()
                 .airQuality()
@@ -98,15 +122,15 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
     }
 
     private void updateDB(AqiResponse response , String location) {
-        if (response.getData()!=null) {
+        if (response.getData()==null) {//todo тут внимание был баг
             getViewState().showState(State.HasNoData);
         } else {
             Disposable saveNewsToDb = Single.fromCallable(response::getData)
                     .subscribeOn(Schedulers.io())
                     .map(aqiDTO -> {
-                        ConverterNews.saveAllDataToDb(context,
-                                ConverterNews.dtoToDao(aqiDTO, location),location);
-                        return ConverterNews.loadDataFromDb(context, location);
+                        ConverterData.saveAllDataToDb(context,
+                                ConverterData.dtoToDao(aqiDTO, location),location);
+                        return ConverterData.loadDataFromDb(context, location);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

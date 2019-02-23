@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
+import com.iaruchkin.deepbreath.network.AqiResponse;
 import com.iaruchkin.deepbreath.network.NetworkSilngleton;
 import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
 import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
@@ -139,14 +140,14 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     private void setupUx() {
 
-        mUpdate.setOnClickListener(v -> forceLoadData(getNewsCategory()));
-        errorAction.setOnClickListener(v -> loadData(getNewsCategory()));
+        mUpdate.setOnClickListener(v -> forceLoadData(getLocation()));
+        errorAction.setOnClickListener(v -> loadData(getLocation()));
 
-        loadData(getNewsCategory());
+        loadData(getLocation());
 
     }
 
-    private String getNewsCategory() {
+    private String getLocation() {
         return "here";
     }
 
@@ -172,6 +173,13 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     public void showData(List<WeatherEntity> data) {
         if (mAdapter != null) {
             mAdapter.replaceItems(data);
+        }
+    }
+
+    @Override
+    public void setData(@NonNull AqiResponse data) {
+        if (mAdapter != null) {
+            mAdapter.setData(data);
         }
     }
 

@@ -5,7 +5,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
 import com.iaruchkin.deepbreath.service.NetworkUtils;
-import com.iaruchkin.deepbreath.service.NewsRequestService;
+import com.iaruchkin.deepbreath.service.WeatherRequestService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -36,9 +36,9 @@ public class App extends Application {
                 .setRequiresCharging(true)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
-        WorkRequest workRequest = new PeriodicWorkRequest.Builder(NewsRequestService.class, 3, TimeUnit.HOURS)
+        WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class, 3, TimeUnit.HOURS)
                 .setConstraints(constraints)
-                .addTag(NewsRequestService.WORK_TAG)
+                .addTag(WeatherRequestService.WORK_TAG)
                 .build();
         NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(workRequest.getId());
         WorkManager.getInstance()

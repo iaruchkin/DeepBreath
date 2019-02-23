@@ -11,9 +11,8 @@ import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
 
-    public final static String WEATHER_LIST_TAG = "NEWS_LIST";
-    public final static String WEATHER_DETAILS_TAG = "NEWS_DETAILS";
-    public final static String ABOUT_TAG = "ABOUT";
+    public final static String WEATHER_LIST_TAG = "WEATHER_LIST";
+    public final static String WEATHER_DETAILS_TAG = "WEATHER_DETAILS";
     public final static String INTRO_TAG = "INTRO";
 
     private FragmentManager mFragmentManager;

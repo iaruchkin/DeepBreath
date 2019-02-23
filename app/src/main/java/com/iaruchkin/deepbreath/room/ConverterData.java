@@ -9,7 +9,7 @@ import com.iaruchkin.deepbreath.network.aqicnDTO.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConverterNews {
+public class ConverterData {
 
     private static final String TAG = "RoomConverter";
 
@@ -22,7 +22,7 @@ public class ConverterNews {
             weatherEntity.setId(data.getDominentpol()+weatherLocation);
             weatherEntity.setLocation(weatherLocation);
             weatherEntity.setAqi(data.getAqi().toString());
-            weatherEntity.setDate(data.getTime().toString());
+            weatherEntity.setDate(data.getTime().getS());
 
             listDao.add(weatherEntity);
 
@@ -34,24 +34,24 @@ public class ConverterNews {
         return db.weatherDao().getNewsById(id);
     }
 
-    public static List<WeatherEntity> loadDataFromDb(Context context, String category) {
+    public static List<WeatherEntity> loadDataFromDb(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "data loaded from DB");
-        return db.weatherDao().getAll(category);
+        return db.weatherDao().getAll(location);
     }
 
-    public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String category){
+    public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String location){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.weatherDao().deleteAll(category);
+        db.weatherDao().deleteAll(location);
         Log.i(TAG, "DB: deleteAll");
 
-        WeatherEntity news[] = list.toArray(new WeatherEntity[list.size()]);
-        db.weatherDao().insertAll(news);
+        WeatherEntity data[] = list.toArray(new WeatherEntity[list.size()]);
+        db.weatherDao().insertAll(data);
         Log.i(TAG, "DB: insertAll");
 
         Log.i(TAG, "data saved to DB");
         Log.i(TAG, list.toString());
-        weatherDao.insertAll(news);
+        weatherDao.insertAll(data);
 
     }
 
