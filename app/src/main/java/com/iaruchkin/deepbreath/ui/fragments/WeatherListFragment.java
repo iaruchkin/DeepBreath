@@ -16,8 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.network.AqiResponse;
-import com.iaruchkin.deepbreath.network.NetworkSilngleton;
+import com.iaruchkin.deepbreath.network.AqiApi;
+import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
 import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
@@ -45,7 +45,7 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     @ProvidePresenter
     WeatherListPresenter provideWeatherListPresenter() {
-        return new WeatherListPresenter(NetworkSilngleton.getInstance());
+        return new WeatherListPresenter(WeatherApi.getInstance());
     }
 
     @Nullable
@@ -148,12 +148,12 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     }
 
     private String getLocation() {
-        return "here";
+        return "forecast";
     }
 
     @Override
     public void onClick(WeatherEntity weatherItem) {
-        listener.onActionClicked(WEATHER_DETAILS_TAG, weatherItem.getAqi());
+        listener.onActionClicked(WEATHER_DETAILS_TAG, weatherItem.getTemperature().toString());
     }
 
 
@@ -173,13 +173,6 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     public void showData(List<WeatherEntity> data) {
         if (mAdapter != null) {
             mAdapter.replaceItems(data);
-        }
-    }
-
-    @Override
-    public void setData(@NonNull AqiResponse data) {
-        if (mAdapter != null) {
-            mAdapter.setData(data);
         }
     }
 

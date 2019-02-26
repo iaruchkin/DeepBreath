@@ -5,10 +5,10 @@ import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface AirQualityEndpoint {
+public interface WeatherEndpoint {
 
-    @GET("/feed/{location}/")
-    Single<AqiResponse> get(@Path("location") @NonNull String section);
+    @GET("v1/{forecast}.json")
+    Single<WeatherResponse> get(@Path("forecast") @NonNull String forecast);
 }
 
 

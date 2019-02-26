@@ -4,34 +4,43 @@ import android.content.Context;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.App;
-import com.iaruchkin.deepbreath.network.aqicnDTO.Data;
+import com.iaruchkin.deepbreath.network.weatherApixuDTO.Forecastday;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConverterData {
+public class ConverterWeather {
 
     private static final String TAG = "RoomConverter";
 
     private static WeatherDao weatherDao = AppDatabase.getAppDatabase(App.INSTANCE).weatherDao();
 
-    public static List<WeatherEntity> dtoToDao(Data data, String weatherLocation){
+    public static List<WeatherEntity> dtoToDao(List<Forecastday> listDTO, String weatherLocation){
         List<WeatherEntity> listDao = new ArrayList<>();
 
+//        AqiEntity aqiEntity = new AqiEntity();
+//        aqiEntity.setId(data.getDominentpol()+weatherLocation);
+//        aqiEntity.setLocation(weatherLocation);
+//        aqiEntity.setAqi(data.getAqi().toString());
+//        aqiEntity.setDate(data.getTime().getS());
+//        aqiEntity.setPm10(data.getIaqi().getPm10().getV());
+//        listDao.add(aqiEntity);
+
+        for(Forecastday dto : listDTO) {
             WeatherEntity weatherEntity = new WeatherEntity();
-            weatherEntity.setId(data.getDominentpol()+weatherLocation);
+            weatherEntity.setId(dto.date + weatherLocation);
+            weatherEntity.setTemperature(dto.getDay().avgtemp_c);
+            weatherEntity.setDate(dto.date);
             weatherEntity.setLocation(weatherLocation);
-            weatherEntity.setAqi(data.getAqi().toString());
-            weatherEntity.setDate(data.getTime().getS());
 
             listDao.add(weatherEntity);
-
+        }
         return listDao;
     }
 
     public static WeatherEntity getDataById(Context context, String id){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        return db.weatherDao().getNewsById(id);
+        return db.weatherDao().getDataById(id);
     }
 
     public static List<WeatherEntity> loadDataFromDb(Context context, String location) {

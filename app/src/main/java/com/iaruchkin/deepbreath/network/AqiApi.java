@@ -9,24 +9,24 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NetworkSilngleton {
+public class AqiApi {
 
-    private static NetworkSilngleton networkSilngleton;
+    private static AqiApi aqiApi;
     private static final String URL = "https://api.waqi.info/";
-    private AirQualityEndpoint airQualityEndpoint;
+    private AqiEndpoint aqiEndpoint;
 
-    public static synchronized NetworkSilngleton getInstance(){
-        if (networkSilngleton == null){
-            networkSilngleton = new NetworkSilngleton();
+    public static synchronized AqiApi getInstance(){
+        if (aqiApi == null){
+            aqiApi = new AqiApi();
         }
-        return networkSilngleton;
+        return aqiApi;
     }
 
-    private NetworkSilngleton(){
+    private AqiApi(){
         final OkHttpClient client = builtClient();
         final Retrofit retrofit = builtRertofit(client);
 
-        airQualityEndpoint = retrofit.create(AirQualityEndpoint.class);
+        aqiEndpoint = retrofit.create(AqiEndpoint.class);
     }
 
     private Retrofit builtRertofit(OkHttpClient client) {
@@ -51,7 +51,7 @@ public class NetworkSilngleton {
     }
 
     @NonNull
-    public AirQualityEndpoint airQuality() {
-        return airQualityEndpoint;
+    public AqiEndpoint airQuality() {
+        return aqiEndpoint;
     }
 }

@@ -13,7 +13,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_primary"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -82,18 +82,19 @@
                     android:id="@+id/purity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginEnd="20dp"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/colorTextWhite"
-                    android:textSize="50sp"
+                    android:textSize="40sp"
+                    android:maxLines="1"
                     tools:text="50"/>
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:id="@+id/weather_icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="0dp"
-                    android:id="@+id/img_preview"
                     android:scaleType="centerCrop"
                     android:src="@drawable/art_clouds"
                     tools:src="@drawable/art_clouds"/>
@@ -102,13 +103,24 @@
                     android:id="@+id/high_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:fontFamily="sans-serif-light"
                     android:textColor="@color/colorTextWhite"
-                    android:textSize="50sp"
+                    android:textSize="40sp"
+                    android:maxLines="2"
                     tools:text="19\u00b0"/>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/weather_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="24sp"
+                android:textColor="@color/colorTextWhite"
+                tools:text="Rainy"/>
 
     </LinearLayout>
 

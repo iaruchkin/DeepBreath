@@ -4,7 +4,7 @@ import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.network.AqiResponse;
+import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 
 import java.util.List;
@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 public interface WeatherListView extends MvpView {
 
     void showData(@NonNull List<WeatherEntity> data);
-    void setData(@NonNull AqiResponse data);
     void showState(@NonNull State state);
 
 }

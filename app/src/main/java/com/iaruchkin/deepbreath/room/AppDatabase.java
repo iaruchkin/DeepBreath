@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mSingleton;
 
-    private static final String DATABASE_NAME = "AqiRoomDb.db";
+    private static final String DATABASE_NAME = "WeatherRoomDb.db";
 
     public abstract WeatherDao weatherDao();
 

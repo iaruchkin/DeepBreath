@@ -13,14 +13,14 @@ import androidx.room.Update;
 @Dao
 public interface WeatherDao {
 
-    @Query("SELECT * FROM aqi")
+    @Query("SELECT * FROM weather")
     List<WeatherEntity> getAll();
 
-    @Query("SELECT * FROM aqi WHERE location = :location")
+    @Query("SELECT * FROM weather WHERE location = :location")
     List<WeatherEntity> getAll(String location);
 
-    @Query("SELECT * FROM aqi WHERE id = :id")
-    WeatherEntity getNewsById(String id);
+    @Query("SELECT * FROM weather WHERE id = :id")
+    WeatherEntity getDataById(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(WeatherEntity... weatherEntities);
@@ -34,7 +34,7 @@ public interface WeatherDao {
     @Delete
     void delete(WeatherEntity weatherEntity);
 
-    @Query("DELETE FROM aqi WHERE location = :location")
+    @Query("DELETE FROM weather WHERE location = :location")
     void deleteAll(String location);
 
 }
