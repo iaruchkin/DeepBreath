@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     private WeatherListFragment mWeatherListFragment;
 //    private IntroFragment mIntroFragment;
 //    private AboutFragment mAboutFragment;
-//    private WeatherDetailsFragment mNewsDetailsFragment;
+//    private AqiFragment mNewsDetailsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

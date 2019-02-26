@@ -12,17 +12,17 @@ import com.iaruchkin.deepbreath.R;
 import androidx.fragment.app.Fragment;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class WeatherDetailsFragment extends Fragment {
+public class AqiFragment extends Fragment {
     static final String EXTRA_ITEM_URL = "extra:itemURL";
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    public static final String TAG = WeatherDetailsFragment.class.getSimpleName();
+    public static final String TAG = AqiFragment.class.getSimpleName();
     private MessageFragmentListener listener;
 
     WebView mWebView;
 
 
-    public static WeatherDetailsFragment newInstance(String itemURL){
-        WeatherDetailsFragment fragmentFullNews = new WeatherDetailsFragment();
+    public static AqiFragment newInstance(String itemURL){
+        AqiFragment fragmentFullNews = new AqiFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_ITEM_URL, itemURL);
         fragmentFullNews.setArguments(bundle);

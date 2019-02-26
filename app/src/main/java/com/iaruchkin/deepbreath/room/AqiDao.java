@@ -22,6 +22,9 @@ public interface AqiDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(AqiEntity aqiEntity);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(AqiEntity... aqiEntities);
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void edit(AqiEntity aqiEntity);
 

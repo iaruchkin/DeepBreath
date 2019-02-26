@@ -11,20 +11,12 @@ import java.util.List;
 
 public class ConverterWeather {
 
-    private static final String TAG = "RoomConverter";
+    private static final String TAG = "RoomConverterWeather";
 
     private static WeatherDao weatherDao = AppDatabase.getAppDatabase(App.INSTANCE).weatherDao();
 
     public static List<WeatherEntity> dtoToDao(List<Forecastday> listDTO, String weatherLocation){
         List<WeatherEntity> listDao = new ArrayList<>();
-
-//        AqiEntity aqiEntity = new AqiEntity();
-//        aqiEntity.setId(data.getDominentpol()+weatherLocation);
-//        aqiEntity.setLocation(weatherLocation);
-//        aqiEntity.setAqi(data.getAqi().toString());
-//        aqiEntity.setDate(data.getTime().getS());
-//        aqiEntity.setPm10(data.getIaqi().getPm10().getV());
-//        listDao.add(aqiEntity);
 
         for(Forecastday dto : listDTO) {
             WeatherEntity weatherEntity = new WeatherEntity();
@@ -45,20 +37,20 @@ public class ConverterWeather {
 
     public static List<WeatherEntity> loadDataFromDb(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        Log.i(TAG, "data loaded from DB");
+        Log.i(TAG, "Weather data loaded from DB");
         return db.weatherDao().getAll(location);
     }
 
     public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String location){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         db.weatherDao().deleteAll(location);
-        Log.i(TAG, "DB: deleteAll");
+        Log.i(TAG, "Weather DB: deleteAll");
 
         WeatherEntity data[] = list.toArray(new WeatherEntity[list.size()]);
         db.weatherDao().insertAll(data);
-        Log.i(TAG, "DB: insertAll");
+        Log.i(TAG, "Weather DB: insertAll");
 
-        Log.i(TAG, "data saved to DB");
+        Log.i(TAG, "Weather data saved to DB");
         Log.i(TAG, list.toString());
         weatherDao.insertAll(data);
 

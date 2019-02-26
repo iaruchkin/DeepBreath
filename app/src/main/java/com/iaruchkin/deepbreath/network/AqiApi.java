@@ -46,12 +46,12 @@ public class AqiApi {
         return new OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
-                .addInterceptor(ApiKeyInterceptor.create())
+                .addInterceptor(AqiApiKeyInterceptor.create())
                 .build();
     }
 
     @NonNull
-    public AqiEndpoint airQuality() {
+    public AqiEndpoint airEndpoint() {
         return aqiEndpoint;
     }
 }

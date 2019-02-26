@@ -20,6 +20,7 @@ import com.iaruchkin.deepbreath.network.AqiApi;
 import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
 import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
+import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.ui.adapter.WeatherItemAdapter;
 
@@ -170,9 +171,16 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     }
 
     @Override
-    public void showData(List<WeatherEntity> data) {
+    public void showWeatherData(List<WeatherEntity> data) {
         if (mAdapter != null) {
             mAdapter.replaceItems(data);
+        }
+    }
+
+    @Override
+    public void showAqiData(@NonNull AqiEntity data) {
+        if (mAdapter != null) {
+            mAdapter.setAqiItem(data);
         }
     }
 

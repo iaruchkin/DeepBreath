@@ -7,9 +7,13 @@ import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
+import com.iaruchkin.deepbreath.network.AqiApi;
+import com.iaruchkin.deepbreath.network.AqiResponse;
 import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.network.WeatherResponse;
 import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
+import com.iaruchkin.deepbreath.room.AqiEntity;
+import com.iaruchkin.deepbreath.room.ConverterAqi;
 import com.iaruchkin.deepbreath.room.ConverterWeather;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 
@@ -38,17 +42,20 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
 
     @Override
     protected void onFirstViewAttach() {
-        loadFromDb(FORECAST);
+        loadWeatherFromDb(FORECAST);
+        loadAqiFromDb(DEFAULT_LOCATION);
     }
 
     public void loadData(String location){
-        loadFromDb(location);
+        loadWeatherFromDb(location);
+        loadAqiFromDb(DEFAULT_LOCATION);
 //        loadDummy();
 
     }
 
     public void forceLoadData(String location){
-        loadFromNet(location);
+        loadWeatherFromNet(location);
+        loadAqiFromNet(DEFAULT_LOCATION);
 //        loadDummy();
     }
 
@@ -63,47 +70,84 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
         weatherEntities.add(dummy);
         weatherEntities.add(dummy);
 
-        getViewState().showData(weatherEntities);
+        getViewState().showWeatherData(weatherEntities);
     }
 
-    private void loadFromDb(String location){
+    private void loadWeatherFromDb(String option){
         getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
+                .loadDataFromDb(context, option))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> updateWeatherData(data, option), this::handleError);
+        disposeOnDestroy(loadFromDb);
+        Log.e(WEATHER_LIST_TAG,"Load WeatherData from db presenter");
+
+    }
+
+    private void loadAqiFromDb(String location){
+        getViewState().showState(State.Loading);
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
                 .loadDataFromDb(context, location))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateData(data, location), this::handleError);
+                .subscribe(data -> updateAqiData(data, location), this::handleError);
         disposeOnDestroy(loadFromDb);
-        Log.e(WEATHER_LIST_TAG,"Load from db presenter");
+        Log.e(WEATHER_LIST_TAG,"Load AqiData from db presenter");
 
     }
 
-    private void updateData(@Nullable List<WeatherEntity> data, String location) {
+    private void updateWeatherData(@Nullable List<WeatherEntity> data, String option) {
         if (data.size()==0){
-            loadFromNet(location);
-            Log.i(WEATHER_LIST_TAG, "there is no data for location : " + location);
+            loadWeatherFromNet(option);
+            Log.i(WEATHER_LIST_TAG, "there is no WeatherData for option : " + option);
         }else {
-            getViewState().showData(data);
+            getViewState().showWeatherData(data);
             getViewState().showState(State.HasData);
-            Log.i(WEATHER_LIST_TAG, "loaded from DB: " + data.get(0).getLocation() + " / " + data.get(0).getId());
-            Log.i(WEATHER_LIST_TAG, "updateData executed on thread: " + Thread.currentThread().getName());
+            Log.i(WEATHER_LIST_TAG, "loaded WeatherData from DB: " + data.get(0).getId() + " / " + data.get(0).getLocation());
+            Log.i(WEATHER_LIST_TAG, "updateWeatherData executed on thread: " + Thread.currentThread().getName());
         }
     }
 
-    private void loadFromNet(@NonNull String location){
-        Log.e(WEATHER_LIST_TAG,"Load from net start presenter");
+    private void updateAqiData(@Nullable AqiEntity data, String location) {
+        if (data == null){
+            loadAqiFromNet(location);
+            Log.i(WEATHER_LIST_TAG, "there is no AqiData for location : " + location);
+        }else {
+            getViewState().showAqiData(data);
+            getViewState().showState(State.HasData);
+            Log.i(WEATHER_LIST_TAG, "loaded AqiData from DB: " + data.getId() + " / " + data.getAqi());
+            Log.i(WEATHER_LIST_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
+        }
+    }
+
+    private void loadWeatherFromNet(@NonNull String option){
+        Log.e(WEATHER_LIST_TAG,"Load Weather from net start presenter");
 
         getViewState().showState(State.Loading);
         final Disposable disposable = WeatherApi.getInstance()
                 .weatherEndpoint()
-                .get(location)
+                .get(option)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> updateDB(response, location), this::handleError);
+                .subscribe(response -> updateWeatherDB(response, option), this::handleError);
         disposeOnDestroy(disposable);
     }
 
-    private void updateDB(WeatherResponse response , String location) {
+    private void loadAqiFromNet(@NonNull String location){
+        Log.e(WEATHER_LIST_TAG,"Load AQI from net start presenter");
+
+        getViewState().showState(State.Loading);
+        final Disposable disposable = AqiApi.getInstance()
+                .airEndpoint()
+                .get(location)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> updateAqiDB(response, location), this::handleError);
+        disposeOnDestroy(disposable);
+    }
+
+    private void updateWeatherDB(WeatherResponse response , String option) {
         if (response.getForecast().getForecastday().size()==0) {
                 getViewState().showState(State.HasNoData);
         } else {
@@ -111,14 +155,36 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
                     .subscribeOn(Schedulers.io())
                     .map(aqiDTO -> {
                         ConverterWeather.saveAllDataToDb(context,
-                                ConverterWeather.dtoToDao(aqiDTO, location),location);
-                        return ConverterWeather.loadDataFromDb(context, location);
+                                ConverterWeather.dtoToDao(aqiDTO, option),option);
+                        return ConverterWeather.loadDataFromDb(context, option);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             weatherEntities -> {
-                                getViewState().showData(weatherEntities);
-                                Log.i(WEATHER_LIST_TAG, "loaded from NET to DB: " + weatherEntities.get(0).getLocation() + " / " + weatherEntities.get(0).getId());
+                                getViewState().showWeatherData(weatherEntities);
+                                Log.i(WEATHER_LIST_TAG, "loaded weather from NET to DB: " + weatherEntities.get(0).getId() + " / " +  weatherEntities.get(0).getLocation());
+                            });
+            disposeOnDestroy(saveDataToDb);
+            getViewState().showState(State.HasData);
+        }
+    }
+
+    private void updateAqiDB(AqiResponse response , String location) {
+        if (response.getData() == null) {
+            getViewState().showState(State.HasNoData);
+        } else {
+            Disposable saveDataToDb = Single.fromCallable(response::getData)
+                    .subscribeOn(Schedulers.io())
+                    .map(aqiDTO -> {
+                        ConverterAqi.saveAllDataToDb(context,
+                                ConverterAqi.dtoToDao(aqiDTO, location),location);
+                        return ConverterAqi.loadDataFromDb(context, location);
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            aqiEntities -> {
+                                getViewState().showAqiData(aqiEntities);
+                                Log.i(WEATHER_LIST_TAG, "loaded aqi from NET to DB: " + aqiEntities.getId() + " / " + aqiEntities.getAqi());
                             });
             disposeOnDestroy(saveDataToDb);
             getViewState().showState(State.HasData);

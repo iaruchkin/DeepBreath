@@ -14,7 +14,8 @@ import androidx.annotation.NonNull;
 @StateStrategyType(value = SingleStateStrategy.class)
 public interface WeatherListView extends MvpView {
 
-    void showData(@NonNull List<WeatherEntity> data);
+    void showWeatherData(@NonNull List<WeatherEntity> data);
+    void showAqiData(@NonNull AqiEntity data);
     void showState(@NonNull State state);
 
 }

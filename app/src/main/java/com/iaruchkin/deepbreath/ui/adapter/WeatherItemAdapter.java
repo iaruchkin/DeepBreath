@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
     private boolean mUseTodayLayout;
 
     private final List<WeatherEntity> weatherItemList = new ArrayList<>();
+    private AqiEntity aqiItem = new AqiEntity();
     private final WeatherAdapterOnClickHandler mClickHandler;
 
     public interface WeatherAdapterOnClickHandler {
@@ -59,7 +61,7 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, final int position) {
         WeatherEntity weatherItem = weatherItemList.get(position);
-        holder.bind(weatherItem);
+        holder.bind(weatherItem ,aqiItem);
 
         //todo set images
 //        int weatherImageId;
@@ -103,12 +105,12 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
         private final TextView temperatureTextView;
 
 
-        public void bind(WeatherEntity weatherItem) {
+        public void bind(WeatherEntity weatherItem, AqiEntity aqiItem) {
             imageView.setImageResource(R.drawable.art_clouds);
             categoryTextView.setText(weatherItem.getLocation());
             dateTextView.setText(weatherItem.getDate());
             temperatureTextView.setText(String.valueOf(weatherItem.getTemperature())+"\u00b0");
-            aqiTextView.setText(String.valueOf(weatherItem.getTemperature()));
+            aqiTextView.setText(aqiItem.getAqi());
         }
 
         public WeatherViewHolder(View view) {
@@ -134,5 +136,9 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
             weatherItemList.clear();
             weatherItemList.addAll(weatherData);
             notifyDataSetChanged();
+        }
+
+        public void setAqiItem(AqiEntity data){
+            aqiItem = data;
         }
 }
