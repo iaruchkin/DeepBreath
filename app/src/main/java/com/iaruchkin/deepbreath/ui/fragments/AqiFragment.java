@@ -5,35 +5,69 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.TextView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
+import com.iaruchkin.deepbreath.common.State;
+import com.iaruchkin.deepbreath.network.AqiApi;
+import com.iaruchkin.deepbreath.network.WeatherApi;
+import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
+import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
+import com.iaruchkin.deepbreath.room.AqiEntity;
+import com.iaruchkin.deepbreath.room.WeatherEntity;
 
-import androidx.fragment.app.Fragment;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class AqiFragment extends Fragment {
-    static final String EXTRA_ITEM_URL = "extra:itemURL";
+public class AqiFragment extends MvpAppCompatFragment implements WeatherListView {
+    private static final int LAYOUT = R.layout.layout_detail;
+
+    static final String EXTRA_ITEM_LOCATION = "extra:itemLocation";
+    static final String EXTRA_ITEM_OPTION = "extra:itemOption";
+
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static final String TAG = AqiFragment.class.getSimpleName();
     private MessageFragmentListener listener;
 
-    WebView mWebView;
+    @InjectPresenter
+    WeatherListPresenter weatherListPresenter;
 
+    @ProvidePresenter
+    WeatherListPresenter provideWeatherListPresenter() {
+        return new WeatherListPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
+    }
 
-    public static AqiFragment newInstance(String itemURL){
-        AqiFragment fragmentFullNews = new AqiFragment();
+    TextView date;
+    TextView weather_description;
+    TextView high_temperature;
+    TextView low_temperature;
+
+    TextView humidity;
+    TextView pressure;
+    TextView wind_measurement;
+
+    public static AqiFragment newInstance(String location, String option){
+        AqiFragment fragmentAqi = new AqiFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(EXTRA_ITEM_URL, itemURL);
-        fragmentFullNews.setArguments(bundle);
-        return fragmentFullNews;
+        bundle.putSerializable(EXTRA_ITEM_LOCATION, location);
+//        bundle.putSerializable(EXTRA_ITEM_OPTION, option);
+        fragmentAqi.setArguments(bundle);
+        return fragmentAqi;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_error, container, false);
-//        setView(getArguments().getString(EXTRA_ITEM_URL));
+        View view = inflater.inflate(LAYOUT, container, false);
+//        getArguments().getString(EXTRA_ITEM_LOCATION);
+//        getArguments().getString(EXTRA_ITEM_OPTION);
+
+        findViews(view);
 
         return view;
     }
@@ -57,10 +91,54 @@ public class AqiFragment extends Fragment {
         super.onDetach();
     }
 
-     private void setView(String itemURL){
+     private void setWeatherView(WeatherEntity weatherData){
+        date.setText(weatherData.getDate());
+        weather_description.setText(weatherData.getLocation());
+        low_temperature.setText(weatherData.getTemperature().toString());
+     }
 
-        if (itemURL != null) {
-        mWebView.loadUrl(itemURL);
-        }
+    private void setAqiView(AqiEntity aqiData) {
+//        high_temperature.setText("51");
+//        humidity.setText("10");
+//        pressure.setText("710");
+//        wind_measurement.setText("штиль");
+
+        high_temperature.setText(aqiData.getAqi());
+        humidity.setText(aqiData.getPm10());
+//        pressure.setText(aqiData.getLocation());
+//        wind_measurement.setText(aqiData.getPm10());
+    }
+
+    private void findViews(View view) {
+//        mToolbar = view.findViewById(R.id.toolbar);
+        date = view.findViewById(R.id.date);
+        weather_description = view.findViewById(R.id.weather_description);
+        high_temperature = view.findViewById(R.id.high_temperature);
+        low_temperature = view.findViewById(R.id.low_temperature);
+        humidity = view.findViewById(R.id.humidity);
+        pressure = view.findViewById(R.id.pressure);
+        wind_measurement = view.findViewById(R.id.wind_measurement);
+
+    }
+
+    @Override
+    public void showWeatherData(@NonNull List<WeatherEntity> data) {
+        setWeatherView(data.get(0));
+    }
+
+    @Override
+    public void showAqiData(@NonNull AqiEntity data) {
+        setAqiView(data);
+    }
+
+    @Override
+    public void showState(@NonNull State state) {
+
+    }
+
+    public void loadData(String category) {
+
+        weatherListPresenter.loadData(category);
+
     }
 }

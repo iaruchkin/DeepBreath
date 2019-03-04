@@ -28,17 +28,21 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_DETAILS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
 public class WeatherListFragment extends MvpAppCompatFragment implements WeatherItemAdapter.WeatherAdapterOnClickHandler, WeatherListView {
 
-    private static final int LAYOUT = R.layout.weather_list_layout;
+    private static final int LAYOUT = R.layout.layout_weather_list;
     private MessageFragmentListener listener;
 
     @InjectPresenter
@@ -46,7 +50,7 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     @ProvidePresenter
     WeatherListPresenter provideWeatherListPresenter() {
-        return new WeatherListPresenter(WeatherApi.getInstance());
+        return new WeatherListPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
     }
 
     @Nullable
@@ -61,8 +65,10 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     private Button errorAction;
     @Nullable
     private FloatingActionButton mUpdate;
-//    @Nullable
-//    private Toolbar toolbar;
+    @Nullable
+    private Toolbar toolbar;
+    private CollapsingToolbarLayout mToolbar;
+
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -113,17 +119,31 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     private void setupUi(View view) {
         findViews(view);
-//        setupToolbar();
+        setupToolbar();
         setupOrientation(mRecyclerView);
         setupRecyclerViewAdapter();
+
+//        setHomeButton(view);
     }
 
-//    private void setupToolbar() {
-//        setHasOptionsMenu(true);
-//        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
-//        ((AppCompatActivity)getContext()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-//    }
+    private void setupToolbar() {
+        setHasOptionsMenu(true);
+        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_logo));
+//        actionBar.setShowHideAnimationEnabled(true);
+//        actionBar.show();
 
+    }
+    private void setHomeButton(View view) {
+        final Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
+        ActionBar supportActionBar = ((AppCompatActivity) getContext()).getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
     private void setupRecyclerViewAdapter(){
         mAdapter = new WeatherItemAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -154,7 +174,7 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     @Override
     public void onClick(WeatherEntity weatherItem) {
-        listener.onActionClicked(WEATHER_DETAILS_TAG, weatherItem.getTemperature().toString());
+        listener.onActionClicked(WEATHER_DETAILS_TAG, weatherItem.getTemperature().toString());//todo передать нужное значение
     }
 
 
@@ -228,7 +248,8 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     }
 
     private void findViews(View view) {
-//        toolbar = view.findViewById(R.id.toolbar);
+//        mToolbar = view.findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.toolbar);
         mRecyclerView = view.findViewById(R.id.idRecyclerView);
         mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         mError = view.findViewById(R.id.error_layout);

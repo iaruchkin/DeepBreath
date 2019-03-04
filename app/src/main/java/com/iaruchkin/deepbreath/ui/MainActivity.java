@@ -3,6 +3,7 @@ package com.iaruchkin.deepbreath.ui;
 import android.os.Bundle;
 
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.ui.fragments.AqiFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.WeatherListFragment;
 
@@ -17,10 +18,9 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
     private FragmentManager mFragmentManager;
     private WeatherListFragment mWeatherListFragment;
+    private AqiFragment mDetailsFragment;
 //    private IntroFragment mIntroFragment;
 //    private AboutFragment mAboutFragment;
-//    private AqiFragment mNewsDetailsFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +52,15 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 .commit();
     }
 
-//    private void startNewsDetails(String message){
-//        mNewsDetailsFragment = NewsDetailsFragment.newInstance(message);
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_list, mNewsDetailsFragment)
-//                .addToBackStack(null)
-//                .commit();
-//    }
+    private void startNewsDetails(String message){
+        mDetailsFragment = AqiFragment.newInstance(message, message);//todo set correct string messages
+        mDetailsFragment = new AqiFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_list, mDetailsFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 //
 //    private void startAbout(){
 //        mAboutFragment = new AboutFragment();
@@ -87,9 +88,9 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
             case WEATHER_LIST_TAG:
                 startNewsList();
                 break;
-//            case WEATHER_DETAILS_TAG:
-//                startNewsDetails(message);
-//                break;
+            case WEATHER_DETAILS_TAG:
+                startNewsDetails(message);
+                break;
 //            case ABOUT_TAG:
 //                startAbout();
 //                break;

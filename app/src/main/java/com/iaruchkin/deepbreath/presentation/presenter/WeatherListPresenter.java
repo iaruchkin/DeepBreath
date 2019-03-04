@@ -32,18 +32,20 @@ import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 @InjectViewState
 public class WeatherListPresenter extends BasePresenter<WeatherListView> {
     private Context context = App.INSTANCE.getApplicationContext();
-    private WeatherApi restApi;
+    private WeatherApi weatherApi;
+    private AqiApi aqiApi;
+
     private final String DEFAULT_LOCATION = "here";
     private final String FORECAST = "forecast";
 
-    public WeatherListPresenter(@NonNull WeatherApi instance) {
-        this.restApi = instance;
+    public WeatherListPresenter(@NonNull WeatherApi weatherInstance, AqiApi aqiInstance) {
+        this.weatherApi = weatherInstance;
+        this.aqiApi = aqiInstance;
     }
 
     @Override
     protected void onFirstViewAttach() {
-        loadWeatherFromDb(FORECAST);
-        loadAqiFromDb(DEFAULT_LOCATION);
+        forceLoadData(FORECAST);
     }
 
     public void loadData(String location){

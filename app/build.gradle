@@ -51,9 +51,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versionJetpack"
     implementation "androidx.cardview:cardview:$versionJetpack"
     implementation "androidx.recyclerview:recyclerview:$versionJetpack"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation "androidx.preference:preference:$versionJetpack"
-    implementation "com.android.support:design:$versionAppCompat"//TODO find this for androidX
-    implementation "com.google.android.material:material:$versionJetpack"
+    implementation "com.google.android.material:material:1.1.0-alpha04"
 
     //glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'

@@ -8,13 +8,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<androidx.appcompat.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="?attr/colorPrimary"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark" >-->
-    <!--</androidx.appcompat.widget.Toolbar >-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark"
+        android:theme="@style/ThemeOverlay.AppCompat.Light" >
+
+    </androidx.appcompat.widget.Toolbar >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            tools:context=".ui.fragments.NewsListFragment"
+            tools:context=".ui.fragments.WeatherListFragment"
             tools:listitem="@layout/item_forecast"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,6 +38,7 @@
             android:clickable="true"
             android:focusable="true"
             app:backgroundTint="@color/colorPrimaryDark"
+            app:tint="@color/colorPrimaryLight"
             app:fabSize="normal"
             app:srcCompat="@android:drawable/ic_popup_sync" />
 
