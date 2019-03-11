@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.App;
+import com.iaruchkin.deepbreath.network.WeatherResponse;
 import com.iaruchkin.deepbreath.network.weatherApixuDTO.Forecastday;
 
 import java.util.ArrayList;
@@ -15,15 +16,16 @@ public class ConverterWeather {
 
     private static WeatherDao weatherDao = AppDatabase.getAppDatabase(App.INSTANCE).weatherDao();
 
-    public static List<WeatherEntity> dtoToDao(List<Forecastday> listDTO, String weatherLocation){
+    public static List<WeatherEntity> dtoToDao(WeatherResponse weatherDTO, String weatherLocation){
+        List<Forecastday> listDTO = weatherDTO.getForecast().getForecastday();
         List<WeatherEntity> listDao = new ArrayList<>();
 
         for(Forecastday dto : listDTO) {
             WeatherEntity weatherEntity = new WeatherEntity();
-            weatherEntity.setId(dto.date + weatherLocation);
+            weatherEntity.setId(dto.date + weatherDTO.getLocation().name);
             weatherEntity.setTemperature(dto.getDay().avgtemp_c);
             weatherEntity.setDate(dto.date);
-            weatherEntity.setLocation(weatherLocation);
+            weatherEntity.setLocation(weatherDTO.getLocation().name);
 
             listDao.add(weatherEntity);
         }
@@ -38,7 +40,7 @@ public class ConverterWeather {
     public static List<WeatherEntity> loadDataFromDb(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Weather data loaded from DB");
-        return db.weatherDao().getAll(location);
+        return db.weatherDao().getAll(); //todo think about request
     }
 
     public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String location){

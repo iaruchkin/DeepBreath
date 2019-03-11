@@ -4,16 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/idCardView"
-    android:layout_margin="10dp"
+    android:layout_margin="1dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="0dp">
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryLight"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="@color/colorPrimaryLight"
+                android:textColor="@color/primary_text"
                 android:textSize="14sp"
                 tools:text="Today, April 03"/>
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="12sp"
-                android:textColor="@color/colorPrimaryLight"
+                android:textColor="@color/secondary_text"
                 tools:text="Rainy"/>
 
             </LinearLayout>
@@ -60,7 +60,7 @@
             android:layout_toEndOf="@+id/date_weather"
             android:fontFamily="sans-serif-light"
             android:textAlignment="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/primary_text"
             android:textSize="30sp"
             tools:text="50" />
 
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:textColor="@color/colorPrimaryLight"
+                android:textColor="@color/primary_text"
                 android:textSize="20sp"
                 tools:text="19\u00b0" />
 
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:fontFamily="sans-serif-light"
-                android:textColor="@color/colorPrimaryLight"
+                android:textColor="@color/secondary_text"
                 android:textSize="14sp"
                 tools:text="10\u00b0" />
 

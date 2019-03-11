@@ -11,7 +11,7 @@ public class Forecast implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("forecastday")
-	public ArrayList<Forecastday> forecastday = new ArrayList<Forecastday>();
+	private ArrayList<Forecastday> forecastday = new ArrayList<Forecastday>();
 	
 	public ArrayList<Forecastday> getForecastday()
     {

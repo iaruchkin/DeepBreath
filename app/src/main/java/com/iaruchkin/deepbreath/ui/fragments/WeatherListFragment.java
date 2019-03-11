@@ -5,6 +5,9 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,13 +37,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.disposables.CompositeDisposable;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import static com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_DETAILS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
-public class WeatherListFragment extends MvpAppCompatFragment implements WeatherItemAdapter.WeatherAdapterOnClickHandler, WeatherListView {
+public class WeatherListFragment extends MvpAppCompatFragment implements WeatherItemAdapter.WeatherAdapterOnClickHandler,
+                                                                        WeatherListView,
+                                                                        SwipeRefreshLayout.OnRefreshListener {
 
     private static final int LAYOUT = R.layout.layout_weather_list;
     private MessageFragmentListener listener;
@@ -63,10 +70,13 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     private View mError;
     @Nullable
     private Button errorAction;
+//    @Nullable
+//    private FloatingActionButton mUpdate;
     @Nullable
-    private FloatingActionButton mUpdate;
-    @Nullable
-    private Toolbar toolbar;
+    private SwipeRefreshLayout mRefresh;
+
+//    @Nullable
+//    private Toolbar toolbar;
     private CollapsingToolbarLayout mToolbar;
 
 
@@ -123,25 +133,52 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
         setupOrientation(mRecyclerView);
         setupRecyclerViewAdapter();
 
-//        setHomeButton(view);
+        setHomeButton(view);
+
+        mRefresh.setOnRefreshListener(this);
+
     }
 
-    private void setupToolbar() {
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.forecast, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                if (listener != null) {
+                    listener.onActionClicked(SETTINGS_TAG, "settings");
+                }
+                return true;
+            case R.id.action_map:
+                if (listener != null) {
+                    listener.onActionClicked(SETTINGS_TAG, "city");
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест
         setHasOptionsMenu(true);
-        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_logo));
-//        actionBar.setShowHideAnimationEnabled(true);
-//        actionBar.show();
+        actionBar.setDisplayUseLogoEnabled(true);
 
+        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_logo));
     }
+
     private void setHomeButton(View view) {
-        final Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
+//        final Toolbar toolbar = view.findViewById(R.id.toolbar);
+//        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
         ActionBar supportActionBar = ((AppCompatActivity) getContext()).getSupportActionBar();
         if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
     private void setupRecyclerViewAdapter(){
@@ -161,10 +198,10 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     private void setupUx() {
 
-        mUpdate.setOnClickListener(v -> forceLoadData(getLocation()));
-        errorAction.setOnClickListener(v -> loadData(getLocation()));
+//        mUpdate.setOnClickListener(v -> forceLoadData());
+        errorAction.setOnClickListener(v -> loadData());
 
-        loadData(getLocation());
+        loadData();
 
     }
 
@@ -178,15 +215,15 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     }
 
 
-    public void loadData(String category) {
+    public void loadData() {
 
-        weatherListPresenter.loadData(category);
+        weatherListPresenter.loadData();
 
     }
 
-    public void forceLoadData(String category) {
+    public void forceLoadData() {
 
-        weatherListPresenter.forceLoadData(category);
+        weatherListPresenter.forceLoadData();
 
     }
 
@@ -212,6 +249,8 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
                 mLoadingIndicator.setVisibility(View.GONE);
 
                 mRecyclerView.setVisibility(View.VISIBLE);
+
+                showRefresher(false);
                 break;
 
             case HasNoData:
@@ -219,6 +258,8 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
                 mRecyclerView.setVisibility(View.GONE);
 
                 mError.setVisibility(View.VISIBLE);
+
+                showRefresher(false);
                 break;
 
             case NetworkError:
@@ -226,6 +267,8 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
                 mRecyclerView.setVisibility(View.GONE);
 
                 mError.setVisibility(View.VISIBLE);
+
+                showRefresher(false);
                 break;
 
             case ServerError:
@@ -233,13 +276,17 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
                 mRecyclerView.setVisibility(View.GONE);
 
                 mError.setVisibility(View.VISIBLE);
+
+                showRefresher(false);
                 break;
 
             case Loading:
                 mError.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
 
-                mLoadingIndicator.setVisibility(View.VISIBLE);
+//                mLoadingIndicator.setVisibility(View.VISIBLE);
+
+                showRefresher(true);
                 break;
 
             default:
@@ -247,13 +294,24 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
         }
     }
 
+    @Override
+    public void onRefresh() {
+        weatherListPresenter.forceLoadData();
+    }
+
+//    @Override
+    public void showRefresher(boolean show) {
+        mRefresh.setRefreshing(show);
+    }
+
     private void findViews(View view) {
-//        mToolbar = view.findViewById(R.id.toolbar);
-        toolbar = view.findViewById(R.id.toolbar);
+//        toolbar = view.findViewById(R.id.toolbar);
         mRecyclerView = view.findViewById(R.id.idRecyclerView);
         mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         mError = view.findViewById(R.id.error_layout);
         errorAction = view.findViewById(R.id.action_button);
-        mUpdate = view.findViewById(R.id.floatingActionButton);
+//        mUpdate = view.findViewById(R.id.floatingActionButton);
+        mRefresh = view.findViewById(R.id.refresh);
+
     }
 }

@@ -1,23 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/primary_info"
-            layout="@layout/aqi_detail"
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--<androidx.appcompat.widget.Toolbar-->
+                <!--android:id="@+id/toolbar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="?attr/colorPrimary"-->
+                <!--android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar.Primary" >-->
+            <!--</androidx.appcompat.widget.Toolbar >-->
+
+
+            <include
+                android:id="@+id/primary_info"
+                layout="@layout/aqi_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:text="Weather data"/>
+
+            <include
+                android:id="@+id/extra_details"
+                layout="@layout/extra_aqi_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:text="Air data"/>
 
         <include
             android:id="@+id/extra_details"
             layout="@layout/extra_aqi_details"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content"/>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

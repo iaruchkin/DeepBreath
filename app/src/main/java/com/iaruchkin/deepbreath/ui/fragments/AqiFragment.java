@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -14,7 +15,9 @@ import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.AqiApi;
 import com.iaruchkin.deepbreath.network.WeatherApi;
+import com.iaruchkin.deepbreath.presentation.presenter.AqiPresenter;
 import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
+import com.iaruchkin.deepbreath.presentation.view.AqiView;
 import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
@@ -22,9 +25,11 @@ import com.iaruchkin.deepbreath.room.WeatherEntity;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class AqiFragment extends MvpAppCompatFragment implements WeatherListView {
+public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     private static final int LAYOUT = R.layout.layout_detail;
 
     static final String EXTRA_ITEM_LOCATION = "extra:itemLocation";
@@ -35,12 +40,7 @@ public class AqiFragment extends MvpAppCompatFragment implements WeatherListView
     private MessageFragmentListener listener;
 
     @InjectPresenter
-    WeatherListPresenter weatherListPresenter;
-
-    @ProvidePresenter
-    WeatherListPresenter provideWeatherListPresenter() {
-        return new WeatherListPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
-    }
+    AqiPresenter aqiPresenter;
 
     TextView date;
     TextView weather_description;
@@ -51,11 +51,13 @@ public class AqiFragment extends MvpAppCompatFragment implements WeatherListView
     TextView pressure;
     TextView wind_measurement;
 
+//    Toolbar toolbar;
+
     public static AqiFragment newInstance(String location, String option){
         AqiFragment fragmentAqi = new AqiFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_ITEM_LOCATION, location);
-//        bundle.putSerializable(EXTRA_ITEM_OPTION, option);
+        bundle.putSerializable(EXTRA_ITEM_OPTION, option);
         fragmentAqi.setArguments(bundle);
         return fragmentAqi;
     }
@@ -68,7 +70,7 @@ public class AqiFragment extends MvpAppCompatFragment implements WeatherListView
 //        getArguments().getString(EXTRA_ITEM_OPTION);
 
         findViews(view);
-
+        setupToolbar();
         return view;
     }
 
@@ -98,19 +100,14 @@ public class AqiFragment extends MvpAppCompatFragment implements WeatherListView
      }
 
     private void setAqiView(AqiEntity aqiData) {
-//        high_temperature.setText("51");
-//        humidity.setText("10");
-//        pressure.setText("710");
-//        wind_measurement.setText("штиль");
-
         high_temperature.setText(aqiData.getAqi());
-        humidity.setText(aqiData.getPm10());
-//        pressure.setText(aqiData.getLocation());
-//        wind_measurement.setText(aqiData.getPm10());
+        humidity.setText(aqiData.getLocation());
+        pressure.setText(aqiData.getId());
+        wind_measurement.setText(aqiData.getPm10().toString());
     }
 
     private void findViews(View view) {
-//        mToolbar = view.findViewById(R.id.toolbar);
+//        toolbar = view.findViewById(R.id.toolbar);
         date = view.findViewById(R.id.date);
         weather_description = view.findViewById(R.id.weather_description);
         high_temperature = view.findViewById(R.id.high_temperature);
@@ -122,12 +119,12 @@ public class AqiFragment extends MvpAppCompatFragment implements WeatherListView
     }
 
     @Override
-    public void showWeatherData(@NonNull List<WeatherEntity> data) {
-        setWeatherView(data.get(0));
+    public void setWeatherData(@NonNull WeatherEntity data) {
+        setWeatherView(data);
     }
 
     @Override
-    public void showAqiData(@NonNull AqiEntity data) {
+    public void setAqiData(@NonNull AqiEntity data) {
         setAqiView(data);
     }
 
@@ -136,9 +133,22 @@ public class AqiFragment extends MvpAppCompatFragment implements WeatherListView
 
     }
 
-    public void loadData(String category) {
+    public void loadData() {
 
-        weatherListPresenter.loadData(category);
+        aqiPresenter.loadData();
 
+    }
+
+    private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест
+        setHasOptionsMenu(true);
+//        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
+        actionBar.setDisplayUseLogoEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle("Moscow");
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 }

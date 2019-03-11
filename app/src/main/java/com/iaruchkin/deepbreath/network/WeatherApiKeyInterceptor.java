@@ -17,6 +17,9 @@ public final class WeatherApiKeyInterceptor implements Interceptor {
     private static final String TIME_HEADER_NAME = "days";
     private static final String TIME = "10";
 
+    private static final String GPS = "48.8567,2.3508";
+    private static final String IP = "109.252.99.90";
+
     public static WeatherApiKeyInterceptor create() {
         return new WeatherApiKeyInterceptor();
     }
@@ -32,7 +35,7 @@ public final class WeatherApiKeyInterceptor implements Interceptor {
         final HttpUrl url = requestWithoutApiKey.url()
                 .newBuilder()
                 .addQueryParameter(API_KEY_HEADER_NAME, API_KEY)
-                .addQueryParameter(CITY_HEADER_NAME, CITY)
+                .addQueryParameter(CITY_HEADER_NAME, IP)
                 .addQueryParameter(TIME_HEADER_NAME, TIME)
                 .build();
 

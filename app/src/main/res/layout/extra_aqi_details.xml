@@ -7,7 +7,7 @@
         android:id="@+id/extra_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/detail_accent_pane_background"
+        android:background="@color/colorPrimaryLight"
         android:paddingBottom="@dimen/forecast_detail_vertical_padding"
         android:paddingEnd="@dimen/forecast_detail_horizontal_padding"
         android:paddingLeft="@dimen/forecast_detail_horizontal_padding"

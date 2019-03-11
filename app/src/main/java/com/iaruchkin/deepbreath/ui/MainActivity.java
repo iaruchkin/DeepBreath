@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.ui.fragments.AqiFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
+import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 import com.iaruchkin.deepbreath.ui.fragments.WeatherListFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +15,16 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
     public final static String WEATHER_LIST_TAG = "WEATHER_LIST";
     public final static String WEATHER_DETAILS_TAG = "WEATHER_DETAILS";
+    public final static String SETTINGS_TAG = "SETTINGS";
+
     public final static String INTRO_TAG = "INTRO";
 
     private FragmentManager mFragmentManager;
     private WeatherListFragment mWeatherListFragment;
     private AqiFragment mDetailsFragment;
-//    private IntroFragment mIntroFragment;
-//    private AboutFragment mAboutFragment;
+    private SettingsFragment mSettingsFragment;
+    //    private IntroFragment mIntroFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,15 +65,15 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 .addToBackStack(null)
                 .commit();
     }
-//
-//    private void startAbout(){
-//        mAboutFragment = new AboutFragment();
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_list, mAboutFragment)
-//                .addToBackStack(null)
-//                .commit();
-//    }
+
+    private void startSettings(){
+        mSettingsFragment = new SettingsFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_list, mSettingsFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -91,9 +95,9 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
             case WEATHER_DETAILS_TAG:
                 startNewsDetails(message);
                 break;
-//            case ABOUT_TAG:
-//                startAbout();
-//                break;
+            case SETTINGS_TAG:
+                startSettings();
+                break;
 //            case INTRO_TAG:
 //                startIntro();
 //                break;

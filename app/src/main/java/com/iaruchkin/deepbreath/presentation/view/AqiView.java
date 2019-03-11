@@ -12,11 +12,10 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 @StateStrategyType(value = SingleStateStrategy.class)
-public interface WeatherListView extends MvpView {
+public interface AqiView extends MvpView {
 
-    void showWeatherData(@NonNull List<WeatherEntity> data);
-    void showAqiData(@NonNull AqiEntity data);
-    void showState(@NonNull State state);//todo replace with refresher
-//    void showRefresher(@NonNull boolean show);
+    void setWeatherData(@NonNull WeatherEntity data);
+    void setAqiData(@NonNull AqiEntity data);
+    void showState(@NonNull State state);
 
 }

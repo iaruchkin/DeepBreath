@@ -45,18 +45,18 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
 
     @Override
     protected void onFirstViewAttach() {
-        forceLoadData(FORECAST);
+        forceLoadData();
     }
 
-    public void loadData(String location){
-        loadWeatherFromDb(location);
+    public void loadData(){
+        loadWeatherFromDb(FORECAST);
         loadAqiFromDb(DEFAULT_LOCATION);
 //        loadDummy();
 
     }
 
-    public void forceLoadData(String location){
-        loadWeatherFromNet(location);
+    public void forceLoadData(){
+        loadWeatherFromNet(FORECAST);
         loadAqiFromNet(DEFAULT_LOCATION);
 //        loadDummy();
     }
@@ -132,7 +132,7 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
                 .get(option)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> updateWeatherDB(response, option), this::handleError);
+                .subscribe(response -> updateWeatherDB(response, response.getLocation().name), this::handleError);
         disposeOnDestroy(disposable);
     }
 
@@ -145,7 +145,7 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
                 .get(location)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> updateAqiDB(response, location), this::handleError);
+                .subscribe(response -> updateAqiDB(response, response.getData().getCity().getName()), this::handleError);
         disposeOnDestroy(disposable);
     }
 
@@ -153,12 +153,12 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
         if (response.getForecast().getForecastday().size()==0) {
                 getViewState().showState(State.HasNoData);
         } else {
-            Disposable saveDataToDb = Single.fromCallable(() -> response.getForecast().getForecastday())
+            Disposable saveDataToDb = Single.fromCallable(() -> response)
                     .subscribeOn(Schedulers.io())
-                    .map(aqiDTO -> {
+                    .map(weatherDTO -> {
                         ConverterWeather.saveAllDataToDb(context,
-                                ConverterWeather.dtoToDao(aqiDTO, option),option);
-                        return ConverterWeather.loadDataFromDb(context, option);
+                                ConverterWeather.dtoToDao(weatherDTO, option),weatherDTO.getLocation().name);
+                        return ConverterWeather.loadDataFromDb(context, weatherDTO.getLocation().name);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -178,9 +178,10 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
             Disposable saveDataToDb = Single.fromCallable(response::getData)
                     .subscribeOn(Schedulers.io())
                     .map(aqiDTO -> {
+                        String city = aqiDTO.getCity().getName();
                         ConverterAqi.saveAllDataToDb(context,
-                                ConverterAqi.dtoToDao(aqiDTO, location),location);
-                        return ConverterAqi.loadDataFromDb(context, location);
+                                ConverterAqi.dtoToDao(aqiDTO, city),city);
+                        return ConverterAqi.loadDataFromDb(context, city);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -192,6 +193,8 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
             getViewState().showState(State.HasData);
         }
     }
+
+
 
     private void handleError(Throwable th) {
         getViewState().showState(State.NetworkError);

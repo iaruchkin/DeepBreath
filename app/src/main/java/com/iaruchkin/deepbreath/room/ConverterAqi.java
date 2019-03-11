@@ -20,8 +20,8 @@ public class ConverterAqi {
     public static AqiEntity dtoToDao(Data aqiDTO, String weatherLocation){
 
         AqiEntity aqiEntity = new AqiEntity();
-        aqiEntity.setId(aqiDTO.getTime().getS()+weatherLocation);
-        aqiEntity.setLocation(weatherLocation);
+        aqiEntity.setId(aqiDTO.getTime().getS()+aqiDTO.getCity().getName());
+        aqiEntity.setLocation(aqiDTO.getCity().getName());
         aqiEntity.setAqi(aqiDTO.getAqi().toString());
         aqiEntity.setDate(aqiDTO.getTime().getS());
         aqiEntity.setPm10(aqiDTO.getIaqi().getPm10().getV());
@@ -37,7 +37,7 @@ public class ConverterAqi {
     public static AqiEntity loadDataFromDb(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.aqiDao().getAll(location);
+        return db.aqiDao().getAll(location);//todo think about request
     }
 
     public static void saveAllDataToDb(Context context, AqiEntity data, String location){

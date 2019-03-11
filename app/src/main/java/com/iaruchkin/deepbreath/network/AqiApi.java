@@ -13,7 +13,7 @@ public class AqiApi {
 
     private static AqiApi aqiApi;
     private static final String URL = "https://api.waqi.info/";
-    private AqiEndpoint aqiEndpoint;
+    private IpAqiEndpoint ipAqiEndpoint;
 
     public static synchronized AqiApi getInstance(){
         if (aqiApi == null){
@@ -26,7 +26,7 @@ public class AqiApi {
         final OkHttpClient client = builtClient();
         final Retrofit retrofit = builtRertofit(client);
 
-        aqiEndpoint = retrofit.create(AqiEndpoint.class);
+        ipAqiEndpoint = retrofit.create(IpAqiEndpoint.class);
     }
 
     private Retrofit builtRertofit(OkHttpClient client) {
@@ -51,7 +51,7 @@ public class AqiApi {
     }
 
     @NonNull
-    public AqiEndpoint airEndpoint() {
-        return aqiEndpoint;
+    public IpAqiEndpoint airEndpoint() {
+        return ipAqiEndpoint;
     }
 }
