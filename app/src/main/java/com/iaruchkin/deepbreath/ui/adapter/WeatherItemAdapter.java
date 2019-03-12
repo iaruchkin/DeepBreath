@@ -101,8 +101,8 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
         private final ImageView imageView;
         private final TextView categoryTextView;
         private final TextView dateTextView;
-        private final TextView aqiTextView;
         private final TextView temperatureTextView;
+        private final TextView aqiTextView;
 
 
         public void bind(WeatherEntity weatherItem, AqiEntity aqiItem) {
@@ -110,7 +110,7 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
             categoryTextView.setText(weatherItem.getLocation());
             dateTextView.setText(weatherItem.getDate());
             temperatureTextView.setText(String.valueOf(weatherItem.getTemperature())+"\u00b0");
-            aqiTextView.setText(aqiItem.getAqi());
+            aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
         }
 
         public WeatherViewHolder(View view) {

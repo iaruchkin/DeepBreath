@@ -13,8 +13,8 @@ public interface AqiDao {
     @Query("SELECT * FROM aqi")
     AqiEntity getAll();
 
-    @Query("SELECT * FROM aqi WHERE location = :location")
-    AqiEntity getAll(String location);
+    @Query("SELECT * FROM aqi WHERE cityName = :cityName")
+    AqiEntity getAll(String cityName);
 
     @Query("SELECT * FROM aqi WHERE id = :id")
     AqiEntity getDataById(String id);
@@ -31,7 +31,7 @@ public interface AqiDao {
     @Delete
     void delete(AqiEntity aqiEntity);
 
-    @Query("DELETE FROM aqi WHERE location = :location")
-    void deleteAll(String location);
+    @Query("DELETE FROM aqi WHERE cityName = :cityName")
+    void deleteAll(String cityName);
 
 }

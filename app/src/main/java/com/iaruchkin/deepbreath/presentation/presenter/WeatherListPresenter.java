@@ -90,7 +90,7 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
     private void loadAqiFromDb(String location){
         getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
-                .loadDataFromDb(context, location))
+                .getDataById(context, location))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateAqiData(data, location), this::handleError);
@@ -101,8 +101,8 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
 
     private void updateWeatherData(@Nullable List<WeatherEntity> data, String option) {
         if (data.size()==0){
-            loadWeatherFromNet(option);
             Log.i(WEATHER_LIST_TAG, "there is no WeatherData for option : " + option);
+            loadWeatherFromNet(option);
         }else {
             getViewState().showWeatherData(data);
             getViewState().showState(State.HasData);
@@ -113,8 +113,8 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
 
     private void updateAqiData(@Nullable AqiEntity data, String location) {
         if (data == null){
-            loadAqiFromNet(location);
             Log.i(WEATHER_LIST_TAG, "there is no AqiData for location : " + location);
+            loadAqiFromNet(location);
         }else {
             getViewState().showAqiData(data);
             getViewState().showState(State.HasData);
@@ -124,7 +124,7 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
     }
 
     private void loadWeatherFromNet(@NonNull String option){
-        Log.e(WEATHER_LIST_TAG,"Load Weather from net start presenter");
+        Log.e(WEATHER_LIST_TAG,"Load Weather from net presenter");
 
         getViewState().showState(State.Loading);
         final Disposable disposable = WeatherApi.getInstance()
@@ -137,7 +137,7 @@ public class WeatherListPresenter extends BasePresenter<WeatherListView> {
     }
 
     private void loadAqiFromNet(@NonNull String location){
-        Log.e(WEATHER_LIST_TAG,"Load AQI from net start presenter");
+        Log.e(WEATHER_LIST_TAG,"Load AQI from net presenter");
 
         getViewState().showState(State.Loading);
         final Disposable disposable = AqiApi.getInstance()

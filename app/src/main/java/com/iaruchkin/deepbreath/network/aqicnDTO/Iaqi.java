@@ -24,6 +24,9 @@ public class Iaqi {
     @SerializedName("so2")
     @Expose
     private So2 so2;
+    @SerializedName("o3")
+    @Expose
+    private O3 o3;
     @SerializedName("t")
     @Expose
     private T t;
@@ -33,6 +36,9 @@ public class Iaqi {
     @SerializedName("wg")
     @Expose
     private Wg wg;
+    @SerializedName("H")
+    @Expose
+    private H h;
 
     public Co getCo() {
         return co;
@@ -82,6 +88,14 @@ public class Iaqi {
         this.so2 = so2;
     }
 
+    public O3 getO3() {
+        return o3;
+    }
+
+    public void setO3(O3 o3) {
+        this.o3 = o3;
+    }
+
     public T getT() {
         return t;
     }
@@ -106,4 +120,11 @@ public class Iaqi {
         this.wg = wg;
     }
 
+    public H getH() {
+        return h;
+    }
+
+    public void setH(H h) {
+        this.h = h;
+    }
 }

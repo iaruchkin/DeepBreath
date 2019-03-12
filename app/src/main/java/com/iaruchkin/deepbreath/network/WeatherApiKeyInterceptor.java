@@ -35,7 +35,7 @@ public final class WeatherApiKeyInterceptor implements Interceptor {
         final HttpUrl url = requestWithoutApiKey.url()
                 .newBuilder()
                 .addQueryParameter(API_KEY_HEADER_NAME, API_KEY)
-                .addQueryParameter(CITY_HEADER_NAME, IP)
+                .addQueryParameter(CITY_HEADER_NAME, CITY)
                 .addQueryParameter(TIME_HEADER_NAME, TIME)
                 .build();
 

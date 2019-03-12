@@ -44,7 +44,7 @@ public class WeatherApi {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         return new OkHttpClient.Builder()
-                .connectTimeout(2, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .addInterceptor(WeatherApiKeyInterceptor.create())
                 .build();

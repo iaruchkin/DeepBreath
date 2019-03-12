@@ -4,12 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.App;
-import com.iaruchkin.deepbreath.network.AqiResponse;
 import com.iaruchkin.deepbreath.network.aqicnDTO.Data;
-import com.iaruchkin.deepbreath.network.weatherApixuDTO.Forecastday;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConverterAqi {
 
@@ -20,29 +15,60 @@ public class ConverterAqi {
     public static AqiEntity dtoToDao(Data aqiDTO, String weatherLocation){
 
         AqiEntity aqiEntity = new AqiEntity();
-        aqiEntity.setId(aqiDTO.getTime().getS()+aqiDTO.getCity().getName());
-        aqiEntity.setLocation(aqiDTO.getCity().getName());
-        aqiEntity.setAqi(aqiDTO.getAqi().toString());
-        aqiEntity.setDate(aqiDTO.getTime().getS());
+
+        aqiEntity.setId(aqiDTO.getIdx().toString());
+
+        aqiEntity.setCityGeo(aqiDTO.getCity().getGeo().toString());
+        aqiEntity.setCityName(aqiDTO.getCity().getName());
+        aqiEntity.setCityUrl(aqiDTO.getCity().getUrl());
+
+        aqiEntity.setAqi(aqiDTO.getAqi());
+
         aqiEntity.setPm10(aqiDTO.getIaqi().getPm10().getV());
+        aqiEntity.setPm25(aqiDTO.getIaqi().getPm25().getV());
+
+        if(aqiDTO.getIaqi().getCo() != null) aqiEntity.setCo(aqiDTO.getIaqi().getCo().getV());
+        if(aqiDTO.getIaqi().getNo2() != null) aqiEntity.setNo2(aqiDTO.getIaqi().getNo2().getV());
+        if(aqiDTO.getIaqi().getSo2() != null) aqiEntity.setSo2(aqiDTO.getIaqi().getSo2().getV());
+        if(aqiDTO.getIaqi().getO3() != null) aqiEntity.setO3(aqiDTO.getIaqi().getO3().getV());
+
+        if(aqiDTO.getIaqi().getWg() != null)aqiEntity.setWg(aqiDTO.getIaqi().getWg().getV());
+        if(aqiDTO.getIaqi().getH() != null)aqiEntity.setH(aqiDTO.getIaqi().getH().getV());
+        if(aqiDTO.getIaqi().getW() != null)aqiEntity.setW(aqiDTO.getIaqi().getW().getV());
+        if(aqiDTO.getIaqi().getP() != null)aqiEntity.setP(aqiDTO.getIaqi().getP().getV());
+
+        aqiEntity.setDate(aqiDTO.getTime().getS());
 
         return aqiEntity;
     }
-
+/*
+    pm25: "PM<sub>2.5</sub>",
+    pm10: "PM<sub>10</sub>",
+    o3: "Ozone",
+    no2: "Nitrogen Dioxide",
+    so2: "Sulphur Dioxide",
+    co: "Carbon Monoxyde",
+    t: "Temperature",
+    w: "Wind",
+    r: "Rain (precipitation)",
+    h: "Relative Humidity",
+    d: "Dew",
+    p: "Atmostpheric Pressure"
+*/
     public static AqiEntity getDataById(Context context, String id){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        return db.aqiDao().getDataById(id);
+        return db.aqiDao().getDataById("11457");
     }
 
-    public static AqiEntity loadDataFromDb(Context context, String location) {
+    public static AqiEntity loadDataFromDb(Context context, String city) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.aqiDao().getAll(location);//todo think about request
+        return db.aqiDao().getAll(city);//todo think about request
     }
 
-    public static void saveAllDataToDb(Context context, AqiEntity data, String location){
+    public static void saveAllDataToDb(Context context, AqiEntity data, String city){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.aqiDao().deleteAll(location);
+        db.aqiDao().deleteAll(city);
         Log.i(TAG, "AQI DB: deleteAll");
 
 //        AqiEntity data[] = list.toArray(new WeatherEntity[list.size()]);

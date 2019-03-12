@@ -44,7 +44,7 @@ public class AqiApi {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         return new OkHttpClient.Builder()
-                .connectTimeout(2, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .addInterceptor(AqiApiKeyInterceptor.create())
                 .build();

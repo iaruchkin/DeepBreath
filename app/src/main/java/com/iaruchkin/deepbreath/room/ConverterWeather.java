@@ -53,7 +53,7 @@ public class ConverterWeather {
         Log.i(TAG, "Weather DB: insertAll");
 
         Log.i(TAG, "Weather data saved to DB");
-        Log.i(TAG, list.toString());
+        Log.w(TAG, list.toString());
         weatherDao.insertAll(data);
 
     }
