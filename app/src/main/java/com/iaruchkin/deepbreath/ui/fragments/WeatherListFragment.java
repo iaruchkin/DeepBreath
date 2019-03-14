@@ -235,9 +235,9 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     }
 
     @Override
-    public void showAqiData(@NonNull AqiEntity data) {
+    public void showAqiData(@NonNull List<AqiEntity> data) {
         if (mAdapter != null) {
-            mAdapter.setAqiItem(data);
+            mAdapter.setAqiItem(data.get(0));
         }
     }
 

@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class WeatherApi {
 
     private static WeatherApi networkSilngleton;
-    private static final String URL = "http://api.apixu.com/";
+    private static final String URL = "https://api.apixu.com/";
     private WeatherEndpoint weatherEndpoint;
 
     public static synchronized WeatherApi getInstance(){

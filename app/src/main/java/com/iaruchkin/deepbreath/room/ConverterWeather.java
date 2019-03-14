@@ -29,6 +29,8 @@ public class ConverterWeather {
 
             listDao.add(weatherEntity);
         }
+        Log.w(TAG, listDao.toString());
+
         return listDao;
     }
 
@@ -37,7 +39,13 @@ public class ConverterWeather {
         return db.weatherDao().getDataById(id);
     }
 
-    public static List<WeatherEntity> loadDataFromDb(Context context, String location) {
+    public static List<WeatherEntity> getDataByLocation(Context context, String location) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        Log.i(TAG, "Weather data loaded from DB");
+        return db.weatherDao().getAll(location); //todo think about request
+    }
+
+    public static List<WeatherEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Weather data loaded from DB");
         return db.weatherDao().getAll(); //todo think about request
@@ -53,9 +61,7 @@ public class ConverterWeather {
         Log.i(TAG, "Weather DB: insertAll");
 
         Log.i(TAG, "Weather data saved to DB");
-        Log.w(TAG, list.toString());
         weatherDao.insertAll(data);
-
     }
 
     public static void editNewsToDb(Context context, WeatherEntity weatherEntity){

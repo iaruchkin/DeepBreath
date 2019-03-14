@@ -96,14 +96,14 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
      private void setWeatherView(WeatherEntity weatherData){
         date.setText(weatherData.getDate());
         weather_description.setText(weatherData.getLocation());
-        low_temperature.setText(weatherData.getTemperature().toString());
+        low_temperature.setText(String.valueOf(weatherData.getTemperature()));
      }
 
     private void setAqiView(AqiEntity aqiData) {
-        high_temperature.setText(aqiData.getAqi());
+        high_temperature.setText(String.valueOf(aqiData.getAqi()));
         humidity.setText(aqiData.getCityName());
         pressure.setText(aqiData.getId());
-        wind_measurement.setText(aqiData.getPm10().toString());
+        wind_measurement.setText(String.valueOf(aqiData.getPm25()));
     }
 
     private void findViews(View view) {

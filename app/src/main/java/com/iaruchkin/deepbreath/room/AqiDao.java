@@ -1,5 +1,7 @@
 package com.iaruchkin.deepbreath.room;
 
+import java.util.List;
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,10 +13,10 @@ import androidx.room.Update;
 public interface AqiDao {
 
     @Query("SELECT * FROM aqi")
-    AqiEntity getAll();
+    List<AqiEntity> getAll();
 
-    @Query("SELECT * FROM aqi WHERE cityName = :cityName")
-    AqiEntity getAll(String cityName);
+    @Query("SELECT * FROM aqi WHERE idx = :idx")
+    List<AqiEntity> getAll(String idx);
 
     @Query("SELECT * FROM aqi WHERE id = :id")
     AqiEntity getDataById(String id);

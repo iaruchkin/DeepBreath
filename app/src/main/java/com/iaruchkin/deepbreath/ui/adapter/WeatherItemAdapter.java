@@ -106,11 +106,14 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
 
 
         public void bind(WeatherEntity weatherItem, AqiEntity aqiItem) {
+
             imageView.setImageResource(R.drawable.art_clouds);
             categoryTextView.setText(weatherItem.getLocation());
             dateTextView.setText(weatherItem.getDate());
             temperatureTextView.setText(String.valueOf(weatherItem.getTemperature())+"\u00b0");
             aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
+//            aqiTextView.setText(aqiItem.getCityName());
+
         }
 
         public WeatherViewHolder(View view) {
@@ -140,5 +143,6 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
 
         public void setAqiItem(AqiEntity data){
             aqiItem = data;
+            notifyDataSetChanged();
         }
 }

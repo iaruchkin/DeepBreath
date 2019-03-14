@@ -17,6 +17,10 @@ public class AqiEntity {
     private String mId;
 
     @NonNull
+    @ColumnInfo(name = "idx")
+    private String mIdx;
+
+    @NonNull
     @ColumnInfo(name = "cityGeo")
     private String mCityGeo;
 
@@ -71,6 +75,11 @@ public class AqiEntity {
     @NonNull
     public String getId() {
         return mId;
+    }
+
+    @NonNull
+    public String getIdx() {
+        return mIdx;
     }
 
     @NonNull
@@ -152,6 +161,10 @@ public class AqiEntity {
         mId = id;
     }
 
+    public void setIdx(@NonNull String idx) {
+        mIdx = idx;
+    }
+
     public void setCityGeo(@NonNull String cityGeo) {
         mCityGeo = cityGeo;
     }
@@ -216,6 +229,7 @@ public class AqiEntity {
     public String toString() {
         return "AqiEntity{" +
                 "mId='" + mId + '\'' +
+                ", mAqi= "+ mAqi + '\'' +
                 ", mCityName='" + mCityName + '\'' +
                 ", mDate='" + mDate + '\'' +
                 '}';

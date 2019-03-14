@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 public interface WeatherListView extends MvpView {
 
     void showWeatherData(@NonNull List<WeatherEntity> data);
-    void showAqiData(@NonNull AqiEntity data);
+    void showAqiData(@NonNull List<AqiEntity> data);
     void showState(@NonNull State state);//todo replace with refresher
 //    void showRefresher(@NonNull boolean show);
 

@@ -66,7 +66,7 @@ public class WeatherEntity {
 
     @Override
     public String toString() {
-        return "AqiEntity{" +
+        return "WeatherEntity{" +
                 "mId='" + mId + '\'' +
                 ", mLocation='" + mLocation + '\'' +
                 ", mDate='" + mDate + '\'' +

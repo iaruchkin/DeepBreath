@@ -6,17 +6,22 @@ import android.util.Log;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.network.aqicnDTO.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConverterAqi {
 
     private static final String TAG = "RoomConverterAQI";
 
     private static AqiDao aqiDao = AppDatabase.getAppDatabase(App.INSTANCE).aqiDao();
 
-    public static AqiEntity dtoToDao(Data aqiDTO, String weatherLocation){
+    public static List<AqiEntity> dtoToDao(Data aqiDTO, String weatherLocation){
 
+        List<AqiEntity> listDao = new ArrayList<>();
         AqiEntity aqiEntity = new AqiEntity();
 
-        aqiEntity.setId(aqiDTO.getIdx().toString());
+        aqiEntity.setId(aqiDTO.getIdx().toString() + aqiDTO.getTime().getS());
+        aqiEntity.setIdx(aqiDTO.getIdx().toString());
 
         aqiEntity.setCityGeo(aqiDTO.getCity().getGeo().toString());
         aqiEntity.setCityName(aqiDTO.getCity().getName());
@@ -39,7 +44,10 @@ public class ConverterAqi {
 
         aqiEntity.setDate(aqiDTO.getTime().getS());
 
-        return aqiEntity;
+        listDao.add(aqiEntity);
+        Log.w(TAG, aqiEntity.toString());
+
+        return listDao;
     }
 /*
     pm25: "PM<sub>2.5</sub>",
@@ -57,28 +65,32 @@ public class ConverterAqi {
 */
     public static AqiEntity getDataById(Context context, String id){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        return db.aqiDao().getDataById("11457");
+        return db.aqiDao().getDataById(id);
     }
 
-    public static AqiEntity loadDataFromDb(Context context, String city) {
+    public static List<AqiEntity> getDataByIdx(Context context, String idx) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.aqiDao().getAll(city);//todo think about request
+        return db.aqiDao().getAll(idx);//todo think about request
     }
 
-    public static void saveAllDataToDb(Context context, AqiEntity data, String city){
+    public static List<AqiEntity> loadDataFromDb(Context context) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        Log.i(TAG, "AQI data loaded from DB");
+        return db.aqiDao().getAll();//todo think about request
+    }
+
+    public static void saveAllDataToDb(Context context, List<AqiEntity> list, String city){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         db.aqiDao().deleteAll(city);
         Log.i(TAG, "AQI DB: deleteAll");
 
-//        AqiEntity data[] = list.toArray(new WeatherEntity[list.size()]);
+        AqiEntity data[] = list.toArray(new AqiEntity[list.size()]);
         db.aqiDao().insertAll(data);
         Log.i(TAG, "AQI DB: insertAll");
 
         Log.i(TAG, "AQI data saved to DB");
-        Log.i(TAG, data.toString());
         aqiDao.insertAll(data);
-
     }
 
     public static void editNewsToDb(Context context, WeatherEntity weatherEntity){
