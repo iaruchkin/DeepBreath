@@ -23,7 +23,7 @@ public class ConverterForecast {
         for(Forecastday dto : listDTO) {
             ForecastEntity forecastEntity = new ForecastEntity();
                 //id
-                forecastEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());
+                forecastEntity.setId(dto.getDate() + weatherDTO.getLocation().getName());
 
                 //location
                 forecastEntity.setLocationName(weatherDTO.getLocation().getName());
