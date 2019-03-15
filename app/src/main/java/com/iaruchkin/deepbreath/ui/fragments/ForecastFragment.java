@@ -20,10 +20,11 @@ import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.AqiApi;
 import com.iaruchkin.deepbreath.network.WeatherApi;
-import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
-import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
+import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter;
+import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
+import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.ui.adapter.WeatherItemAdapter;
 
 import java.util.List;
@@ -43,19 +44,19 @@ import static com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_DETAILS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
-public class WeatherListFragment extends MvpAppCompatFragment implements WeatherItemAdapter.WeatherAdapterOnClickHandler,
-                                                                        WeatherListView,
+public class ForecastFragment extends MvpAppCompatFragment implements WeatherItemAdapter.WeatherAdapterOnClickHandler,
+        ForecastView,
                                                                         SwipeRefreshLayout.OnRefreshListener {
 
     private static final int LAYOUT = R.layout.layout_weather_list;
     private MessageFragmentListener listener;
 
     @InjectPresenter
-    WeatherListPresenter weatherListPresenter;
+    ForecastPresenter forecastPresenter;
 
     @ProvidePresenter
-    WeatherListPresenter provideWeatherListPresenter() {
-        return new WeatherListPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
+    ForecastPresenter provideWeatherListPresenter() {
+        return new ForecastPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
     }
 
     @Nullable
@@ -215,18 +216,23 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     public void loadData() {
 
-        weatherListPresenter.loadData();
+        forecastPresenter.loadData();
 
     }
 
     public void forceLoadData() {
 
-        weatherListPresenter.forceLoadData();
+        forecastPresenter.forceLoadData();
 
     }
 
     @Override
-    public void showWeatherData(List<ForecastEntity> data) {
+    public void showWeatherData(@NonNull List<WeatherEntity> data) {
+
+    }
+
+    @Override
+    public void showForecastData(List<ForecastEntity> data) {
         if (mAdapter != null) {
             mAdapter.replaceItems(data);
         }
@@ -294,7 +300,7 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
 
     @Override
     public void onRefresh() {
-        weatherListPresenter.forceLoadData();
+        forecastPresenter.forceLoadData();
     }
 
 //    @Override

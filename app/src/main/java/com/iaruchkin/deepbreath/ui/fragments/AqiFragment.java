@@ -15,6 +15,7 @@ import com.iaruchkin.deepbreath.presentation.presenter.AqiPresenter;
 import com.iaruchkin.deepbreath.presentation.view.AqiView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
+import com.iaruchkin.deepbreath.room.WeatherEntity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -111,12 +112,17 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     }
 
     @Override
-    public void setWeatherData(@NonNull ForecastEntity data) {
+    public void showWeatherData(@NonNull WeatherEntity data) {
+//        setForecastView(data);
+    }
+
+    @Override
+    public void showForecastData(@NonNull ForecastEntity data) {
         setWeatherView(data);
     }
 
     @Override
-    public void setAqiData(@NonNull AqiEntity data) {
+    public void showAqiData(@NonNull AqiEntity data) {
         setAqiView(data);
     }
 

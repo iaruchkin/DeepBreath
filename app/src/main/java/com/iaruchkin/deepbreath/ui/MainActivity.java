@@ -4,9 +4,9 @@ import android.os.Bundle;
 
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.ui.fragments.AqiFragment;
+import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
-import com.iaruchkin.deepbreath.ui.fragments.WeatherListFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String INTRO_TAG = "INTRO";
 
     private FragmentManager mFragmentManager;
-    private WeatherListFragment mWeatherListFragment;
+    private ForecastFragment mWeatherListFragment;
     private AqiFragment mDetailsFragment;
     private SettingsFragment mSettingsFragment;
     //    private IntroFragment mIntroFragment;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //    }
 
     private void startNewsList(){
-        mWeatherListFragment = new WeatherListFragment();
+        mWeatherListFragment = new ForecastFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mWeatherListFragment)

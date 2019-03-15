@@ -84,7 +84,7 @@ public class WeatherEntity {
     @ColumnInfo(name ="feelslike_f")
     private double feelslike_f;
 
-    @NonNull
+//    @NonNull
     @ColumnInfo(name ="conditionText")
     private String conditionText;
 

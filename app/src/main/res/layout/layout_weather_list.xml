@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            tools:context=".ui.fragments.WeatherListFragment"
+            tools:context=".ui.fragments.ForecastFragment"
             tools:listitem="@layout/item_forecast"/>
 
         <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->

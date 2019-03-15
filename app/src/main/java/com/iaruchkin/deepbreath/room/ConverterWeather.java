@@ -21,7 +21,7 @@ public class ConverterWeather {
         WeatherEntity weatherEntity = new WeatherEntity();
 
             //id
-            weatherEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());
+            weatherEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());//todo подумать о необходимости уникального ID
 
             //location
             weatherEntity.setLocation(weatherDTO.getLocation().getName());
