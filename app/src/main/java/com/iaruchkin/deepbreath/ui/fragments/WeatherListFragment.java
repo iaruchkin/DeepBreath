@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
@@ -24,7 +23,7 @@ import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
 import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.ui.adapter.WeatherItemAdapter;
 
 import java.util.List;
@@ -33,7 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -210,8 +208,8 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     }
 
     @Override
-    public void onClick(WeatherEntity weatherItem) {
-        listener.onActionClicked(WEATHER_DETAILS_TAG, weatherItem.getTemperature().toString());//todo передать нужное значение
+    public void onClick(ForecastEntity weatherItem) {
+        listener.onActionClicked(WEATHER_DETAILS_TAG, String.valueOf(weatherItem.getAvgtemp_c()));//todo передать нужное значение
     }
 
 
@@ -228,7 +226,7 @@ public class WeatherListFragment extends MvpAppCompatFragment implements Weather
     }
 
     @Override
-    public void showWeatherData(List<WeatherEntity> data) {
+    public void showWeatherData(List<ForecastEntity> data) {
         if (mAdapter != null) {
             mAdapter.replaceItems(data);
         }

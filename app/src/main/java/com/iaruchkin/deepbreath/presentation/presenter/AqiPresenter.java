@@ -8,34 +8,24 @@ import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.AqiApi;
-import com.iaruchkin.deepbreath.network.AqiResponse;
 import com.iaruchkin.deepbreath.network.WeatherApi;
-import com.iaruchkin.deepbreath.network.WeatherResponse;
 import com.iaruchkin.deepbreath.presentation.view.AqiView;
-import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ConverterAqi;
-import com.iaruchkin.deepbreath.room.ConverterWeather;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.ConverterForecast;
+import com.iaruchkin.deepbreath.room.ForecastEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
 @InjectViewState
 public class AqiPresenter extends BasePresenter<AqiView> {
     private Context context = App.INSTANCE.getApplicationContext();
 
     private WeatherApi weatherApi;
-    private WeatherEntity weatherEntity;
+    private ForecastEntity forecastEntity;
 
     private AqiApi aqiApi;
     private AqiEntity aqiEntity;
@@ -45,10 +35,10 @@ public class AqiPresenter extends BasePresenter<AqiView> {
     private final String PRESENTER_WEATHER_TAG = "[detail presenter]";
 
     public void initData(String id){ //todo use in AQIFragment
-        if (weatherEntity == null || !weatherEntity.getId().equals(id)) {
+        if (forecastEntity == null || !forecastEntity.getId().equals(id)) {
             loadData();
         } else {
-            getViewState().setWeatherData(weatherEntity);
+            getViewState().setWeatherData(forecastEntity);
             getViewState().setAqiData(aqiEntity);
         }
     }
@@ -65,8 +55,8 @@ public class AqiPresenter extends BasePresenter<AqiView> {
 
     private void loadWeatherFromDb(String option){
         getViewState().showState(State.Loading);
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
-                .loadDataFromDb(context))//todo real data
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
+                .getDataById(context, "2019-03-14Moscow"))//todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateWeatherData(data, option), this::handleError);
@@ -78,7 +68,7 @@ public class AqiPresenter extends BasePresenter<AqiView> {
     private void loadAqiFromDb(String location){
         getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
-                .loadDataFromDb(context))//todo real data
+                .getDataById(context, "114572019-03-14 06:00:00"))//todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateAqiData(data, location), this::handleError);
@@ -86,18 +76,18 @@ public class AqiPresenter extends BasePresenter<AqiView> {
         Log.e(PRESENTER_WEATHER_TAG,"Load AqiData from db");
     }
 
-    private void updateWeatherData(List<WeatherEntity> data, String option) {
-        getViewState().setWeatherData(data.get(0)); //todo get single item not list
+    private void updateWeatherData(ForecastEntity data, String option) {
+        getViewState().setWeatherData(data); //todo get single item not list
         getViewState().showState(State.HasData);
-//        Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.getId() + " / " + data.getLocation());
+        Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.getId() + " / " + data.getLocationName());
         Log.i(PRESENTER_WEATHER_TAG, "updateWeatherData executed on thread: " + Thread.currentThread().getName());
 
     }
 
-    private void updateAqiData(List<AqiEntity> data, String location) {
-        getViewState().setAqiData(data.get(0));
+    private void updateAqiData(AqiEntity data, String location) {
+        getViewState().setAqiData(data);
         getViewState().showState(State.HasData);
-//        Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.getId() + " / " + data.getAqi());
+        Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.getId() + " / " + data.getAqi());
         Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
     }
 

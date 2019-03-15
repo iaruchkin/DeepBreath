@@ -5,84 +5,84 @@ import java.io.Serializable;
 import com.google.gson.annotations.SerializedName;
 
 public class Hour implements Serializable{
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@SerializedName("time_epoch")
-	public int time_epoch;
-	
+	private int time_epoch;
+
 	@SerializedName("wind_degree")
-	public int wind_degree;
-	
+    private int wind_degree;
+
 	@SerializedName("humidity")
-	public int humidity;
-	
+    private int humidity;
+
 	@SerializedName("cloud")
-	public int cloud;
-	
+    private int cloud;
+
 	@SerializedName("will_it_rain")
-	public int will_it_rain;
-	
+    private int will_it_rain;
+
 	@SerializedName("will_it_snow")
-	public int will_it_snow;
-	
+    private int will_it_snow;
+
 	@SerializedName("time")
-	public String time;
-	
+    private String time;
+
 	@SerializedName("wind_dir")
 	String wind_dir;
-	
+
 	@SerializedName("temp_c")
-	public double temp_c;
-	
+    private double temp_c;
+
 	@SerializedName("temp_f")
-	public double temp_f;
-	
+    private double temp_f;
+
 	@SerializedName("wind_mph")
-	public double wind_mph;
-	
+    private double wind_mph;
+
 	@SerializedName("wind_kph")
-	public double wind_kph;
-	
+    private double wind_kph;
+
 	@SerializedName("pressure_mb")
-	public double pressure_mb;
-	
+    private double pressure_mb;
+
 	@SerializedName("pressure_in")
-	public double pressure_in;
-	
+    private double pressure_in;
+
 	@SerializedName("precip_mm")
-	public double precip_mm;
-	
+    private double precip_mm;
+
 	@SerializedName("precip_in")
-	public double precip_in;
-	
+    private double precip_in;
+
 	@SerializedName("feelslike_c")
-	public double feelslike_c;
-	
-	@SerializedName("feelslike_f")
-	public double feelslike_f;
-	
+    private double feelslike_c;
+
+    @SerializedName("feelslike_f")
+    private double feelslike_f;
+
 	@SerializedName("windchill_c")
-	public double windchill_c;
-	
+    private double windchill_c;
+
 	@SerializedName("windchill_f")
-	public double windchill_f;
-	
+    private double windchill_f;
+
 	@SerializedName("heatindex_c")
-	public double heatindex_c;
-	
+    private double heatindex_c;
+
 	@SerializedName("heatindex_f")
-	public double heatindex_f;
-	
+    private double heatindex_f;
+
 	@SerializedName("dewpoint_c")
-	public double dewpoint_c;
-	
+    private double dewpoint_c;
+
 	@SerializedName("dewpoint_f")
-	public double dewpoint_f;
-	
+    private double dewpoint_f;
+
 	@SerializedName("condition")
-	Condition condition = new Condition();
-	
+    private Condition condition = new Condition();
+
     public int getTimeEpoch()
     {
     	return time_epoch;
@@ -91,7 +91,7 @@ public class Hour implements Serializable{
     {
     	this.time_epoch = mTimeEpoch;
     }
-    
+
     public String getTime()
     {
     	return time;
@@ -100,7 +100,7 @@ public class Hour implements Serializable{
     {
     	this.time = mTime;
     }
-    
+
     public double getTempC()
     {
     	return temp_c;
@@ -109,7 +109,7 @@ public class Hour implements Serializable{
     {
     	this.temp_c = mTempC;
     }
-    
+
     public double getTempF()
     {
     	return temp_f;
@@ -118,7 +118,7 @@ public class Hour implements Serializable{
     {
     	this.temp_f = mTempF;
     }
-    
+
     public Condition getCondition()
     {
     	return condition;
@@ -127,7 +127,7 @@ public class Hour implements Serializable{
     {
     	this.condition = mCondition;
     }
-    
+
     public double getWindMph()
     {
     	return wind_mph;
@@ -136,7 +136,7 @@ public class Hour implements Serializable{
     {
     	this.wind_mph = mWindMph;
     }
-    
+
     public double getWindKph()
     {
     	return wind_kph;
@@ -145,7 +145,7 @@ public class Hour implements Serializable{
     {
     	this.wind_kph = mWindKph;
     }
-    
+
     public int getWindDegree()
     {
     	return wind_degree;
@@ -154,7 +154,7 @@ public class Hour implements Serializable{
     {
     	this.wind_degree = mWindDegree;
     }
-    
+
     public String getWindDir()
     {
     	return wind_dir;
@@ -163,7 +163,7 @@ public class Hour implements Serializable{
     {
     	this.wind_dir = mWindDir;
     }
-    
+
     public double getPressureMb()
     {
     	return pressure_mb;
@@ -172,7 +172,7 @@ public class Hour implements Serializable{
     {
     	this.pressure_mb = mPressureMb;
     }
-    
+
     public double getPressureIn()
     {
     	return pressure_in;
@@ -181,7 +181,7 @@ public class Hour implements Serializable{
     {
     	this.pressure_in = mPressureIn;
     }
-    
+
     public double getPrecipMm()
     {
     	return precip_mm;
@@ -190,7 +190,7 @@ public class Hour implements Serializable{
     {
     	this.precip_mm = mPrecipMm;
     }
-    
+
     public double getPrecipIn()
     {
     	return precip_in;
@@ -199,7 +199,7 @@ public class Hour implements Serializable{
     {
     	this.precip_in = mPrecipIn;
     }
-    
+
     public int getHumidity()
     {
     	return humidity;
@@ -208,7 +208,7 @@ public class Hour implements Serializable{
     {
     	this.humidity = mHumidity;
     }
-    
+
     public int getCloud()
     {
     	return cloud;
@@ -217,7 +217,7 @@ public class Hour implements Serializable{
     {
     	this.cloud = mCloud;
     }
-    
+
     public double getFeelslikeC()
     {
     	return feelslike_c;
@@ -226,7 +226,7 @@ public class Hour implements Serializable{
     {
     	this.feelslike_c = mFeelslikeC;
     }
-    
+
     public double getFeelslikeF()
     {
     	return feelslike_f;
@@ -235,7 +235,7 @@ public class Hour implements Serializable{
     {
     	this.feelslike_f = mFeelslikeF;
     }
-    
+
     public double getWindchillC()
     {
     	return windchill_c;
@@ -244,7 +244,7 @@ public class Hour implements Serializable{
     {
     	this.windchill_c = mWindchillC;
     }
-    
+
     public double getWindchillF()
     {
     	return windchill_f;
@@ -253,7 +253,7 @@ public class Hour implements Serializable{
     {
     	this.windchill_f = mWindchillF;
     }
-    
+
     public double getHeatindexC()
     {
     	return heatindex_c;
@@ -262,7 +262,7 @@ public class Hour implements Serializable{
     {
     	this.heatindex_c = mHeatindexC;
     }
-    
+
     public double getHeatindexF()
     {
     	return heatindex_f;
@@ -271,7 +271,7 @@ public class Hour implements Serializable{
     {
     	this.heatindex_f = mHeatIndexF;
     }
-    
+
     public double getDewpointC()
     {
     	return dewpoint_c;
@@ -280,7 +280,7 @@ public class Hour implements Serializable{
     {
     	this.dewpoint_c = mDewpointC;
     }
-    
+
     public double getDewpointF()
     {
     	return dewpoint_f;
@@ -289,7 +289,7 @@ public class Hour implements Serializable{
     {
     	this.dewpoint_f = mDewpointF;
     }
-    
+
     public int getWillItRain()
     {
     	return will_it_rain;
@@ -298,7 +298,7 @@ public class Hour implements Serializable{
     {
     	this.will_it_rain = mWillItRain;
     }
-    
+
     public int getWillItSnow()
     {
     	return will_it_snow;
@@ -307,5 +307,5 @@ public class Hour implements Serializable{
     {
     	this.will_it_snow = mWillItSnow;
     }
-    
+
 }

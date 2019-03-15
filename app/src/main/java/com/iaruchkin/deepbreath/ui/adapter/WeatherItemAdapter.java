@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.ForecastEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +24,12 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
     private boolean mUseTodayLayout;
 
-    private final List<WeatherEntity> weatherItemList = new ArrayList<>();
+    private final List<ForecastEntity> weatherItemList = new ArrayList<>();
     private AqiEntity aqiItem = new AqiEntity();
     private final WeatherAdapterOnClickHandler mClickHandler;
 
     public interface WeatherAdapterOnClickHandler {
-        void onClick(WeatherEntity weatherItem);
+        void onClick(ForecastEntity weatherItem);
     }
 
     public WeatherItemAdapter(WeatherAdapterOnClickHandler clickHandler) {
@@ -60,7 +60,7 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, final int position) {
-        WeatherEntity weatherItem = weatherItemList.get(position);
+        ForecastEntity weatherItem = weatherItemList.get(position);
         holder.bind(weatherItem ,aqiItem);
 
         //todo set images
@@ -105,12 +105,12 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
         private final TextView aqiTextView;
 
 
-        public void bind(WeatherEntity weatherItem, AqiEntity aqiItem) {
+        public void bind(ForecastEntity weatherItem, AqiEntity aqiItem) {
 
             imageView.setImageResource(R.drawable.art_clouds);
-            categoryTextView.setText(weatherItem.getLocation());
+            categoryTextView.setText(weatherItem.getLocationName());
             dateTextView.setText(weatherItem.getDate());
-            temperatureTextView.setText(String.valueOf(weatherItem.getTemperature())+"\u00b0");
+            temperatureTextView.setText(String.valueOf(weatherItem.getAvgtemp_c())+"\u00b0");
             aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
 //            aqiTextView.setText(aqiItem.getCityName());
 
@@ -130,14 +130,14 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            WeatherEntity dataItem = weatherItemList.get(adapterPosition);
+            ForecastEntity dataItem = weatherItemList.get(adapterPosition);
             mClickHandler.onClick(dataItem);
         }
     }
 
-        public void replaceItems(List<WeatherEntity> weatherData) {
+        public void replaceItems(List<ForecastEntity> forecastData) {
             weatherItemList.clear();
-            weatherItemList.addAll(weatherData);
+            weatherItemList.addAll(forecastData);
             notifyDataSetChanged();
         }
 

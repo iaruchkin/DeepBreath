@@ -6,14 +6,15 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {WeatherEntity.class, AqiEntity.class}, version = 1)
+@Database(entities = {ForecastEntity.class, AqiEntity.class, WeatherEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mSingleton;
 
     private static final String DATABASE_NAME = "WeatherRoomDb.db";
 
-    public abstract WeatherDao weatherDao();
+    public abstract ForecastDao forecastDao();
     public abstract AqiDao aqiDao();
+    public abstract WeatherDao weatherDao();
 
     public static AppDatabase getAppDatabase(Context context){
         if (mSingleton == null){

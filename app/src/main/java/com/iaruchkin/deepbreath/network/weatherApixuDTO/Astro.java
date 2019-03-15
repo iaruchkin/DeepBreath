@@ -9,16 +9,16 @@ public class Astro implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("sunrise")
-	public String sunrise;
+    private String sunrise;
 	
 	@SerializedName("sunset")
-	public String sunset;
+    private String sunset;
 	
 	@SerializedName("moonrise")
-	public String moonrise;
+    private String moonrise;
 	
 	@SerializedName("moonset")
-	public String moonset;
+    private String moonset;
 
     public String getSunrise()
     {

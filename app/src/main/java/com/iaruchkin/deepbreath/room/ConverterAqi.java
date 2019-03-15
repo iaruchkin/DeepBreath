@@ -20,29 +20,29 @@ public class ConverterAqi {
         List<AqiEntity> listDao = new ArrayList<>();
         AqiEntity aqiEntity = new AqiEntity();
 
-        aqiEntity.setId(aqiDTO.getIdx().toString() + aqiDTO.getTime().getS());
-        aqiEntity.setIdx(aqiDTO.getIdx().toString());
+            aqiEntity.setId(aqiDTO.getIdx().toString() + aqiDTO.getTime().getS());
+            aqiEntity.setIdx(aqiDTO.getIdx().toString());
 
-        aqiEntity.setCityGeo(aqiDTO.getCity().getGeo().toString());
-        aqiEntity.setCityName(aqiDTO.getCity().getName());
-        aqiEntity.setCityUrl(aqiDTO.getCity().getUrl());
+            aqiEntity.setCityGeo(aqiDTO.getCity().getGeo().toString());
+            aqiEntity.setCityName(aqiDTO.getCity().getName());
+            aqiEntity.setCityUrl(aqiDTO.getCity().getUrl());
 
-        aqiEntity.setAqi(aqiDTO.getAqi());
+            aqiEntity.setAqi(aqiDTO.getAqi());
 
-        aqiEntity.setPm10(aqiDTO.getIaqi().getPm10().getV());
-        aqiEntity.setPm25(aqiDTO.getIaqi().getPm25().getV());
+            aqiEntity.setPm10(aqiDTO.getIaqi().getPm10().getV());
+            aqiEntity.setPm25(aqiDTO.getIaqi().getPm25().getV());
 
-        if(aqiDTO.getIaqi().getCo() != null) aqiEntity.setCo(aqiDTO.getIaqi().getCo().getV());
-        if(aqiDTO.getIaqi().getNo2() != null) aqiEntity.setNo2(aqiDTO.getIaqi().getNo2().getV());
-        if(aqiDTO.getIaqi().getSo2() != null) aqiEntity.setSo2(aqiDTO.getIaqi().getSo2().getV());
-        if(aqiDTO.getIaqi().getO3() != null) aqiEntity.setO3(aqiDTO.getIaqi().getO3().getV());
+            if(aqiDTO.getIaqi().getCo() != null) aqiEntity.setCo(aqiDTO.getIaqi().getCo().getV());
+            if(aqiDTO.getIaqi().getNo2() != null) aqiEntity.setNo2(aqiDTO.getIaqi().getNo2().getV());
+            if(aqiDTO.getIaqi().getSo2() != null) aqiEntity.setSo2(aqiDTO.getIaqi().getSo2().getV());
+            if(aqiDTO.getIaqi().getO3() != null) aqiEntity.setO3(aqiDTO.getIaqi().getO3().getV());
 
-        if(aqiDTO.getIaqi().getWg() != null)aqiEntity.setWg(aqiDTO.getIaqi().getWg().getV());
-        if(aqiDTO.getIaqi().getH() != null)aqiEntity.setH(aqiDTO.getIaqi().getH().getV());
-        if(aqiDTO.getIaqi().getW() != null)aqiEntity.setW(aqiDTO.getIaqi().getW().getV());
-        if(aqiDTO.getIaqi().getP() != null)aqiEntity.setP(aqiDTO.getIaqi().getP().getV());
+            if(aqiDTO.getIaqi().getWg() != null)aqiEntity.setWg(aqiDTO.getIaqi().getWg().getV());
+            if(aqiDTO.getIaqi().getH() != null)aqiEntity.setH(aqiDTO.getIaqi().getH().getV());
+            if(aqiDTO.getIaqi().getW() != null)aqiEntity.setW(aqiDTO.getIaqi().getW().getV());
+            if(aqiDTO.getIaqi().getP() != null)aqiEntity.setP(aqiDTO.getIaqi().getP().getV());
 
-        aqiEntity.setDate(aqiDTO.getTime().getS());
+            aqiEntity.setDate(aqiDTO.getTime().getS());
 
         listDao.add(aqiEntity);
         Log.w(TAG, aqiEntity.toString());
@@ -93,13 +93,13 @@ public class ConverterAqi {
         aqiDao.insertAll(data);
     }
 
-    public static void editNewsToDb(Context context, WeatherEntity weatherEntity){
+    public static void editNewsToDb(Context context, ForecastEntity forecastEntity){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.weatherDao().edit(weatherEntity);
+        db.forecastDao().edit(forecastEntity);
     }
 
-    public static void deleteNewsFromDb(Context context, WeatherEntity weatherEntity){
+    public static void deleteNewsFromDb(Context context, ForecastEntity forecastEntity){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.weatherDao().delete(weatherEntity);
+        db.forecastDao().delete(forecastEntity);
     }
 }

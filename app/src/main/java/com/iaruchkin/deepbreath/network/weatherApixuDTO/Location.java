@@ -9,28 +9,28 @@ public class Location implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("name")
-	public String name;
+	private String name;
 	
 	@SerializedName("region")
-	public String region;
+    private String region;
 	
 	@SerializedName("country")
-	public String country;
+    private String country;
 	
 	@SerializedName("tz_id")
-	public String tz_id;
+    private String tz_id;
 	
 	@SerializedName("localtime")
-	public String localtime;
+    private String localtime;
 	
 	@SerializedName("lat")
-	public double lat;
+    private double lat;
 	
 	@SerializedName("lon")
-	public double lon;
+    private double lon;
 	
 	@SerializedName("localtime_epoch")
-	public int localtime_epoch;
+    private int localtime_epoch;
 	
     public String getName()
     {

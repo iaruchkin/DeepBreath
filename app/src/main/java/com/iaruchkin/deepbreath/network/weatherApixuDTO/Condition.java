@@ -9,13 +9,13 @@ public class Condition implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("text")
-	public String text;
+	private String text;
 	
 	@SerializedName("icon")
-	public String icon;
+    private String icon;
 	
 	@SerializedName("code")
-	public int code;
+    private int code;
 	
     public String getText()
     {

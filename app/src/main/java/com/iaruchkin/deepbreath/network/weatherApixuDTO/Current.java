@@ -9,52 +9,52 @@ public class Current implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("last_updated_epoch")
-	public int last_updated_epoch;
+	private int last_updated_epoch;
 	
 	@SerializedName("wind_degree")
-	public int wind_degree;
+    private int wind_degree;
 	
 	@SerializedName("humidity")
-	public int humidity;
+    private int humidity;
 	
 	@SerializedName("cloud")
-	public int cloud;
+    private int cloud;
 	
 	@SerializedName("last_updated")
-	public String last_updated;
+    private String last_updated;
 	
 	@SerializedName("wind_dir")
-	public String wind_dir;
+    private String wind_dir;
 	
 	@SerializedName("temp_c")
-	public double temp_c;
+    private double temp_c;
 	
 	@SerializedName("temp_f")
-	public double temp_f;
+    private double temp_f;
 	
 	@SerializedName("wind_mph")
-	public double wind_mph;
+    private double wind_mph;
 	
 	@SerializedName("wind_kph")
-	public double wind_kph;
+    private double wind_kph;
 	
 	@SerializedName("pressure_mb")
-	public double pressure_mb;
+    private double pressure_mb;
 	
 	@SerializedName("pressure_in")
-	public double pressure_in;
+    private double pressure_in;
 	
 	@SerializedName("precip_mm")
-	public double precip_mm;
+    private double precip_mm;
 	
 	@SerializedName("precip_in")
-	public double precip_in;
+    private double precip_in;
 	
 	@SerializedName("feelslike_c")
-	public double feelslike_c;
+    private double feelslike_c;
 	
 	@SerializedName("feelslike_f")
-	public double feelslike_f;
+    private double feelslike_f;
 	
 	
 	Condition mCondition = new Condition();

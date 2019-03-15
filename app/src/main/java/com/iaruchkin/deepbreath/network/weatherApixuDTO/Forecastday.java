@@ -11,19 +11,19 @@ public class Forecastday implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("date")
-	public String date;
+    private String date;
 	
 	@SerializedName("date_epoch")
-	public int date_epoch;
+    private int date_epoch;
 	
 	@SerializedName("day")
-	Day day = new Day();
+    private Day day = new Day();
 	
 	@SerializedName("astro")
-	Astro astro = new Astro();
+    private Astro astro = new Astro();
 	
 	@SerializedName("hour")
-	ArrayList<Hour> hour = new ArrayList<Hour>();
+    private ArrayList<Hour> hour = new ArrayList<Hour>();
 	
     public String getDate()
     {

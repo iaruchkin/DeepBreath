@@ -6,23 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.network.AqiApi;
-import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.presentation.presenter.AqiPresenter;
-import com.iaruchkin.deepbreath.presentation.presenter.WeatherListPresenter;
 import com.iaruchkin.deepbreath.presentation.view.AqiView;
-import com.iaruchkin.deepbreath.presentation.view.WeatherListView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
-
-import java.util.List;
+import com.iaruchkin.deepbreath.room.ForecastEntity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -93,10 +85,10 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
         super.onDetach();
     }
 
-     private void setWeatherView(WeatherEntity weatherData){
+     private void setWeatherView(ForecastEntity weatherData){
         date.setText(weatherData.getDate());
-        weather_description.setText(weatherData.getLocation());
-        low_temperature.setText(String.valueOf(weatherData.getTemperature()));
+        weather_description.setText(weatherData.getConditionText());
+        low_temperature.setText(String.valueOf(weatherData.getAvgtemp_c()));
      }
 
     private void setAqiView(AqiEntity aqiData) {
@@ -119,7 +111,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     }
 
     @Override
-    public void setWeatherData(@NonNull WeatherEntity data) {
+    public void setWeatherData(@NonNull ForecastEntity data) {
         setWeatherView(data);
     }
 

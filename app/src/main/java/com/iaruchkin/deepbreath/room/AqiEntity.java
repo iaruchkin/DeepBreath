@@ -72,6 +72,7 @@ public class AqiEntity {
     @ColumnInfo(name = "date")
     private String mDate;
 
+
     @NonNull
     public String getId() {
         return mId;
@@ -102,27 +103,22 @@ public class AqiEntity {
         return mAqi;
     }
 
-//    @NonNull
     public Double getCo() {
         return mCo;
     }
 
-//    @NonNull
     public Double getH() {
         return mH;
     }
 
-//    @NonNull
     public Double getNo2() {
         return mNo2;
     }
 
-//    @NonNull
     public Double getO3() {
         return mO3;
     }
 
-//    @NonNull
     public Double getP() {
         return mP;
     }
@@ -137,17 +133,14 @@ public class AqiEntity {
         return mPm25;
     }
 
-//    @NonNull
     public Double getSo2() {
         return mSo2;
     }
 
-//    @NonNull
     public Double getW() {
         return mW;
     }
 
-//    @NonNull
     public Double getWg() {
         return mWg;
     }

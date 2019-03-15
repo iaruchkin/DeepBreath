@@ -9,35 +9,36 @@ public class Day implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("maxtemp_c")
-	public double maxtemp_c;
+    private double maxtemp_c;
 	
 	@SerializedName("maxtemp_f")
-	public double maxtemp_f;
+    private double maxtemp_f;
 	
 	@SerializedName("mintemp_c")
-	public double mintemp_c;
+    private double mintemp_c;
 	
 	@SerializedName("mintemp_f")
-	public double mintemp_f; 
+    private double mintemp_f;
 	
 	@SerializedName("avgtemp_c")
-	public double avgtemp_c;
+    private double avgtemp_c;
 	
 	@SerializedName("avgtemp_f")
-	public double avgtemp_f;
+    private double avgtemp_f;
 	
 	@SerializedName("maxwind_mph")
-	public double maxwind_mph;
+    private double maxwind_mph;
 	
 	@SerializedName("maxwind_kph")
-	public double maxwind_kph;
+    private double maxwind_kph;
 	
 	@SerializedName("totalprecip_mm")
-	public double totalprecip_mm;
+    private double totalprecip_mm;
 	
 	@SerializedName("totalprecip_in")
-	public double totalprecip_in;
-	Condition mCondition = new Condition();
+    private double totalprecip_in;
+
+    private Condition mCondition = new Condition();
 
     public double getMaxtempC()
     {
