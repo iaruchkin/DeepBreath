@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         super.onCreate(savedInstanceState);
 
         init();
-        setupLocation();
+//        setupLocation();
         startForecast();
 
 //        if (savedInstanceState == null){
@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //    }
 
     private void startForecast() {
-        mForecastFragment = ForecastFragment.newInstance(option, wayLatitude, wayLongitude);//todo set correct string messages
+//        mForecastFragment = ForecastFragment.newInstance(option, wayLatitude, wayLongitude);//todo set correct string messages
+        mForecastFragment = new ForecastFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mForecastFragment)
@@ -133,70 +134,71 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         }
     }
 
-    private void setupLocation() {
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-
-        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
-            @Override
-            public void gpsStatus(boolean isGPSEnable) {
-                // turn on GPS
-                isGPS = isGPSEnable;
-            }
-        });
-
-        locationCallback = new LocationCallback() {
-
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        wayLatitude = location.getLatitude();
-                        wayLongitude = location.getLongitude();
-
-                        if (mFusedLocationClient != null) {
-                            mFusedLocationClient.removeLocationUpdates(locationCallback);
-                        }
-                    }
-                }
-            }
-        };
-
-            if (!isGPS) {
-                Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            getLocation();
-    }
-
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    AppConstants.LOCATION_REQUEST);
-
-        } else {
-                mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
-                    if (location != null) {
-                        wayLatitude = location.getLatitude();
-                        wayLongitude = location.getLongitude();
-                        Log.w("MAIN ACTIVITY 1", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
-
-                    } else {
-                        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                    }
-                });
-        }
-    }
+//    private void setupLocation() {
+//
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//
+//        locationRequest = LocationRequest.create();
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        locationRequest.setInterval(10 * 1000); // 10 seconds
+//        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+//
+//        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
+//            @Override
+//            public void gpsStatus(boolean isGPSEnable) {
+//                // turn on GPS
+//                isGPS = isGPSEnable;
+//            }
+//        });
+//
+//        locationCallback = new LocationCallback() {
+//
+//            @Override
+//            public void onLocationResult(LocationResult locationResult) {
+//                if (locationResult == null) {
+//                    return;
+//                }
+//                for (Location location : locationResult.getLocations()) {
+//                    if (location != null) {
+//                        wayLatitude = location.getLatitude();
+//                        wayLongitude = location.getLongitude();
+//                        Log.w("MAIN ACTIVITY 2", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
+//
+//                        if (mFusedLocationClient != null) {
+//                            mFusedLocationClient.removeLocationUpdates(locationCallback);
+//                        }
+//                    }
+//                }
+//            }
+//        };
+//
+//            if (!isGPS) {
+//                Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            getLocation();
+//    }
+//
+//    private void getLocation() {
+//        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+//                    AppConstants.LOCATION_REQUEST);
+//
+//        } else {
+//                mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+//                    if (location != null) {
+//                        wayLatitude = location.getLatitude();
+//                        wayLongitude = location.getLongitude();
+//                        Log.w("MAIN ACTIVITY 1", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
+//
+//                    } else {
+//                        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+//                    }
+//                });
+//        }
+//    }
 
     @SuppressLint("MissingPermission")
     @Override
@@ -212,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                             if (location != null) {
                                 wayLatitude = location.getLatitude();
                                 wayLongitude = location.getLongitude();
-                                Log.w("MAIN ACTIVITY 2", String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
+                                Log.w("MAIN ACTIVITY PER", String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
 //                                txtLocation.setText(String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
                             } else {
                                 mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);

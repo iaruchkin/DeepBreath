@@ -1,9 +1,14 @@
 package com.iaruchkin.deepbreath.presentation.presenter;
 
 import android.content.Context;
+import android.location.Location;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.text.format.Formatter;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
+
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
@@ -19,7 +24,10 @@ import com.iaruchkin.deepbreath.room.ConverterWeather;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,42 +41,34 @@ import io.reactivex.schedulers.Schedulers;
 @InjectViewState
 public class ForecastPresenter extends BasePresenter<ForecastView> {
     private Context context = App.INSTANCE.getApplicationContext();
+
     private WeatherApi weatherApi;
     private AqiApi aqiApi;
 
     private final String PRESENTER_WEATHER_TAG = "[list - presenter]";
-    private final String DEFAULT_LOCATION = "geo:10.3;20.7";
-    private final String FORECAST = "forecast";
 
-    private String option = "";
-    private double latitude = 0.0, longitude = 0.0;
-
-    private String location = String.format(Locale.ENGLISH, "geo:%s;%s", latitude, longitude);
-
-    public ForecastPresenter(@NonNull String option, double latitude, double longitude) {
-        this.option = option;
-        this.latitude = latitude;
-        this.longitude = longitude;
-
-//        this.weatherApi = weatherInstance;
-//        this.aqiApi = aqiInstance;
-    }
+    private String weatherCurrentLocation = "auto:ip";
+    private String aqiCurrentLocation = "here";
 
     @Override
     protected void onFirstViewAttach() {
-        forceLoadData();
+            loadData(true, null);
     }
 
-    public void loadData(){
-        loadForecastFromDb(option);
-        loadWeatherFromDb(option);
-        loadAqiFromDb(location);
-//        loadDummy();
-    }
+    public void loadData(Boolean forceload, Location location){
+        if(location != null) {
+        aqiCurrentLocation = String.format(Locale.ENGLISH, "geo:%s;%s", location.getLatitude(), location.getLongitude());
+        weatherCurrentLocation = String.format(Locale.ENGLISH, "%s,%s", location.getLatitude(), location.getLongitude());
+        }
 
-    public void forceLoadData(){
-        loadForecastFromNet(option);
-        loadAqiFromNet(location);
+        if(!forceload) {
+            loadForecastFromDb(weatherCurrentLocation);
+            loadWeatherFromDb(weatherCurrentLocation);
+            loadAqiFromDb(aqiCurrentLocation);
+        }else {
+            loadForecastFromNet(weatherCurrentLocation);
+            loadAqiFromNet(aqiCurrentLocation);
+        }
 //        loadDummy();
     }
 
@@ -100,7 +100,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     private void loadForecastFromDb(String option){
         getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
-                .loadDataFromDb(context))//todo real data
+                .loadDataFromDb(context))//todo get data by location!!! bug with multiple location forecast
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateForecastData(data, option), this::handleError);
@@ -122,7 +122,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private void updateWeatherData(@Nullable List<WeatherEntity> data, String option) {
         if (data.size()==0){
-            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for option : " + option);
+            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + option);
             loadForecastFromNet(option); //todo check this
         }else {
             getViewState().showWeatherData(data);
@@ -134,7 +134,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private void updateForecastData(@Nullable List<ForecastEntity> data, String option) {
         if (data.size()==0){
-            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for option : " + option);
+            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + option);
             loadForecastFromNet(option);
         }else {
             getViewState().showForecastData(data);
@@ -155,19 +155,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
         }
     }
-
-//    private void loadWeatherFromNet(@NonNull String option){
-//        Log.e(PRESENTER_WEATHER_TAG,"Load Weather from net presenter");
-//
-//        getViewState().showState(State.Loading);
-//        final Disposable disposable = WeatherApi.getInstance()
-//                .weatherEndpoint()
-//                .get(option)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(response -> updateWeatherDB(response, response.getLocation().getName()), this::handleError); //todo check this
-//        disposeOnDestroy(disposable);
-//    }
 
     private void loadForecastFromNet(@NonNull String option){
         Log.e(PRESENTER_WEATHER_TAG,"Load Weather from net presenter");
@@ -274,6 +261,4 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
         Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
     }
-
-    
 }

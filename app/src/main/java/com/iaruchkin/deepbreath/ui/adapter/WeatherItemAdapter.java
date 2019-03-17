@@ -61,7 +61,7 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, final int position) {
         ForecastEntity weatherItem = weatherItemList.get(position);
-        holder.bind(weatherItem ,aqiItem);
+        holder.bind(weatherItem ,aqiItem, position);
 
         //todo set images
 //        int weatherImageId;
@@ -105,15 +105,18 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
         private final TextView aqiTextView;
 
 
-        public void bind(ForecastEntity weatherItem, AqiEntity aqiItem) {
+        public void bind(ForecastEntity weatherItem, AqiEntity aqiItem , int viewType) {
 
             imageView.setImageResource(R.drawable.art_clouds);
             categoryTextView.setText(weatherItem.getLocationName());
             dateTextView.setText(weatherItem.getDate());
             temperatureTextView.setText(String.valueOf(weatherItem.getAvgtemp_c())+"\u00b0");
-            aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
-//            aqiTextView.setText(aqiItem.getCityName());
 
+            if (viewType == VIEW_TYPE_TODAY) {
+                    aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
+                }
+//                    aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
+//            aqiTextView.setText(aqiItem.getCityName());
         }
 
         public WeatherViewHolder(View view) {
@@ -123,7 +126,7 @@ public class WeatherItemAdapter extends RecyclerView.Adapter<WeatherItemAdapter.
             categoryTextView=view.findViewById(R.id.weather_description);
             dateTextView = view.findViewById(R.id.date);
             temperatureTextView = view.findViewById(R.id.high_temperature);
-            aqiTextView = view.findViewById(R.id.purity);
+            aqiTextView = view.findViewById(R.id.aqi);
             view.setOnClickListener(this);
         }
 

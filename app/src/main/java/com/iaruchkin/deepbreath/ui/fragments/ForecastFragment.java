@@ -1,7 +1,11 @@
 package com.iaruchkin.deepbreath.ui.fragments;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.common.AppConstants;
+import com.iaruchkin.deepbreath.common.GpsUtils;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.network.AqiApi;
-import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
@@ -28,11 +37,13 @@ import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.ui.adapter.WeatherItemAdapter;
 
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,28 +56,20 @@ import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_DETAILS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
 public class ForecastFragment extends MvpAppCompatFragment implements WeatherItemAdapter.WeatherAdapterOnClickHandler,
-        ForecastView,
-                                                                        SwipeRefreshLayout.OnRefreshListener {
+        ForecastView, SwipeRefreshLayout.OnRefreshListener {
 
     private static final int LAYOUT = R.layout.layout_weather_list;
     private MessageFragmentListener listener;
 
-    static final String EXTRA_ITEM_LATITUDE = "extra:itemLatitude";
-    static final String EXTRA_ITEM_LONGITUDE = "extra:itemLongitude";
-    static final String EXTRA_ITEM_OPTION = "extra:itemOption";
+    //Location
+    private Location mLocation;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private boolean isGPS = false;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     @InjectPresenter
     ForecastPresenter forecastPresenter;
-
-    @ProvidePresenter
-    ForecastPresenter provideWeatherListPresenter() {
-        String option = getArguments() != null ? getArguments().getString(EXTRA_ITEM_OPTION, "forecast") : null;
-        double latitude = getArguments() != null ? getArguments().getDouble(EXTRA_ITEM_LATITUDE, 0) : 0;
-        double longitude = getArguments() != null ? getArguments().getDouble(EXTRA_ITEM_LONGITUDE, 0) : 0;
-
-        return new ForecastPresenter(option, latitude, longitude);
-//        return new ForecastPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
-    }
 
     @Nullable
     private WeatherItemAdapter mAdapter;
@@ -78,27 +81,13 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
     private View mError;
     @Nullable
     private Button errorAction;
-//    @Nullable
-//    private FloatingActionButton mUpdate;
     @Nullable
     private SwipeRefreshLayout mRefresh;
 
 //    @Nullable
 //    private Toolbar toolbar;
-    private CollapsingToolbarLayout mToolbar;
-
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    public static ForecastFragment newInstance(String option, double latitude, double longitude){
-        ForecastFragment forecastFragment = new ForecastFragment();
-        Bundle bundle = new Bundle();
-        bundle.putDouble(EXTRA_ITEM_LATITUDE, latitude);
-        bundle.putDouble(EXTRA_ITEM_LONGITUDE, longitude);
-        bundle.putString(EXTRA_ITEM_OPTION, option);
-        forecastFragment.setArguments(bundle);
-        return forecastFragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -199,6 +188,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
             supportActionBar.setDisplayHomeAsUpEnabled(false);
         }
     }
+
     private void setupRecyclerViewAdapter(){
         mAdapter = new WeatherItemAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -215,16 +205,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
     }
 
     private void setupUx() {
-
-//        mUpdate.setOnClickListener(v -> forceLoadData());
         errorAction.setOnClickListener(v -> loadData());
-
+        setupLocation();
         loadData();
-
-    }
-
-    private String getLocation() {
-        return "forecast";
     }
 
     @Override
@@ -234,15 +217,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
 
 
     public void loadData() {
-
-        forecastPresenter.loadData();
-
-    }
-
-    public void forceLoadData() {
-
-        forecastPresenter.forceLoadData();
-
+        forecastPresenter.loadData(false, mLocation);
     }
 
     @Override
@@ -319,10 +294,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
 
     @Override
     public void onRefresh() {
-        forecastPresenter.forceLoadData();
+        forecastPresenter.loadData(true, mLocation);
     }
 
-//    @Override
     public void showRefresher(boolean show) {
         mRefresh.setRefreshing(show);
     }
@@ -333,8 +307,109 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
         mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         mError = view.findViewById(R.id.error_layout);
         errorAction = view.findViewById(R.id.action_button);
-//        mUpdate = view.findViewById(R.id.floatingActionButton);
         mRefresh = view.findViewById(R.id.refresh);
-
     }
+
+    private void setupLocation() {
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000); // 10 seconds
+        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+
+        new GpsUtils(getContext()).turnGPSOn(new GpsUtils.onGpsListener() {
+            @Override
+            public void gpsStatus(boolean isGPSEnable) {
+                // turn on GPS
+                isGPS = isGPSEnable;
+            }
+        });
+
+        locationCallback = new LocationCallback() {
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        mLocation = location;
+                        Log.w("FRAGMENT 2", location.toString());
+
+                        if (mFusedLocationClient != null) {
+                            mFusedLocationClient.removeLocationUpdates(locationCallback);
+                        }
+                    }
+                }
+            }
+        };
+
+        if (!isGPS) {
+            Toast.makeText(getContext(), "Please turn on GPS", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        getLocation();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    AppConstants.LOCATION_REQUEST);
+
+        } else {
+            mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
+                if (location != null) {
+                    mLocation = location;
+                    Log.w("FRAGMENT 2", location.toString());
+//                    loadData();
+                } else {
+                    mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+                }
+            });
+        }
+    }
+
+//    @SuppressLint("MissingPermission")
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode) {
+//            case 1000: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+//                        if (location != null) {
+//                            wayLatitude = location.getLatitude();
+//                            wayLongitude = location.getLongitude();
+//                            Log.w("MAIN ACTIVITY PER", String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
+////                                txtLocation.setText(String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
+//                        } else {
+//                            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+//                        }
+//                    });
+//
+//                } else {
+//                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//            }
+//        }
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            if (requestCode == AppConstants.GPS_REQUEST) {
+//                isGPS = true; // flag maintain before get location
+//            }
+//        }
+//    }
 }
