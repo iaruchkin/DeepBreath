@@ -51,12 +51,21 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
     private static final int LAYOUT = R.layout.layout_weather_list;
     private MessageFragmentListener listener;
 
+    static final String EXTRA_ITEM_LATITUDE = "extra:itemLatitude";
+    static final String EXTRA_ITEM_LONGITUDE = "extra:itemLongitude";
+    static final String EXTRA_ITEM_OPTION = "extra:itemOption";
+
     @InjectPresenter
     ForecastPresenter forecastPresenter;
 
     @ProvidePresenter
     ForecastPresenter provideWeatherListPresenter() {
-        return new ForecastPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
+        String option = getArguments() != null ? getArguments().getString(EXTRA_ITEM_OPTION, "forecast") : null;
+        double latitude = getArguments() != null ? getArguments().getDouble(EXTRA_ITEM_LATITUDE, 0) : 0;
+        double longitude = getArguments() != null ? getArguments().getDouble(EXTRA_ITEM_LONGITUDE, 0) : 0;
+
+        return new ForecastPresenter(option, latitude, longitude);
+//        return new ForecastPresenter(WeatherApi.getInstance(), AqiApi.getInstance());
     }
 
     @Nullable
@@ -80,6 +89,16 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
 
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    public static ForecastFragment newInstance(String option, double latitude, double longitude){
+        ForecastFragment forecastFragment = new ForecastFragment();
+        Bundle bundle = new Bundle();
+        bundle.putDouble(EXTRA_ITEM_LATITUDE, latitude);
+        bundle.putDouble(EXTRA_ITEM_LONGITUDE, longitude);
+        bundle.putString(EXTRA_ITEM_OPTION, option);
+        forecastFragment.setArguments(bundle);
+        return forecastFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

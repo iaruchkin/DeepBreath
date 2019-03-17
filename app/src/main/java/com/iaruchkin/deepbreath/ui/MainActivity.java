@@ -1,14 +1,33 @@
 package com.iaruchkin.deepbreath.ui;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.common.AppConstants;
+import com.iaruchkin.deepbreath.common.GpsUtils;
 import com.iaruchkin.deepbreath.ui.fragments.AqiFragment;
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 
+import java.util.Locale;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
@@ -16,11 +35,18 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String WEATHER_LIST_TAG = "WEATHER_LIST";
     public final static String WEATHER_DETAILS_TAG = "WEATHER_DETAILS";
     public final static String SETTINGS_TAG = "SETTINGS";
-
     public final static String INTRO_TAG = "INTRO";
 
+    private String option = "forecast";
+    private double wayLatitude = 0.0, wayLongitude = 0.0;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private StringBuilder stringBuilder;
+    private boolean isGPS = false;
+
+    private FusedLocationProviderClient mFusedLocationClient;
     private FragmentManager mFragmentManager;
-    private ForecastFragment mWeatherListFragment;
+    private ForecastFragment mForecastFragment;
     private AqiFragment mDetailsFragment;
     private SettingsFragment mSettingsFragment;
     //    private IntroFragment mIntroFragment;
@@ -30,12 +56,14 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         super.onCreate(savedInstanceState);
 
         init();
-        startNewsList();
+        setupLocation();
+        startForecast();
+
 //        if (savedInstanceState == null){
 //            if (Storage.needToShowIntro(this)) {
 //                startIntro();
 //            } else {
-//                startNewsList();
+//                startForecast();
 //            }
 //        }
     }
@@ -48,17 +76,18 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //                .commit();
 //    }
 
-    private void startNewsList(){
-        mWeatherListFragment = new ForecastFragment();
+    private void startForecast() {
+        mForecastFragment = ForecastFragment.newInstance(option, wayLatitude, wayLongitude);//todo set correct string messages
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_list, mWeatherListFragment)
+                .replace(R.id.frame_list, mForecastFragment)
                 .commit();
+        Log.w("MAIN ACTIVITY 3", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
     }
 
-    private void startNewsDetails(String message){
+    private void startDetails(String message) {
         mDetailsFragment = AqiFragment.newInstance(message, message);//todo set correct string messages
-        mDetailsFragment = new AqiFragment();
+//        mDetailsFragment = new AqiFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mDetailsFragment)
@@ -66,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 .commit();
     }
 
-    private void startSettings(){
+    private void startSettings() {
         mSettingsFragment = new SettingsFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -81,19 +110,19 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         return true;
     }
 
-    private void init(){
+    private void init() {
         setContentView(R.layout.activity_main);
         mFragmentManager = getSupportFragmentManager();
     }
 
     @Override
     public void onActionClicked(String fragmentTag, String message) {
-        switch (fragmentTag){
+        switch (fragmentTag) {
             case WEATHER_LIST_TAG:
-                startNewsList();
+                startForecast();
                 break;
             case WEATHER_DETAILS_TAG:
-                startNewsDetails(message);
+                startDetails(message);
                 break;
             case SETTINGS_TAG:
                 startSettings();
@@ -102,6 +131,110 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //                startIntro();
 //                break;
         }
-
     }
+
+    private void setupLocation() {
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000); // 10 seconds
+        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+
+        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
+            @Override
+            public void gpsStatus(boolean isGPSEnable) {
+                // turn on GPS
+                isGPS = isGPSEnable;
+            }
+        });
+
+        locationCallback = new LocationCallback() {
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        wayLatitude = location.getLatitude();
+                        wayLongitude = location.getLongitude();
+
+                        if (mFusedLocationClient != null) {
+                            mFusedLocationClient.removeLocationUpdates(locationCallback);
+                        }
+                    }
+                }
+            }
+        };
+
+            if (!isGPS) {
+                Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            getLocation();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    AppConstants.LOCATION_REQUEST);
+
+        } else {
+                mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+                    if (location != null) {
+                        wayLatitude = location.getLatitude();
+                        wayLongitude = location.getLongitude();
+                        Log.w("MAIN ACTIVITY 1", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
+
+                    } else {
+                        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+                    }
+                });
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1000: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                        mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+                            if (location != null) {
+                                wayLatitude = location.getLatitude();
+                                wayLongitude = location.getLongitude();
+                                Log.w("MAIN ACTIVITY 2", String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
+//                                txtLocation.setText(String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
+                            } else {
+                                mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+                            }
+                        });
+
+                } else {
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == AppConstants.GPS_REQUEST) {
+                isGPS = true; // flag maintain before get location
+            }
+        }
+    }
+
 }

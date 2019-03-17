@@ -1,5 +1,7 @@
 package com.iaruchkin.deepbreath.network;
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
@@ -42,6 +44,7 @@ public final class WeatherApiKeyInterceptor implements Interceptor {
         final Request requestWithAttachedApiKey = requestWithoutApiKey.newBuilder()
                 .url(url)
                 .build();
+        Log.w("URL WEATHER", requestWithAttachedApiKey.toString());
 
         return chain.proceed(requestWithAttachedApiKey);
     }

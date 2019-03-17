@@ -21,6 +21,7 @@ import com.iaruchkin.deepbreath.room.WeatherEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,12 +37,21 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     private AqiApi aqiApi;
 
     private final String PRESENTER_WEATHER_TAG = "[list - presenter]";
-    private final String DEFAULT_LOCATION = "here";
+    private final String DEFAULT_LOCATION = "geo:10.3;20.7";
     private final String FORECAST = "forecast";
 
-    public ForecastPresenter(@NonNull WeatherApi weatherInstance, AqiApi aqiInstance) {
-        this.weatherApi = weatherInstance;
-        this.aqiApi = aqiInstance;
+    private String option = "";
+    private double latitude = 0.0, longitude = 0.0;
+
+    private String location = String.format(Locale.ENGLISH, "geo:%s;%s", latitude, longitude);
+
+    public ForecastPresenter(@NonNull String option, double latitude, double longitude) {
+        this.option = option;
+        this.latitude = latitude;
+        this.longitude = longitude;
+
+//        this.weatherApi = weatherInstance;
+//        this.aqiApi = aqiInstance;
     }
 
     @Override
@@ -50,15 +60,15 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     public void loadData(){
-        loadForecastFromDb(FORECAST);
-        loadAqiFromDb(DEFAULT_LOCATION);
-        loadWeatherFromDb(DEFAULT_LOCATION);
+        loadForecastFromDb(option);
+        loadWeatherFromDb(option);
+        loadAqiFromDb(location);
 //        loadDummy();
     }
 
     public void forceLoadData(){
-        loadForecastFromNet(FORECAST);
-        loadAqiFromNet(DEFAULT_LOCATION);
+        loadForecastFromNet(option);
+        loadAqiFromNet(location);
 //        loadDummy();
     }
 
@@ -264,4 +274,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
         Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
     }
+
+    
 }
