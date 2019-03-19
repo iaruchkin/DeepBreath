@@ -25,6 +25,9 @@ public class ConverterForecast {
                 //id
                 forecastEntity.setId(dto.getDate() + weatherDTO.getLocation().getName());
 
+                //geo
+                forecastEntity.setParameter(weatherLocation);
+
                 //location
                 forecastEntity.setLocationName(weatherDTO.getLocation().getName());
                 forecastEntity.setLocationRegion(weatherDTO.getLocation().getRegion());
@@ -73,6 +76,12 @@ public class ConverterForecast {
     public static ForecastEntity getDataById(Context context, String id){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         return db.forecastDao().getDataById(id);
+    }
+
+    public static List<ForecastEntity> getDataByParameter(Context context, String parameter) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        Log.i(TAG, "Weather data loaded from DB");
+        return db.forecastDao().getByParameter(parameter); //todo think about request
     }
 
     public static List<ForecastEntity> getDataByLocation(Context context, String location) {

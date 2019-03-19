@@ -23,6 +23,9 @@ public class ConverterWeather {
             //id
             weatherEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());//todo подумать о необходимости уникального ID
 
+            //geo
+            weatherEntity.setParameter(weatherLocation);
+
             //location
             weatherEntity.setLocation(weatherDTO.getLocation().getName());
 
@@ -61,6 +64,12 @@ public class ConverterWeather {
     public static WeatherEntity getDataById(Context context, String id){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         return db.weatherDao().getDataById(id);
+    }
+
+    public static List<WeatherEntity> getDataByParameter(Context context, String parameter) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        Log.i(TAG, "AQI data loaded from DB");
+        return db.weatherDao().getByParameter(parameter);//todo think about request
     }
 
     public static List<WeatherEntity> getDataByLocation(Context context, String location) {

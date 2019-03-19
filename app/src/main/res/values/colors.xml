@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#82B1FF</color>
-    <color name="colorPrimaryDark">#82B1FF</color>
+    <color name="colorPrimaryDark">#A8C9FF</color>
     <color name="colorAccent">#B388FF</color>
-    <color name="colorPrimaryLight">#6680D8FF</color>
+    <color name="colorPrimaryLight">#1A80D8FF</color>
+    <color name="colorPrimaryLight2">#6680D8FF</color>
 
     <color name="white">#FFFFFF</color>
 
@@ -25,5 +26,6 @@
 
     <!--aqi number color-->
     <color name="bad">#FFEA98</color>
+    <color name="bad_transparent">#8DFFEA98</color>
 
 </resources>

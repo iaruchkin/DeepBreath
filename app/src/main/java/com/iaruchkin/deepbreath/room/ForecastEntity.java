@@ -17,6 +17,10 @@ public class ForecastEntity {
     private String id;
 
     @NonNull
+    @ColumnInfo(name = "parameter")
+    private String parameter;
+
+    @NonNull
     @ColumnInfo(name ="date")
     private String date;
 
@@ -131,6 +135,11 @@ public class ForecastEntity {
     @NonNull
     public String getId() {
         return id;
+    }
+
+    @NonNull
+    public String getParameter() {
+        return parameter;
     }
 
     @NonNull
@@ -252,6 +261,10 @@ public class ForecastEntity {
         this.id = id;
     }
 
+    public void setParameter(@NonNull String mGeo) {
+        this.parameter = mGeo;
+    }
+
     public void setDate(@NonNull String date) {
         this.date = date;
     }
@@ -360,6 +373,7 @@ public class ForecastEntity {
     public String toString() {
         return "ForecastEntity{" +
                 "id='" + id + '\'' +
+                "parameter='" + parameter + '\'' +
                 ", date='" + date + '\'' +
 //                ", date_epoch=" + date_epoch +
                 ", maxtemp_c=" + maxtemp_c +

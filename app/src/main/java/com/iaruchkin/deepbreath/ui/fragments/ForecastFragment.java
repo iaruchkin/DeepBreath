@@ -1,8 +1,10 @@
 package com.iaruchkin.deepbreath.ui.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
@@ -34,10 +36,9 @@ import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
-import com.iaruchkin.deepbreath.ui.adapter.WeatherItemAdapter;
+import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter;
 
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,13 +50,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.disposables.CompositeDisposable;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import static com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG;
-import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_DETAILS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
-public class ForecastFragment extends MvpAppCompatFragment implements WeatherItemAdapter.WeatherAdapterOnClickHandler,
+public class ForecastFragment extends MvpAppCompatFragment implements ForecastAdapter.ForecastAdapterOnClickHandler,
         ForecastView, SwipeRefreshLayout.OnRefreshListener {
 
     private static final int LAYOUT = R.layout.layout_weather_list;
@@ -72,7 +71,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
     ForecastPresenter forecastPresenter;
 
     @Nullable
-    private WeatherItemAdapter mAdapter;
+    private ForecastAdapter mAdapter;
     @Nullable
     private RecyclerView mRecyclerView;
     @Nullable
@@ -157,17 +156,22 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
         switch (item.getItemId()) {
             case R.id.action_settings:
                 if (listener != null) {
-                    listener.onActionClicked(SETTINGS_TAG, "settings");
+                    listener.onActionClicked(SETTINGS_TAG);
                 }
                 return true;
             case R.id.action_map:
                 if (listener != null) {
-                    listener.onActionClicked(SETTINGS_TAG, "city");
+                    listener.onActionClicked(SETTINGS_TAG);
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity) {
+        listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId());//todo передать нужное значение
     }
 
     private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест
@@ -190,7 +194,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
     }
 
     private void setupRecyclerViewAdapter(){
-        mAdapter = new WeatherItemAdapter(this);
+        mAdapter = new ForecastAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -210,25 +214,21 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
         loadData();
     }
 
-    @Override
-    public void onClick(ForecastEntity weatherItem) {
-        listener.onActionClicked(WEATHER_DETAILS_TAG, String.valueOf(weatherItem.getAvgtemp_c()));//todo передать нужное значение
-    }
-
-
     public void loadData() {
         forecastPresenter.loadData(false, mLocation);
     }
 
     @Override
     public void showWeatherData(@NonNull List<WeatherEntity> data) {
-
+        if (mAdapter != null) {
+            mAdapter.setWeatherItem(data.get(0));
+        }
     }
 
     @Override
     public void showForecastData(List<ForecastEntity> data) {
         if (mAdapter != null) {
-            mAdapter.replaceItems(data);
+            mAdapter.setForecastItems(data);
         }
     }
 
@@ -374,42 +374,39 @@ public class ForecastFragment extends MvpAppCompatFragment implements WeatherIte
         }
     }
 
-//    @SuppressLint("MissingPermission")
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case 1000: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
-//                        if (location != null) {
-//                            wayLatitude = location.getLatitude();
-//                            wayLongitude = location.getLongitude();
-//                            Log.w("MAIN ACTIVITY PER", String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
-////                                txtLocation.setText(String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
-//                        } else {
-//                            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-//                        }
-//                    });
-//
-//                } else {
-//                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-//                }
-//                break;
-//            }
-//        }
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            if (requestCode == AppConstants.GPS_REQUEST) {
-//                isGPS = true; // flag maintain before get location
-//            }
-//        }
-//    }
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1000: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
+                        if (location != null) {
+                            Log.w("FRAGMENT 3", location.toString());
+                        } else {
+                            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == AppConstants.GPS_REQUEST) {
+                isGPS = true; // flag maintain before get location
+            }
+        }
+    }
 }

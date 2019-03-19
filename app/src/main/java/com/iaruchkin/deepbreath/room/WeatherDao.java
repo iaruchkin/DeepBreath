@@ -19,6 +19,9 @@ public interface WeatherDao {
     @Query("SELECT * FROM weather WHERE location = :location")
     List<WeatherEntity> getAll(String location);
 
+    @Query("SELECT * FROM weather WHERE parameter = :parameter")
+    List<WeatherEntity> getByParameter(String parameter);
+
     @Query("SELECT * FROM weather WHERE id = :id")
     WeatherEntity getDataById(String id);
 
@@ -34,7 +37,10 @@ public interface WeatherDao {
     @Delete
     void delete(WeatherEntity weatherEntity);
 
+    @Query("DELETE FROM weather WHERE parameter = :parameter")
+    void deleteAll(String parameter);
+
     @Query("DELETE FROM weather WHERE location = :location")
-    void deleteAll(String location);
+    void deleteByLocation(String location);
 
 }

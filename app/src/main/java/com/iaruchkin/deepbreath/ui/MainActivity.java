@@ -37,14 +37,13 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String SETTINGS_TAG = "SETTINGS";
     public final static String INTRO_TAG = "INTRO";
 
-    private String option = "forecast";
-    private double wayLatitude = 0.0, wayLongitude = 0.0;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    private StringBuilder stringBuilder;
-    private boolean isGPS = false;
-
-    private FusedLocationProviderClient mFusedLocationClient;
+//    private String option = "forecast";
+//    private LocationRequest locationRequest;
+//    private LocationCallback locationCallback;
+//    private StringBuilder stringBuilder;
+//    private boolean isGPS = false;
+//
+//    private FusedLocationProviderClient mFusedLocationClient;
     private FragmentManager mFragmentManager;
     private ForecastFragment mForecastFragment;
     private AqiFragment mDetailsFragment;
@@ -77,18 +76,15 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //    }
 
     private void startForecast() {
-//        mForecastFragment = ForecastFragment.newInstance(option, wayLatitude, wayLongitude);//todo set correct string messages
         mForecastFragment = new ForecastFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mForecastFragment)
                 .commit();
-        Log.w("MAIN ACTIVITY 3", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
     }
 
-    private void startDetails(String message) {
-        mDetailsFragment = AqiFragment.newInstance(message, message);//todo set correct string messages
-//        mDetailsFragment = new AqiFragment();
+    private void startDetails(String idForecast, String idWeather, String idAqi) {
+        mDetailsFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi);//todo set correct string messages
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mDetailsFragment)
@@ -117,14 +113,19 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
     @Override
-    public void onActionClicked(String fragmentTag, String message) {
+    public void onListClicked(String idF, String idW, String idA) {
+        startDetails(idF, idW, idA);
+    }
+
+    @Override
+    public void onActionClicked(String fragmentTag) {
         switch (fragmentTag) {
             case WEATHER_LIST_TAG:
                 startForecast();
                 break;
-            case WEATHER_DETAILS_TAG:
-                startDetails(message);
-                break;
+//            case WEATHER_DETAILS_TAG:
+//                startDetails(message);
+//                break;
             case SETTINGS_TAG:
                 startSettings();
                 break;
@@ -200,43 +201,42 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //        }
 //    }
 
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1000: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                        mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
-                            if (location != null) {
-                                wayLatitude = location.getLatitude();
-                                wayLongitude = location.getLongitude();
-                                Log.w("MAIN ACTIVITY PER", String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
-//                                txtLocation.setText(String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
-                            } else {
-                                mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                            }
-                        });
-
-                } else {
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == AppConstants.GPS_REQUEST) {
-                isGPS = true; // flag maintain before get location
-            }
-        }
-    }
+//    @SuppressLint("MissingPermission")
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode) {
+//            case 1000: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                        mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+//                            if (location != null) {
+//                                wayLatitude = location.getLatitude();
+//                                wayLongitude = location.getLongitude();
+////                                txtLocation.setText(String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
+//                            } else {
+//                                mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+//                            }
+//                        });
+//
+//                } else {
+//                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//            }
+//        }
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            if (requestCode == AppConstants.GPS_REQUEST) {
+//                isGPS = true; // flag maintain before get location
+//            }
+//        }
+//    }
 
 }

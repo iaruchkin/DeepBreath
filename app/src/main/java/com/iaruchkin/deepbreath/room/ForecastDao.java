@@ -19,6 +19,9 @@ public interface ForecastDao {
     @Query("SELECT * FROM forecast WHERE locationName = :locationName")
     List<ForecastEntity> getAll(String locationName);
 
+    @Query("SELECT * FROM forecast WHERE parameter = :parameter")
+    List<ForecastEntity> getByParameter(String parameter);
+
     @Query("SELECT * FROM forecast WHERE id = :id")
     ForecastEntity getDataById(String id);
 
@@ -34,7 +37,10 @@ public interface ForecastDao {
     @Delete
     void delete(ForecastEntity forecastEntity);
 
+    @Query("DELETE FROM forecast WHERE parameter = :parameter")
+    void deleteAll(String parameter);
+
     @Query("DELETE FROM forecast WHERE locationName = :locationName")
-    void deleteAll(String locationName);
+    void deleteByLocation(String locationName);
 
 }

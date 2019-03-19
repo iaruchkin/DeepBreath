@@ -50,6 +50,9 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     private String weatherCurrentLocation = "auto:ip";
     private String aqiCurrentLocation = "here";
 
+    private String lastLocationName = "Zhulebino";
+    private String aqiStationName = "Kalynova Street, 49, Dnipro, Ukraine";
+
     @Override
     protected void onFirstViewAttach() {
             loadData(true, null);
@@ -86,44 +89,44 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         getViewState().showForecastData(weatherEntities);
     }
 
-    private void loadWeatherFromDb(String option){
+    private void loadWeatherFromDb(String geo){
         getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
-                .loadDataFromDb(context))//todo real data
+                .getDataByParameter(context, geo))//todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateWeatherData(data, option), this::handleError);
+                .subscribe(data -> updateWeatherData(data, geo), this::handleError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
-    private void loadForecastFromDb(String option){
+    private void loadForecastFromDb(String geo){
         getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
-                .loadDataFromDb(context))//todo get data by location!!! bug with multiple location forecast
+                .getDataByParameter(context, geo))//todo get data by location!!! bug with multiple location forecast
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateForecastData(data, option), this::handleError);
+                .subscribe(data -> updateForecastData(data, geo), this::handleError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
-    private void loadAqiFromDb(String location){
+    private void loadAqiFromDb(String geo){
         getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
-                .loadDataFromDb(context))              //todo real data
+                .getDataByParameter(context, geo))              //todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateAqiData(data, location), this::handleError);
+                .subscribe(data -> updateAqiData(data, geo), this::handleError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load AqiData from db");
 
     }
 
-    private void updateWeatherData(@Nullable List<WeatherEntity> data, String option) {
+    private void updateWeatherData(@Nullable List<WeatherEntity> data, String geo) {
         if (data.size()==0){
-            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + option);
-            loadForecastFromNet(option); //todo check this
+            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + geo);
+            loadForecastFromNet(geo); //todo check this
         }else {
             getViewState().showWeatherData(data);
             getViewState().showState(State.HasData);
@@ -156,47 +159,47 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }
     }
 
-    private void loadForecastFromNet(@NonNull String option){
+    private void loadForecastFromNet(@NonNull String parameter){
         Log.e(PRESENTER_WEATHER_TAG,"Load Weather from net presenter");
 
         getViewState().showState(State.Loading);
         final Disposable disposable = WeatherApi.getInstance()
                 .weatherEndpoint()
-                .get(option)
+                .get(parameter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    updateForecastDB(response, response.getLocation().getName());
-                    updateWeatherDB(response, response.getLocation().getName());
+                    updateForecastDB(response, parameter);//response.getLocation().getName()
+                    updateWeatherDB(response, parameter);//response.getLocation().getName()
                     },
                         this::handleError);
 
         disposeOnDestroy(disposable);
     }
 
-    private void loadAqiFromNet(@NonNull String location){
+    private void loadAqiFromNet(@NonNull String parameter){
         Log.e(PRESENTER_WEATHER_TAG,"Load AQI from net presenter");
 
         getViewState().showState(State.Loading);
         final Disposable disposable = AqiApi.getInstance()
                 .airEndpoint()
-                .get(location)
+                .get(parameter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> updateAqiDB(response, response.getData().getCity().getName()), this::handleError);
+                .subscribe(response -> updateAqiDB(response, parameter), this::handleError);//response.getData().getCity().getName()
         disposeOnDestroy(disposable);
     }
 
-    private void updateWeatherDB(WeatherResponse response, String option) {
+    private void updateWeatherDB(WeatherResponse response, String parameter) {
         if (response.getCurrent() == null) { //todo check this
                 getViewState().showState(State.HasNoData);
         } else {
             Disposable saveWeatherToDb = Single.fromCallable(() -> response)
                     .subscribeOn(Schedulers.io())
                     .map(weatherDTO -> {
-                        String location = weatherDTO.getLocation().getName();
+//                        String location = weatherDTO.getLocation().getName();
                         ConverterWeather.saveAllDataToDb(context,
-                                ConverterWeather.dtoToDao(weatherDTO, option),location);
+                                ConverterWeather.dtoToDao(weatherDTO, parameter),parameter);
                         return ConverterWeather.loadDataFromDb(context);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
@@ -210,17 +213,17 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }
     }
 
-    private void updateForecastDB(WeatherResponse response, String option) {
+    private void updateForecastDB(WeatherResponse response, String parameter) {
         if (response.getForecast().getForecastday().size()==0) {
             getViewState().showState(State.HasNoData);
         } else {
             Disposable saveForecastToDb = Single.fromCallable(() -> response)
                     .subscribeOn(Schedulers.io())
                     .map(weatherDTO -> {
-                        String location = weatherDTO.getLocation().getName();
+//                        String location = weatherDTO.getLocation().getName();
                         ConverterForecast.saveAllDataToDb(context,
-                                ConverterForecast.dtoToDao(weatherDTO, option),location);
-                        return ConverterForecast.loadDataFromDb(context);
+                                ConverterForecast.dtoToDao(weatherDTO, parameter),parameter);
+                        return ConverterForecast.getDataByParameter(context, parameter);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -233,16 +236,17 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }
     }
 
-    private void updateAqiDB(AqiResponse response, String location) {
+    private void updateAqiDB(AqiResponse response, String parameter) {
         if (response.getData() == null) {
             getViewState().showState(State.HasNoData);
         } else {
             Disposable saveDataToDb = Single.fromCallable(response::getData)
                     .subscribeOn(Schedulers.io())
                     .map(aqiDTO -> {
-                        String city = aqiDTO.getCity().getName();
+//                        String city = aqiDTO.getCity().getName();
+                        //todo save by parameter
                         ConverterAqi.saveAllDataToDb(context,
-                                ConverterAqi.dtoToDao(aqiDTO, city),city);
+                                ConverterAqi.dtoToDao(aqiDTO, parameter),parameter);
                         return ConverterAqi.loadDataFromDb(context);
                     })
                     .observeOn(AndroidSchedulers.mainThread())

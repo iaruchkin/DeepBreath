@@ -17,6 +17,10 @@ public class WeatherEntity {
     private String id;
 
     @NonNull
+    @ColumnInfo(name = "parameter")
+    private String parameter;
+
+    @NonNull
     @ColumnInfo(name = "location")
     private String mLocation;
 
@@ -99,6 +103,11 @@ public class WeatherEntity {
     @NonNull
     public String getId() {
         return id;
+    }
+
+    @NonNull
+    public String getParameter() {
+        return parameter;
     }
 
     @NonNull
@@ -185,6 +194,10 @@ public class WeatherEntity {
         this.id = id;
     }
 
+    public void setParameter(@NonNull String mGeo) {
+        this.parameter = mGeo;
+    }
+
     public void setLocation(@NonNull String mLocation) {
         this.mLocation = mLocation;
     }
@@ -265,6 +278,7 @@ public class WeatherEntity {
     public String toString() {
         return "WeatherEntity{" +
                 "id='" + id + '\'' +
+                "parameter='" + parameter + '\'' +
                 ", location=" + mLocation +
                 ", last_updated_epoch=" + last_updated_epoch +
                 ", wind_degree=" + wind_degree +

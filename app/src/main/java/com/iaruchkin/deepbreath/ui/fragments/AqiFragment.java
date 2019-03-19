@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
@@ -25,8 +26,9 @@ import io.reactivex.disposables.CompositeDisposable;
 public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     private static final int LAYOUT = R.layout.layout_detail;
 
-    static final String EXTRA_ITEM_LOCATION = "extra:itemLocation";
-    static final String EXTRA_ITEM_OPTION = "extra:itemOption";
+    static final String FORECAST_ID = "extra:itemLocation";
+    static final String WEATHER_ID = "extra:itemOption";
+    static final String AQI_ID = "extra:itemOption";
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static final String TAG = AqiFragment.class.getSimpleName();
@@ -46,11 +48,23 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
 
 //    Toolbar toolbar;
 
-    public static AqiFragment newInstance(String location, String option){
+    @ProvidePresenter
+    AqiPresenter providePresenter() {
+//        if (getArguments() != null) {
+            String idForecast = getArguments().getString(FORECAST_ID, "");
+            String idWeather = getArguments().getString(WEATHER_ID, "");
+            String idAqi = getArguments().getString(AQI_ID, "");
+            return new AqiPresenter(idForecast, idWeather, idAqi);
+//        }
+    }
+
+    public static AqiFragment newInstance(String idForecast, String idWeather, String idAqi){
         AqiFragment fragmentAqi = new AqiFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(EXTRA_ITEM_LOCATION, location);
-        bundle.putSerializable(EXTRA_ITEM_OPTION, option);
+        bundle.putSerializable(FORECAST_ID, idForecast);
+        bundle.putSerializable(WEATHER_ID, idWeather);
+        bundle.putSerializable(AQI_ID, idAqi);
+
         fragmentAqi.setArguments(bundle);
         return fragmentAqi;
     }
@@ -59,9 +73,11 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(LAYOUT, container, false);
-//        getArguments().getString(EXTRA_ITEM_LOCATION);
-//        getArguments().getString(EXTRA_ITEM_OPTION);
-
+//        if (getArguments() != null) {
+//            getArguments().getString(FORECAST_ID);
+//            getArguments().getString(WEATHER_ID);
+//            getArguments().getString(WEATHER_ID);
+//        }
         findViews(view);
         setupToolbar();
         return view;
@@ -86,16 +102,16 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
         super.onDetach();
     }
 
-     private void setWeatherView(ForecastEntity weatherData){
-        date.setText(weatherData.getDate());
-        weather_description.setText(weatherData.getConditionText());
-        low_temperature.setText(String.valueOf(weatherData.getAvgtemp_c()));
+     private void setForecastView(ForecastEntity forecastData){
+        date.setText(forecastData.getDate());
+        weather_description.setText(forecastData.getConditionText());
+        high_temperature.setText(String.valueOf(forecastData.getMaxtemp_c()));
+        low_temperature.setText(String.valueOf(forecastData.getMintemp_c()));
      }
 
     private void setAqiView(AqiEntity aqiData) {
-        high_temperature.setText(String.valueOf(aqiData.getAqi()));
         humidity.setText(aqiData.getCityName());
-        pressure.setText(aqiData.getId());
+        pressure.setText(String.valueOf(aqiData.getAqi()));
         wind_measurement.setText(String.valueOf(aqiData.getPm25()));
     }
 
@@ -118,7 +134,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
 
     @Override
     public void showForecastData(@NonNull ForecastEntity data) {
-        setWeatherView(data);
+        setForecastView(data);
     }
 
     @Override

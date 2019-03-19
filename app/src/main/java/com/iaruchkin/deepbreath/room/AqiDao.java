@@ -18,6 +18,9 @@ public interface AqiDao {
     @Query("SELECT * FROM aqi WHERE idx = :idx")
     List<AqiEntity> getAll(String idx);
 
+    @Query("SELECT * FROM aqi WHERE parameter = :parameter")
+    List<AqiEntity> getByParameter(String parameter);
+
     @Query("SELECT * FROM aqi WHERE id = :id")
     AqiEntity getDataById(String id);
 
@@ -33,7 +36,10 @@ public interface AqiDao {
     @Delete
     void delete(AqiEntity aqiEntity);
 
+    @Query("DELETE FROM aqi WHERE parameter = :parameter")
+    void deleteAll(String parameter);
+
     @Query("DELETE FROM aqi WHERE cityName = :cityName")
-    void deleteAll(String cityName);
+    void deleteByLocation(String cityName);
 
 }

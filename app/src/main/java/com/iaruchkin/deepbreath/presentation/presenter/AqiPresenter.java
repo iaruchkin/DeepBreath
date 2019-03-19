@@ -41,19 +41,24 @@ public class AqiPresenter extends BasePresenter<AqiView> {
     private final String DEFAULT_LOCATION = "here";
     private final String FORECAST = "forecast";
     //todo set real data
-    private final String ID_AQI = "114572019-03-15 22:00:00";
-    private final String ID_WEATHER = "1552680907Moscow";
-    private final String ID_FORECAST = "2019-03-15Moscow";
+    private String ID_FORECAST;
+    private String ID_WEATHER;
+    private String ID_AQI;
 
+//    public void initData(String id){ //todo use in AQIFragment
+//        if (forecastEntity == null || !forecastEntity.getId().equals(id)) {
+//            loadData();
+//        } else {
+//            getViewState().showForecastData(forecastEntity);
+//            getViewState().showAqiData(aqiEntity);
+//            getViewState().showWeatherData(weatherEntity);
+//        }
+//    }
 
-    public void initData(String id){ //todo use in AQIFragment
-        if (forecastEntity == null || !forecastEntity.getId().equals(id)) {
-            loadData();
-        } else {
-            getViewState().showForecastData(forecastEntity);
-            getViewState().showAqiData(aqiEntity);
-            getViewState().showWeatherData(weatherEntity);
-        }
+    public AqiPresenter(String idForecast, String idWeather, String idAqi) {
+        ID_FORECAST = idForecast;
+        ID_WEATHER = idWeather;
+        ID_AQI = idAqi;
     }
 
     @Override
