@@ -50,13 +50,10 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     private String weatherCurrentLocation = "auto:ip";
     private String aqiCurrentLocation = "here";
 
-    private String lastLocationName = "Zhulebino";
-    private String aqiStationName = "Kalynova Street, 49, Dnipro, Ukraine";
-
     @Override
     protected void onFirstViewAttach() {
-            loadData(true, null);
-    }
+            loadData(false, null);
+    } //todo поправить вызов
 
     public void loadData(Boolean forceload, Location location){
         if(location != null) {
@@ -80,7 +77,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         ForecastEntity dummy = new ForecastEntity();
         dummy.setLocationName("Moscow");
         dummy.setId("1qwe");
-        dummy.setDate("02/03/2019");
+//        dummy.setDate("02/03/2019");
         dummy.setAvgtemp_c(30.1);
 
         weatherEntities.add(dummy);
@@ -200,7 +197,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 //                        String location = weatherDTO.getLocation().getName();
                         ConverterWeather.saveAllDataToDb(context,
                                 ConverterWeather.dtoToDao(weatherDTO, parameter),parameter);
-                        return ConverterWeather.loadDataFromDb(context);
+                        return ConverterWeather.getDataByParameter(context, parameter);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -229,7 +226,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             forecastEntities -> {
                                 getViewState().showForecastData(forecastEntities);
-                                Log.i(PRESENTER_WEATHER_TAG, "loaded weather from NET to DB: " + forecastEntities.get(0).getId() + " / " +  forecastEntities.get(0).getLocationName());
+                                Log.i(PRESENTER_WEATHER_TAG, "loaded forecast from NET to DB: " + forecastEntities.get(0).getId() + " / " +  forecastEntities.get(0).getLocationName());
                             });
             disposeOnDestroy(saveForecastToDb);
             getViewState().showState(State.HasData);
@@ -247,7 +244,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                         //todo save by parameter
                         ConverterAqi.saveAllDataToDb(context,
                                 ConverterAqi.dtoToDao(aqiDTO, parameter),parameter);
-                        return ConverterAqi.loadDataFromDb(context);
+                        return ConverterAqi.getDataByParameter(context, parameter);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

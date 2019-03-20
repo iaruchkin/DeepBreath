@@ -14,7 +14,7 @@
       - Action, typically from the action bar.  The ActionBar is limited real estate, so         -
       - shorter is better.                                                                       -
       - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <string name="action_map">Map Location</string>
+    <string name="action_about">About</string>
     <!-- Used to share the weather forecast on a given day from the DetailActivity -->
     <string name="action_share">Share</string>
 

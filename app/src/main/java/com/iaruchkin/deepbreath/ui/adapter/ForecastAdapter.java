@@ -1,5 +1,6 @@
 package com.iaruchkin.deepbreath.ui.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +12,37 @@ import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.utils.StringUtils;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static java.security.AccessController.getContext;
+
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder>{
+
+    private final String DATE_FORMAT = "HH:mm, EEEE";
 
     private static final int VIEW_TYPE_TODAY = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
     private boolean mUseTodayLayout;
 
+    Context context = App.INSTANCE.getApplicationContext();
     private final List<ForecastEntity> forecastItemList = new ArrayList<>();
     private WeatherEntity weatherItem = new WeatherEntity();
     private AqiEntity aqiItem = new AqiEntity();
     private final ForecastAdapterOnClickHandler mClickHandler;
 
     public interface ForecastAdapterOnClickHandler {
-        void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity);
+        void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, int viewType);
     }
 
     public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
@@ -119,7 +129,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
             locationTextView.setText(forecastItem.getLocationName());
             weatherDescTextView.setText(weatherItem.getConditionText());
-            dateTextView.setText(weatherItem.getLast_updated());
+
+            dateTextView.setText(String.format(Locale.getDefault(), "updated"+" %s", (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
             highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
             lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getFeelslike_c()));
         }
@@ -128,8 +139,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             imageView.setImageResource(R.drawable.art_clouds);
 
-            weatherDescTextView.setText(forecastItem.getParameter());
-            dateTextView.setText(forecastItem.getDate());
+//            weatherDescTextView.setText(forecastItem.getParameter());
+
+            dateTextView.setText(StringUtils.formatDate(forecastItem.getDate_epoch(), "EEEE"));
+            weatherDescTextView.setText(StringUtils.formatDate(forecastItem.getDate_epoch(), "d MMMM"));
+
             highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMaxtemp_c()));
             lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMintemp_c()));
         }
@@ -152,7 +166,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             ForecastEntity dataItem = forecastItemList.get(adapterPosition);
-            mClickHandler.onClickList(dataItem, weatherItem, aqiItem);
+            mClickHandler.onClickList(dataItem, weatherItem, aqiItem, getItemViewType());
         }
     }
 

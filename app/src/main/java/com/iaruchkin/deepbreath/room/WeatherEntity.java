@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(tableName = "weather")
+@TypeConverters(DateConverter.class)
+
 public class WeatherEntity {
 
     public WeatherEntity() {
@@ -88,7 +91,7 @@ public class WeatherEntity {
     @ColumnInfo(name ="feelslike_f")
     private double feelslike_f;
 
-//    @NonNull
+    @NonNull
     @ColumnInfo(name ="conditionText")
     private String conditionText;
 

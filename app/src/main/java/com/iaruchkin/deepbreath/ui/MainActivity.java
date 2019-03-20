@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 .commit();
     }
 
-    private void startDetails(String idForecast, String idWeather, String idAqi) {
-        mDetailsFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi);//todo set correct string messages
+    private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
+        mDetailsFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mDetailsFragment)
@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
     @Override
-    public void onListClicked(String idF, String idW, String idA) {
-        startDetails(idF, idW, idA);
+    public void onListClicked(String idF, String idW, String idA, int viewType) {
+        startDetails(idF, idW, idA, viewType);
     }
 
     @Override

@@ -4,7 +4,7 @@ public interface MessageFragmentListener {
 
     void onActionClicked(String fragmentTag);
 
-    void onListClicked(String idF, String idW, String idA);
+    void onListClicked(String idF, String idW, String idA, int viewType);
 
 
 }

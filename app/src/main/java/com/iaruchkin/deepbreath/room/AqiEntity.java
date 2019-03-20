@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(tableName = "aqi")
+@TypeConverters(DateConverter.class)
+
 public class AqiEntity {
 
     public AqiEntity() {
@@ -55,11 +58,10 @@ public class AqiEntity {
     @ColumnInfo(name = "p")
     private Double mP;
 
-    @NonNull
     @ColumnInfo(name = "pm10")
     private Integer mPm10;
 
-    @NonNull
+//    @NonNull
     @ColumnInfo(name = "pm25")
     private Integer mPm25;
 
@@ -76,6 +78,9 @@ public class AqiEntity {
     @ColumnInfo(name = "date")
     private String mDate;
 
+    @NonNull
+    @ColumnInfo(name = "date_epoch")
+    private Integer mDateEpoch;
 
     @NonNull
     public String getId() {
@@ -159,6 +164,11 @@ public class AqiEntity {
         return mDate;
     }
 
+    @NonNull
+    public Integer getDateEpoch() {
+        return mDateEpoch;
+    }
+
     public void setId(@NonNull String id) {
         mId = id;
     }
@@ -229,6 +239,10 @@ public class AqiEntity {
 
     public void setDate(@NonNull String date) {
         mDate = date;
+    }
+
+    public void setDateEpoch(@NonNull Integer mDateEpoch) {
+        this.mDateEpoch = mDateEpoch;
     }
 
     @Override

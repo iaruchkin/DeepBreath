@@ -32,8 +32,8 @@ public class ConverterAqi {
 
             aqiEntity.setAqi(aqiDTO.getAqi());
 
-            aqiEntity.setPm10(aqiDTO.getIaqi().getPm10().getV());
-            aqiEntity.setPm25(aqiDTO.getIaqi().getPm25().getV());
+            if(aqiDTO.getIaqi().getPm10() != null) aqiEntity.setPm10(aqiDTO.getIaqi().getPm10().getV());
+            if(aqiDTO.getIaqi().getPm25() != null) aqiEntity.setPm25(aqiDTO.getIaqi().getPm25().getV());
 
             if(aqiDTO.getIaqi().getCo() != null) aqiEntity.setCo(aqiDTO.getIaqi().getCo().getV());
             if(aqiDTO.getIaqi().getNo2() != null) aqiEntity.setNo2(aqiDTO.getIaqi().getNo2().getV());
@@ -46,6 +46,7 @@ public class ConverterAqi {
             if(aqiDTO.getIaqi().getP() != null)aqiEntity.setP(aqiDTO.getIaqi().getP().getV());
 
             aqiEntity.setDate(aqiDTO.getTime().getS());
+            aqiEntity.setDateEpoch(aqiDTO.getTime().getV());
 
         listDao.add(aqiEntity);
         Log.w(TAG, aqiEntity.toString());

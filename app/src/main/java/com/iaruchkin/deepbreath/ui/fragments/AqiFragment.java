@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
@@ -17,6 +18,9 @@ import com.iaruchkin.deepbreath.presentation.view.AqiView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.utils.StringUtils;
+
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -26,9 +30,12 @@ import io.reactivex.disposables.CompositeDisposable;
 public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     private static final int LAYOUT = R.layout.layout_detail;
 
-    static final String FORECAST_ID = "extra:itemLocation";
-    static final String WEATHER_ID = "extra:itemOption";
-    static final String AQI_ID = "extra:itemOption";
+    Context context = App.INSTANCE.getApplicationContext();
+
+    static final String FORECAST_ID = "extra:forecast";
+    static final String WEATHER_ID = "extra:weather";
+    static final String AQI_ID = "extra:aqi";
+    static final String VIEW_TYPE = "extra:viewType";
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static final String TAG = AqiFragment.class.getSimpleName();
@@ -46,24 +53,27 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     TextView pressure;
     TextView wind_measurement;
 
+    View aqiDetails;
+    TextView aqiLabel;
+
 //    Toolbar toolbar;
 
     @ProvidePresenter
     AqiPresenter providePresenter() {
-//        if (getArguments() != null) {
-            String idForecast = getArguments().getString(FORECAST_ID, "");
-            String idWeather = getArguments().getString(WEATHER_ID, "");
-            String idAqi = getArguments().getString(AQI_ID, "");
-            return new AqiPresenter(idForecast, idWeather, idAqi);
-//        }
+            String idForecast = getArguments() != null ? getArguments().getString(FORECAST_ID, "") : null;
+            String idWeather = getArguments() != null ? getArguments().getString(WEATHER_ID, "") : null;
+            String idAqi = getArguments() != null ? getArguments().getString(AQI_ID, "") : null;
+            int viewType = getArguments() != null ? getArguments().getInt(VIEW_TYPE, 1) : 0;
+        return new AqiPresenter(idForecast, idWeather, idAqi, viewType);
     }
 
-    public static AqiFragment newInstance(String idForecast, String idWeather, String idAqi){
+    public static AqiFragment newInstance(String idForecast, String idWeather, String idAqi, int viewType){
         AqiFragment fragmentAqi = new AqiFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(FORECAST_ID, idForecast);
-        bundle.putSerializable(WEATHER_ID, idWeather);
-        bundle.putSerializable(AQI_ID, idAqi);
+        bundle.putString(FORECAST_ID, idForecast);
+        bundle.putString(WEATHER_ID, idWeather);
+        bundle.putString(AQI_ID, idAqi);
+        bundle.putInt(VIEW_TYPE, viewType);
 
         fragmentAqi.setArguments(bundle);
         return fragmentAqi;
@@ -78,6 +88,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
 //            getArguments().getString(WEATHER_ID);
 //            getArguments().getString(WEATHER_ID);
 //        }
+
         findViews(view);
         setupToolbar();
         return view;
@@ -103,7 +114,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     }
 
      private void setForecastView(ForecastEntity forecastData){
-        date.setText(forecastData.getDate());
+//        date.setText(forecastData.getDate());
         weather_description.setText(forecastData.getConditionText());
         high_temperature.setText(String.valueOf(forecastData.getMaxtemp_c()));
         low_temperature.setText(String.valueOf(forecastData.getMintemp_c()));
@@ -112,7 +123,18 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     private void setAqiView(AqiEntity aqiData) {
         humidity.setText(aqiData.getCityName());
         pressure.setText(String.valueOf(aqiData.getAqi()));
-        wind_measurement.setText(String.valueOf(aqiData.getPm25()));
+//        wind_measurement.setText(String.valueOf(aqiData.getPm25()));
+//        wind_measurement.setText(StringUtils.formatEpoch(context, aqiData.getDateEpoch()));
+        wind_measurement.setText(String.format(Locale.getDefault(), ""+"%s", (StringUtils.formatDate(aqiData.getDateEpoch(), "HH:mm"))));
+
+    }
+
+    private void setWeatherView(WeatherEntity weatherData) {
+//        date.setText(weatherData.getLast_updated());
+//        date.setText(StringUtils.formatDate(context, weatherData.getLast_updated()));
+        weather_description.setText(weatherData.getConditionText());
+        high_temperature.setText(String.valueOf(weatherData.getTemp_c()));
+        low_temperature.setText(String.valueOf(weatherData.getFeelslike_c()));
     }
 
     private void findViews(View view) {
@@ -125,11 +147,13 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
         pressure = view.findViewById(R.id.pressure);
         wind_measurement = view.findViewById(R.id.wind_measurement);
 
+        aqiDetails = view.findViewById(R.id.aqi_details);
+        aqiLabel = view.findViewById(R.id.aqi_label);
     }
 
     @Override
     public void showWeatherData(@NonNull WeatherEntity data) {
-//        setForecastView(data);
+        setWeatherView(data);
     }
 
     @Override
@@ -145,12 +169,19 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     @Override
     public void showState(@NonNull State state) {
 
-    }
+        switch (state) {
+            case Current:
 
-    public void loadData() {
+                break;
 
-        aqiPresenter.loadData();
+            case Forecast:
+                aqiDetails.setVisibility(View.GONE);
+                aqiLabel.setVisibility(View.GONE);
+                break;
 
+            default:
+                throw new IllegalArgumentException("Unknown state: " + state);
+        }
     }
 
     private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест

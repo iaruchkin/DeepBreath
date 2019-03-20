@@ -30,8 +30,8 @@
 
         <ImageView
             android:id="@+id/weather_icon"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

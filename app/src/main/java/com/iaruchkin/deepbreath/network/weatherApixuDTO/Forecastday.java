@@ -2,6 +2,7 @@ package com.iaruchkin.deepbreath.network.weatherApixuDTO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +12,7 @@ public class Forecastday implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("date")
-    private String date;
+    private Date date;
 	
 	@SerializedName("date_epoch")
     private int date_epoch;
@@ -25,11 +26,11 @@ public class Forecastday implements Serializable {
 	@SerializedName("hour")
     private ArrayList<Hour> hour = new ArrayList<Hour>();
 	
-    public String getDate()
+    public Date getDate()
     {
     	return date;
     }
-    public void setDate(String mDate)
+    public void setDate(Date mDate)
     {
     	this.date = mDate;
     }

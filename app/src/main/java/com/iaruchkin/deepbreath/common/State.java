@@ -5,5 +5,7 @@ public enum State {
     HasNoData,
     Loading,
     NetworkError,
-    ServerError
+    ServerError,
+    Forecast,
+    Current
 }

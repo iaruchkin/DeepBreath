@@ -82,7 +82,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private Button errorAction;
     @Nullable
     private SwipeRefreshLayout mRefresh;
-
 //    @Nullable
 //    private Toolbar toolbar;
 
@@ -159,7 +158,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                     listener.onActionClicked(SETTINGS_TAG);
                 }
                 return true;
-            case R.id.action_map:
+            case R.id.action_about:
                 if (listener != null) {
                     listener.onActionClicked(SETTINGS_TAG);
                 }
@@ -170,8 +169,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     }
 
     @Override
-    public void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity) {
-        listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId());//todo передать нужное значение
+    public void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, int viewType) {
+        listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId(), viewType);//todo передать нужное значение
     }
 
     private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест

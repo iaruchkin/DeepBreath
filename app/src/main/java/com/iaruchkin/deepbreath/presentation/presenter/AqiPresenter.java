@@ -38,12 +38,11 @@ public class AqiPresenter extends BasePresenter<AqiView> {
 
     private final String PRESENTER_WEATHER_TAG = "[detail - presenter]";
 
-    private final String DEFAULT_LOCATION = "here";
-    private final String FORECAST = "forecast";
     //todo set real data
     private String ID_FORECAST;
     private String ID_WEATHER;
     private String ID_AQI;
+    private int VIEW_TYPE;
 
 //    public void initData(String id){ //todo use in AQIFragment
 //        if (forecastEntity == null || !forecastEntity.getId().equals(id)) {
@@ -55,81 +54,96 @@ public class AqiPresenter extends BasePresenter<AqiView> {
 //        }
 //    }
 
-    public AqiPresenter(String idForecast, String idWeather, String idAqi) {
+    public AqiPresenter(String idForecast, String idWeather, String idAqi, int viewType) {
         ID_FORECAST = idForecast;
         ID_WEATHER = idWeather;
         ID_AQI = idAqi;
+        VIEW_TYPE = viewType;
     }
 
     @Override
     protected void onFirstViewAttach() {
-        loadData();
+        setView();
     }
 
-    public void loadData(){
-        loadForecastFromDb(FORECAST);
-        loadWeatherFromDb(FORECAST);
-        loadAqiFromDb(DEFAULT_LOCATION);
+    private void setView(){
+        if (VIEW_TYPE == 0){
+            loadCurrent();
+            getViewState().showState(State.Current);
+        } else {
+            loadForecast();
+            getViewState().showState(State.Forecast);
+        }
     }
 
-    private void loadWeatherFromDb(String option){
-        getViewState().showState(State.Loading);
+    private void loadCurrent(){
+        loadWeatherFromDb(ID_WEATHER);
+        loadAqiFromDb(ID_AQI);
+    }
+
+    private void loadForecast(){
+        loadForecastFromDb(ID_FORECAST);
+    }
+
+    private void loadWeatherFromDb(String id){
+//        getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
-                .getDataById(context, ID_WEATHER))//todo real data
+                .getDataById(context, id))//todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateWeatherData(data, option), this::handleError);
+                .subscribe(this::updateWeatherData, this::handleError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
-    private void loadAqiFromDb(String location){
-        getViewState().showState(State.Loading);
+    private void loadAqiFromDb(String id){
+//        getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
-                .getDataById(context, ID_AQI))              //todo real data
+                .getDataById(context, id))              //todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateAqiData(data, location), this::handleError);
+                .subscribe(this::updateAqiData, this::handleError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load AqiData from db");
     }
 
-    private void loadForecastFromDb(String option){
-        getViewState().showState(State.Loading);
+    private void loadForecastFromDb(String id){
+//        getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
-                .getDataById(context, ID_FORECAST))//todo real data
+                .getDataById(context, id))//todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateForecastData(data, option), this::handleError);
+                .subscribe(this::updateForecastData, this::handleError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        Log.e(PRESENTER_WEATHER_TAG,"Load Forecast from db");
     }
 
 
-    private void updateWeatherData(@Nullable WeatherEntity data, String option) {
+    private void updateWeatherData(@Nullable WeatherEntity data) {
         getViewState().showWeatherData(data);
-        getViewState().showState(State.HasData);
+//        getViewState().showState(State.HasData);
         Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.getId() + " / " + data.getLocation());
-        Log.i(PRESENTER_WEATHER_TAG, "updateForecastData executed on thread: " + Thread.currentThread().getName());
+        Log.i(PRESENTER_WEATHER_TAG, "updateWeatherData executed on thread: " + Thread.currentThread().getName());
     }
 
-    private void updateForecastData(@Nullable ForecastEntity data, String option) {
+    private void updateForecastData(@Nullable ForecastEntity data) {
         getViewState().showForecastData(data);
-        getViewState().showState(State.HasData);
-        Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.getId() + " / " + data.getLocationName());
+//        getViewState().showState(State.Forecast);
+//        getViewState().showState(State.HasData);
+        Log.i(PRESENTER_WEATHER_TAG, "loaded ForecastData from DB: " + data.getId() + " / " + data.getLocationName());
         Log.i(PRESENTER_WEATHER_TAG, "updateForecastData executed on thread: " + Thread.currentThread().getName());
 
     }
 
-    private void updateAqiData(@Nullable AqiEntity data, String location) {
+    private void updateAqiData(@Nullable AqiEntity data) {
         getViewState().showAqiData(data);
-        getViewState().showState(State.HasData);
+//        getViewState().showState(State.HasData);
         Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.getId() + " / " + data.getAqi());
         Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
     }
 
     private void handleError(Throwable th) {
-        getViewState().showState(State.NetworkError);
+//        getViewState().showState(State.NetworkError);
         Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
         Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
     }

@@ -1,11 +1,16 @@
 package com.iaruchkin.deepbreath.room;
 
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 @Entity(tableName = "forecast")
+@TypeConverters(DateConverter.class)
+
 public class ForecastEntity {
 
     public ForecastEntity() {
@@ -22,7 +27,7 @@ public class ForecastEntity {
 
     @NonNull
     @ColumnInfo(name ="date")
-    private String date;
+    private Date date;
 
     @NonNull
     @ColumnInfo(name ="date_epoch")
@@ -68,7 +73,7 @@ public class ForecastEntity {
     @ColumnInfo(name ="totalprecip_in")
     private double totalprecip_in;
 
-//    @NonNull                          //todo исправить баг
+    @NonNull
     @ColumnInfo(name ="conditionText")
     private String conditionText;
 
@@ -143,7 +148,7 @@ public class ForecastEntity {
     }
 
     @NonNull
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -265,7 +270,7 @@ public class ForecastEntity {
         this.parameter = mGeo;
     }
 
-    public void setDate(@NonNull String date) {
+    public void setDate(@NonNull Date date) {
         this.date = date;
     }
 
@@ -386,8 +391,8 @@ public class ForecastEntity {
 //                ", maxwind_kph=" + maxwind_kph +
 //                ", totalprecip_mm=" + totalprecip_mm +
 //                ", totalprecip_in=" + totalprecip_in +
-//                ", conditionText='" + conditionText + '\'' +
-//                ", conditionCode=" + conditionCode +
+                ", conditionText='" + conditionText + '\'' +
+                ", conditionCode=" + conditionCode +
                 ", locationName='" + locationName + '\'' +
 //                ", locationRegion='" + locationRegion + '\'' +
 //                ", locationCountry='" + locationCountry + '\'' +

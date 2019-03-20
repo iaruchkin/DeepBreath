@@ -38,7 +38,8 @@ public class Day implements Serializable{
 	@SerializedName("totalprecip_in")
     private double totalprecip_in;
 
-    private Condition mCondition = new Condition();
+    @SerializedName("condition")
+    private Condition mCondition;
 
     public double getMaxtempC()
     {

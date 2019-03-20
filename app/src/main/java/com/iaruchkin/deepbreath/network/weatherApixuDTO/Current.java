@@ -55,9 +55,9 @@ public class Current implements Serializable{
 	
 	@SerializedName("feelslike_f")
     private double feelslike_f;
-	
-	
-	Condition mCondition = new Condition();
+
+    @SerializedName("condition")
+    private Condition mCondition;
 
      public int getLastUpdateEpoch()
      {

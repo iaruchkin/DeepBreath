@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/extra_aqi_details"
+        android:id="@+id/extra_weather_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryLight"
@@ -27,8 +27,8 @@
             style="@style/DetailLabel"
             android:text="@string/humidity_label"
             app:layout_constraintBottom_toTopOf="@+id/pressure_label"
-            app:layout_constraintLeft_toLeftOf="@+id/extra_aqi_details"
-            app:layout_constraintTop_toTopOf="@+id/extra_aqi_details"
+            app:layout_constraintLeft_toLeftOf="@+id/extra_weather_details"
+            app:layout_constraintTop_toTopOf="@+id/extra_weather_details"
             app:layout_constraintVertical_bias="0.33"/>
 
         <TextView
@@ -42,9 +42,9 @@
             android:id="@+id/pressure_label"
             style="@style/DetailLabel"
             android:text="@string/pressure_label"
-            app:layout_constraintBottom_toBottomOf="@+id/extra_aqi_details"
-            app:layout_constraintLeft_toLeftOf="@+id/extra_aqi_details"
-            app:layout_constraintTop_toTopOf="@+id/extra_aqi_details"/>
+            app:layout_constraintBottom_toBottomOf="@+id/extra_weather_details"
+            app:layout_constraintLeft_toLeftOf="@+id/extra_weather_details"
+            app:layout_constraintTop_toTopOf="@+id/extra_weather_details"/>
 
         <!-- Pressure measurement -->
         <TextView
@@ -58,8 +58,8 @@
             android:id="@+id/wind_label"
             style="@style/DetailLabel"
             android:text="@string/wind_label"
-            app:layout_constraintBottom_toBottomOf="@+id/extra_aqi_details"
-            app:layout_constraintLeft_toLeftOf="@+id/extra_aqi_details"
+            app:layout_constraintBottom_toBottomOf="@+id/extra_weather_details"
+            app:layout_constraintLeft_toLeftOf="@+id/extra_weather_details"
             app:layout_constraintTop_toBottomOf="@+id/pressure_label"
             app:layout_constraintVertical_bias="0.65999997"/>
 
