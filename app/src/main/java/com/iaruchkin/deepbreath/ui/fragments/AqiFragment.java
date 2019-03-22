@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -48,6 +49,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     TextView weather_description;
     TextView high_temperature;
     TextView low_temperature;
+    ImageView imageView;
 
     TextView humidity;
     TextView pressure;
@@ -115,6 +117,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
 
      private void setForecastView(ForecastEntity forecastData){
 //        date.setText(forecastData.getDate());
+        imageView.setImageResource(R.drawable.art_clouds);
         weather_description.setText(forecastData.getConditionText());
         high_temperature.setText(String.valueOf(forecastData.getMaxtemp_c()));
         low_temperature.setText(String.valueOf(forecastData.getMintemp_c()));
@@ -125,13 +128,13 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
         pressure.setText(String.valueOf(aqiData.getAqi()));
 //        wind_measurement.setText(String.valueOf(aqiData.getPm25()));
 //        wind_measurement.setText(StringUtils.formatEpoch(context, aqiData.getDateEpoch()));
-        wind_measurement.setText(String.format(Locale.getDefault(), ""+"%s", (StringUtils.formatDate(aqiData.getDateEpoch(), "HH:mm"))));
-
+        wind_measurement.setText(String.format(Locale.getDefault(), ""+"%s", (StringUtils.formatDateAqi(aqiData.getDateEpoch(), "HH:mm"))));
     }
 
     private void setWeatherView(WeatherEntity weatherData) {
 //        date.setText(weatherData.getLast_updated());
 //        date.setText(StringUtils.formatDate(context, weatherData.getLast_updated()));
+        imageView.setImageResource(R.drawable.art_clouds);
         weather_description.setText(weatherData.getConditionText());
         high_temperature.setText(String.valueOf(weatherData.getTemp_c()));
         low_temperature.setText(String.valueOf(weatherData.getFeelslike_c()));
@@ -146,6 +149,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
         humidity = view.findViewById(R.id.humidity);
         pressure = view.findViewById(R.id.pressure);
         wind_measurement = view.findViewById(R.id.wind_measurement);
+        imageView = view.findViewById(R.id.weather_icon);
 
         aqiDetails = view.findViewById(R.id.aqi_details);
         aqiLabel = view.findViewById(R.id.aqi_label);

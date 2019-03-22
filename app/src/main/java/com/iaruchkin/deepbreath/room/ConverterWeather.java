@@ -96,14 +96,4 @@ public class ConverterWeather {
         Log.i(TAG, "AQI data saved to DB");
         weatherDao.insertAll(data);
     }
-
-    public static void editNewsToDb(Context context, WeatherEntity weatherEntity){
-        AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.weatherDao().edit(weatherEntity);
-    }
-
-    public static void deleteNewsFromDb(Context context, WeatherEntity weatherEntity){
-        AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.weatherDao().delete(weatherEntity);
-    }
 }

@@ -13,11 +13,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:background="@color/bad_transparent"
+        android:paddingStart="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:background="@color/bad_transparent">
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/horizontal_middle"
@@ -33,9 +33,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat"
             android:textColor="@color/secondary_text"
-            android:textSize="20sp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/aqi_card"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -44,27 +46,28 @@
         <!-- Icon indicating weather condition -->
         <ImageView
             android:id="@+id/weather_icon"
-            android:layout_width="84dp"
-            android:layout_height="84dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="36dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/art_clouds" />
 
         <!-- Text that describes weather condition -->
         <TextView
             android:id="@+id/weather_description"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:textColor="@color/secondary_text"
-            android:textSize="20sp"
-            app:layout_constraintHorizontal_bias="0.52"
+            android:textSize="14sp"
+            app:layout_constraintHorizontal_bias="0.25"
             app:layout_constraintLeft_toLeftOf="@+id/weather_icon"
             app:layout_constraintRight_toRightOf="@+id/weather_icon"
             app:layout_constraintTop_toBottomOf="@+id/weather_icon"
-            tools:text="Rainy" />
+            tools:text="Rainy light snow" />
 
         <TextView
             android:id="@+id/high_temperature"
@@ -91,46 +94,29 @@
             app:layout_constraintTop_toBottomOf="@+id/high_temperature"
             tools:text="10\u00b0" />
 
-        <TextView
-            android:id="@+id/aqi"
+        <include
+            android:id="@+id/aqi_card"
+            layout="@layout/aqi_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:textColor="@color/primary_text"
-            android:textSize="54sp"
-            app:layout_constraintBottom_toBottomOf="@+id/weather_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/weather_icon"
-            tools:text="50"
-            android:background="@drawable/radius_corner" />
-
-        <TextView
-            android:id="@+id/aqi_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="aqi"
-            android:textColor="@color/secondary_text"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/aqi"
-            app:layout_constraintEnd_toEndOf="@+id/aqi"
-            app:layout_constraintStart_toStartOf="@+id/aqi"
-            app:layout_constraintTop_toBottomOf="@+id/date"
-            tools:text="aqi" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/location_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
             android:textColor="@color/secondary_text"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/aqi"
-            app:layout_constraintStart_toStartOf="@+id/aqi"
-            app:layout_constraintTop_toBottomOf="@+id/weather_icon"
+            app:layout_constraintEnd_toEndOf="@+id/aqi_card"
+            app:layout_constraintStart_toStartOf="@+id/aqi_card"
+            app:layout_constraintTop_toBottomOf="@+id/aqi_card"
             tools:text="Moscow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

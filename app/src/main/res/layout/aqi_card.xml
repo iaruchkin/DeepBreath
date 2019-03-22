@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/aqi_card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="2dp">
+
+    <TextView
+        android:id="@+id/aqi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/primary_text"
+        android:textSize="54sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:background="@color/bad"
+        tools:text="5"
+        android:minWidth="70dp"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/aqi_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="aqi"
+        android:textColor="@color/secondary_text"
+        android:textSize="20sp"
+        tools:text="aqi" />
+
+</androidx.cardview.widget.CardView>

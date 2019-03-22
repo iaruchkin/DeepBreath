@@ -2,9 +2,6 @@ package com.iaruchkin.deepbreath.presentation.presenter;
 
 import android.content.Context;
 import android.location.Location;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.text.format.Formatter;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -14,20 +11,22 @@ import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.AqiApi;
 import com.iaruchkin.deepbreath.network.AqiResponse;
+import com.iaruchkin.deepbreath.network.ConditionParser;
 import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.network.WeatherResponse;
+import com.iaruchkin.deepbreath.network.weatherApixuDTO.OfflineCondition.WeatherCondition;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
+import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ConverterAqi;
+import com.iaruchkin.deepbreath.room.ConverterCondition;
 import com.iaruchkin.deepbreath.room.ConverterForecast;
 import com.iaruchkin.deepbreath.room.ConverterWeather;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.utils.LangUtils;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,7 +55,11 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     } //todo поправить вызов
 
     public void loadData(Boolean forceload, Location location){
-        if(location != null) {
+
+//        if(location != null) {
+        if(false){//todo баг - пока при загрузке нет данных о gps
+            // грузятся данные из базы для ip, при обновлении и получении координат база обновляется(?) для координат,
+            // а при старте снова показывается устарешнее
         aqiCurrentLocation = String.format(Locale.ENGLISH, "geo:%s;%s", location.getLatitude(), location.getLongitude());
         weatherCurrentLocation = String.format(Locale.ENGLISH, "%s,%s", location.getLatitude(), location.getLongitude());
         }
@@ -65,9 +68,12 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             loadForecastFromDb(weatherCurrentLocation);
             loadWeatherFromDb(weatherCurrentLocation);
             loadAqiFromDb(aqiCurrentLocation);
+            loadConditionFromDb();
         }else {
             loadForecastFromNet(weatherCurrentLocation);
             loadAqiFromNet(aqiCurrentLocation);
+//            loadConditionFromDb();
+//            condition();
         }
 //        loadDummy();
     }
@@ -128,7 +134,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             getViewState().showWeatherData(data);
             getViewState().showState(State.HasData);
             Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.get(0).getId() + " / " + data.get(0).getLocation());
-            Log.i(PRESENTER_WEATHER_TAG, "updateForecastData executed on thread: " + Thread.currentThread().getName());
+            Log.i(PRESENTER_WEATHER_TAG, "update WeatherData executed on thread: " + Thread.currentThread().getName());
         }
     }
 
@@ -139,8 +145,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }else {
             getViewState().showForecastData(data);
             getViewState().showState(State.HasData);
-            Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.get(0).getId() + " / " + data.get(0).getLocationName());
-            Log.i(PRESENTER_WEATHER_TAG, "updateForecastData executed on thread: " + Thread.currentThread().getName());
+            Log.i(PRESENTER_WEATHER_TAG, "loaded ForecastData from DB: " + data.get(0).getId() + " / " + data.get(0).getLocationName());
+            Log.i(PRESENTER_WEATHER_TAG, "update ForecastData executed on thread: " + Thread.currentThread().getName());
         }
     }
 
@@ -152,7 +158,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             getViewState().showAqiData(data);
             getViewState().showState(State.HasData);
             Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.get(0).getId() + " / " + data.get(0).getAqi());
-            Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
+            Log.i(PRESENTER_WEATHER_TAG, "update AqiData executed on thread: " + Thread.currentThread().getName());
         }
     }
 
@@ -256,6 +262,66 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             getViewState().showState(State.HasData);
         }
     }
+
+
+    //condition
+
+    private void condition() {
+        updateCondition(ConditionParser.getInstance().conditions());
+    }
+
+    private void loadConditionFromDb(){
+        getViewState().showState(State.Loading);
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterCondition
+                .getDataByLang(context, LangUtils.getLangCode()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateConditionData, this::handleError);
+        disposeOnDestroy(loadFromDb);
+        Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+    }
+
+    private void updateConditionData(@Nullable List<ConditionEntity> data) {
+        if (data.size()==0){
+            Log.w(PRESENTER_WEATHER_TAG, "init condition");
+            loadCondition();
+        }else {
+            getViewState().showConditionData(data);
+            getViewState().showState(State.HasData);
+            Log.i(PRESENTER_WEATHER_TAG, "loaded condition from DB: " + data.get(0).getId() + " / " + data.get(0).getDayText());
+            Log.i(PRESENTER_WEATHER_TAG, "update condition executed on thread: " + Thread.currentThread().getName());
+        }
+    }
+
+    private void loadCondition(){
+
+        final Disposable disposable = Single.fromCallable(ConditionParser.getInstance()::conditions)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateCondition, this::handleError);
+
+        disposeOnDestroy(disposable);
+    }
+
+        private void updateCondition(List<WeatherCondition> response) {
+
+            Disposable saveDataToDb = Single.fromCallable(() -> response)
+                    .subscribeOn(Schedulers.io())
+                    .map(conditions -> {
+                        ConverterCondition.saveAllDataToDb(context,
+                                ConverterCondition.dtoToDao(conditions, LangUtils.getLangCode()));
+                        return ConverterCondition.loadDataFromDb(context);
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            conditionEntities -> {
+                                getViewState().showConditionData(conditionEntities);
+                                Log.i(PRESENTER_WEATHER_TAG, "loaded condition from NET to DB: " + conditionEntities.get(0).getId() + " / " + conditionEntities.get(0).getDayText());
+                            });
+            disposeOnDestroy(saveDataToDb);
+            getViewState().showState(State.HasData);
+    }
+
 
     private void handleError(Throwable th) {
         getViewState().showState(State.NetworkError);

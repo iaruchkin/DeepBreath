@@ -21,6 +21,4 @@ public class Forecast implements Serializable{
     {
     	this.forecastday = mForecastday;
     }
-	
-	
 }

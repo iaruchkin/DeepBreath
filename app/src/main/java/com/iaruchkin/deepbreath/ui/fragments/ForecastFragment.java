@@ -34,6 +34,7 @@ import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
+import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter;
@@ -235,6 +236,13 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     public void showAqiData(@NonNull List<AqiEntity> data) {
         if (mAdapter != null) {
             mAdapter.setAqiItem(data.get(0));
+        }
+    }
+
+    @Override
+    public void showConditionData(@NonNull List<ConditionEntity> data) {
+        if (mAdapter != null) {
+            mAdapter.setConditionItems(data);
         }
     }
 

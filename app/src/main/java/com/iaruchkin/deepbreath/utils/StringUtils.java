@@ -3,6 +3,7 @@ package com.iaruchkin.deepbreath.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
 
@@ -17,6 +18,13 @@ public final class StringUtils {
 
     public static String formatDate(@NonNull long epoch, String DATE_FORMAT){
         Date date = new Date(epoch*1000);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+
+        return sdf.format(date);
+    }
+
+    public static String formatDateAqi(@NonNull long epoch, String DATE_FORMAT){
+        Date date = new Date((epoch*1000 - TimeZone.getDefault().getRawOffset()));
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
         return sdf.format(date);

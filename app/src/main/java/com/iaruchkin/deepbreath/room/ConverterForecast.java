@@ -108,14 +108,4 @@ public class ConverterForecast {
         Log.i(TAG, "Weather data saved to DB");
         forecastDao.insertAll(data);
     }
-
-    public static void editNewsToDb(Context context, ForecastEntity forecastEntity){
-        AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.forecastDao().edit(forecastEntity);
-    }
-
-    public static void deleteNewsFromDb(Context context, ForecastEntity forecastEntity){
-        AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.forecastDao().delete(forecastEntity);
-    }
 }

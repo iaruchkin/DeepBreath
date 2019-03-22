@@ -101,14 +101,4 @@ public class ConverterAqi {
         Log.i(TAG, "AQI data saved to DB");
         aqiDao.insertAll(data);
     }
-
-    public static void editNewsToDb(Context context, ForecastEntity forecastEntity){
-        AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.forecastDao().edit(forecastEntity);
-    }
-
-    public static void deleteNewsFromDb(Context context, ForecastEntity forecastEntity){
-        AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.forecastDao().delete(forecastEntity);
-    }
 }

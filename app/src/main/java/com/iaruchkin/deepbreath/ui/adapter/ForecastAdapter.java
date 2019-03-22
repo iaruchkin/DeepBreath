@@ -9,23 +9,20 @@ import android.widget.TextView;
 
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.network.weatherApixuDTO.OfflineCondition.WeatherCondition;
 import com.iaruchkin.deepbreath.room.AqiEntity;
+import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.utils.ConditionUtils;
 import com.iaruchkin.deepbreath.utils.StringUtils;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static java.security.AccessController.getContext;
-
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder>{
 
@@ -37,6 +34,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
     Context context = App.INSTANCE.getApplicationContext();
     private final List<ForecastEntity> forecastItemList = new ArrayList<>();
+    private final List<ConditionEntity> conditionItemList = new ArrayList<>();
+
     private WeatherEntity weatherItem = new WeatherEntity();
     private AqiEntity aqiItem = new AqiEntity();
     private final ForecastAdapterOnClickHandler mClickHandler;
@@ -74,14 +73,19 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, final int position) {
         ForecastEntity forecastItem = forecastItemList.get(position);
-
+        String dayText;
+        if(conditionItemList.size()!=0) {
+            dayText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
+        } else {
+            dayText = null;
+        }
         //todo set images
 //        int weatherImageId;
         int viewType = getItemViewType(position);
 
         switch (viewType) {
             case VIEW_TYPE_TODAY:
-                holder.bindFirst(forecastItem, weatherItem ,aqiItem);
+                holder.bindFirst(forecastItem, weatherItem ,aqiItem, dayText);
 //                weatherImageId = SunshineWeatherUtils
 //                        .getLargeArtResourceIdForWeatherCondition(weatherId);
                 break;
@@ -122,13 +126,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         private final TextView aqiTextView;
 
 
-        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, AqiEntity aqiItem) {
+        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, AqiEntity aqiItem, String dayText) {
 
-            imageView.setImageResource(R.drawable.art_clouds);
+            imageView.setImageResource(R.drawable.art_snow);
 
             aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
             locationTextView.setText(forecastItem.getLocationName());
-            weatherDescTextView.setText(weatherItem.getConditionText());
+
+            weatherDescTextView.setText(dayText);
 
             dateTextView.setText(String.format(Locale.getDefault(), "updated"+" %s", (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
             highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
@@ -137,7 +142,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         public void bindFuture(ForecastEntity forecastItem) {
 
-            imageView.setImageResource(R.drawable.art_clouds);
+            imageView.setImageResource(R.drawable.day_113);
 
 //            weatherDescTextView.setText(forecastItem.getParameter());
 
@@ -185,5 +190,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         public void setAqiItem(AqiEntity data){
             aqiItem = data;
             notifyDataSetChanged();
+        }
+
+        public void setConditionItems(List<ConditionEntity> conditionItems) {
+            if (conditionItemList.size() == 0){
+                conditionItemList.addAll(conditionItems);
+                notifyDataSetChanged();
+
+            }
         }
 }
