@@ -86,12 +86,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         switch (viewType) {
             case VIEW_TYPE_TODAY:
                 holder.bindFirst(forecastItem, weatherItem ,aqiItem, dayText);
-//                weatherImageId = SunshineWeatherUtils
+//                weatherImageId = WeatherUtils
 //                        .getLargeArtResourceIdForWeatherCondition(weatherId);
                 break;
             case VIEW_TYPE_FUTURE_DAY:
                 holder.bindFuture(forecastItem);
-//                weatherImageId = SunshineWeatherUtils
+//                weatherImageId = WeatherUtils
 //                        .getSmallArtResourceIdForWeatherCondition(weatherId);
                 break;
             default:
