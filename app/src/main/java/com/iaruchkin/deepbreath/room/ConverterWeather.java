@@ -85,9 +85,9 @@ public class ConverterWeather {
         return db.weatherDao().getAll();//todo think about request
     }
 
-    public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String city){
+    public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String parameter){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.weatherDao().deleteAll(city);
+        db.weatherDao().deleteAll(parameter);
         Log.i(TAG, "AQI DB: deleteAll");
 
         WeatherEntity data[] = list.toArray(new WeatherEntity[list.size()]);

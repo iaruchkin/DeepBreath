@@ -17,7 +17,7 @@ public class AqiEntity {
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "id")
-    private String mId;
+    private String id;
 
     @NonNull
     @ColumnInfo(name = "idx")
@@ -84,7 +84,7 @@ public class AqiEntity {
 
     @NonNull
     public String getId() {
-        return mId;
+        return id;
     }
 
     @NonNull
@@ -170,7 +170,7 @@ public class AqiEntity {
     }
 
     public void setId(@NonNull String id) {
-        mId = id;
+        this.id = id;
     }
 
     public void setIdx(@NonNull String idx) {
@@ -248,7 +248,7 @@ public class AqiEntity {
     @Override
     public String toString() {
         return "AqiEntity{" +
-                "mId='" + mId + '\'' +
+                "id='" + id + '\'' +
                 "parameter='" + parameter + '\'' +
                 ", mAqi= "+ mAqi + '\'' +
                 ", mCityName='" + mCityName + '\'' +

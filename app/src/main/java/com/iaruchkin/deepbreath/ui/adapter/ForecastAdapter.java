@@ -1,6 +1,7 @@
 package com.iaruchkin.deepbreath.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         ForecastEntity forecastItem = forecastItemList.get(position);
         String conditionText;
         int icon;
+        int aqi;
         if(conditionItemList.size()!=0) {
             icon = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
 
@@ -90,20 +92,22 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             conditionText = null;
             icon = 0;
         }
-        //todo set images
-        int weatherImageId;
+
+        if (aqiItem.getAqi() != null){
+            Log.e("ADAPTER", aqiItem.toString());
+            Log.e("ADAPTER", weatherItem.toString());
+            aqi = aqiItem.getAqi();
+        } //todo выяснить почему приходит null с weatherItem такого нет
+        else aqi = 0;
+
         int viewType = getItemViewType(position);
 
         switch (viewType) {
             case VIEW_TYPE_TODAY:
-//                weatherImageId = WeatherUtils
-//                        .getLargeArtResource(weatherItem.getConditionCode());
-                holder.bindFirst(forecastItem, weatherItem ,aqiItem, conditionText, icon);
+                holder.bindFirst(forecastItem, weatherItem  , aqi, conditionText, icon);
                 break;
             case VIEW_TYPE_FUTURE_DAY:
                 holder.bindFuture(forecastItem, icon);
-//                weatherImageId = WeatherUtils
-//                        .getSmallArtResourceIdForWeatherCondition(weatherId);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
@@ -141,11 +145,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
 
 
-        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, AqiEntity aqiItem, String dayText, int icon) {
+        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, int aqi, String dayText, int icon) {
 
             imageView.setImageResource(WeatherUtils.getLargeArtResource(icon));
 
-            aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
+            aqiTextView.setText(String.valueOf(aqi));
             locationTextView.setText(forecastItem.getLocationName());
 
             weatherDescTextView.setText(dayText);
@@ -154,9 +158,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
             lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getFeelslike_c()));
 
-            aqiDesc.setText(AqiUtils.getPollutionLevel(aqiItem.getAqi()));
-            aqiCard.setBackgroundResource(AqiUtils.getColor(aqiItem.getAqi()));
-            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqiItem.getAqi()));
+            aqiDesc.setText(AqiUtils.getPollutionLevel(aqi));
+            aqiCard.setBackgroundResource(AqiUtils.getColor(aqi));
+            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
 
         }
 
@@ -220,7 +224,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             if (conditionItemList.size() == 0){
                 conditionItemList.addAll(conditionItems);
                 notifyDataSetChanged();
-
             }
         }
 }

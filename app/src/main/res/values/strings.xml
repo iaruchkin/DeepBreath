@@ -138,9 +138,9 @@
 
     <string name="pollution_good">good</string>
     <string name="pollution_moderate">moderate</string>
-    <string name="pollution_pre_unhealthy">pre_unhealthy</string>
+    <string name="pollution_pre_unhealthy">pre unhealthy</string>
     <string name="pollution_unhealthy">unhealthy</string>
-    <string name="pollution_very_unhealthy">very_unhealthy</string>
+    <string name="pollution_very_unhealthy">very unhealthy</string>
     <string name="pollution_hazardous">hazardous</string>
     <string name="feels_like">feels like</string>
 

@@ -71,10 +71,11 @@ public class ConverterAqi {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         return db.aqiDao().getDataById(id);
     }
-    public static List<AqiEntity> getDataByParameter(Context context, String locaion) {
+
+    public static List<AqiEntity> getDataByParameter(Context context, String parameter) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.aqiDao().getByParameter(locaion);//todo think about request
+        return db.aqiDao().getByParameter(parameter);//todo think about request
     }
 
     public static List<AqiEntity> getDataByIdx(Context context, String idx) {
@@ -89,9 +90,9 @@ public class ConverterAqi {
         return db.aqiDao().getAll();//todo think about request
     }
 
-    public static void saveAllDataToDb(Context context, List<AqiEntity> list, String city){
+    public static void saveAllDataToDb(Context context, List<AqiEntity> list, String parameter){
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        db.aqiDao().deleteAll(city);
+        db.aqiDao().deleteAll(parameter);
         Log.i(TAG, "AQI DB: deleteAll");
 
         AqiEntity data[] = list.toArray(new AqiEntity[list.size()]);

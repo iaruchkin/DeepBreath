@@ -25,10 +25,10 @@ public interface AqiDao {
     AqiEntity getDataById(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(AqiEntity aqiEntity);
+    void insertAll(AqiEntity... aqiEntities);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(AqiEntity... aqiEntities);
+    void insert(AqiEntity aqiEntity);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void edit(AqiEntity aqiEntity);

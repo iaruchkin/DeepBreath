@@ -65,13 +65,13 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }
 
         if(!forceload) {
+            loadAqiFromDb(aqiCurrentLocation);
             loadForecastFromDb(weatherCurrentLocation);
             loadWeatherFromDb(weatherCurrentLocation);
-            loadAqiFromDb(aqiCurrentLocation);
             loadConditionFromDb();
         }else {
-            loadForecastFromNet(weatherCurrentLocation);
             loadAqiFromNet(aqiCurrentLocation);
+            loadForecastFromNet(weatherCurrentLocation);
 //            loadConditionFromDb();
 //            condition();
         }
@@ -163,7 +163,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     private void loadForecastFromNet(@NonNull String parameter){
-        Log.e(PRESENTER_WEATHER_TAG,"Load Weather from net presenter");
+        Log.e(PRESENTER_WEATHER_TAG,"Load Forecast from net presenter");
 
         getViewState().showState(State.Loading);
         final Disposable disposable = WeatherApi.getInstance()
