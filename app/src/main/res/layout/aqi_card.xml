@@ -7,32 +7,40 @@
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
     app:cardElevation="4dp"
-    app:cardCornerRadius="2dp">
+    app:cardCornerRadius="2dp"
+    app:cardBackgroundColor="@color/good">
 
     <TextView
         android:id="@+id/aqi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
+        android:gravity="center_horizontal"
+        android:minWidth="70dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
         android:textColor="@color/primary_text"
         android:textSize="54sp"
-        android:paddingTop="10dp"
-        android:paddingBottom="4dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:background="@color/bad"
-        tools:text="5"
-        android:minWidth="70dp"
-        android:gravity="center_horizontal"/>
+        tools:text="36" />
 
     <TextView
-        android:id="@+id/aqi_description"
+        android:id="@+id/aqi_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="aqi"
         android:textColor="@color/secondary_text"
-        android:textSize="20sp"
-        tools:text="aqi" />
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/aqi_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textColor="@color/secondary_text"
+        android:textSize="14sp"
+        tools:text="good" />
 
 </androidx.cardview.widget.CardView>

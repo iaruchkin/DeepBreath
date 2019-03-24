@@ -104,6 +104,10 @@ public class WeatherEntity {
     private int conditionCode;
 
     @NonNull
+    @ColumnInfo(name ="isDay")
+    private int isDay;
+
+    @NonNull
     public String getId() {
         return id;
     }
@@ -193,6 +197,10 @@ public class WeatherEntity {
         return conditionCode;
     }
 
+    public int getIsDay() {
+        return isDay;
+    }
+
     public void setId(@NonNull String id) {
         this.id = id;
     }
@@ -275,6 +283,10 @@ public class WeatherEntity {
 
     public void setConditionCode(int conditionCode) {
         this.conditionCode = conditionCode;
+    }
+
+    public void setIsDay(int isDay) {
+        this.isDay = isDay;
     }
 
     @Override

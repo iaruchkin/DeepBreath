@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/idCardView2"
+    android:id="@+id/today_card"
     android:layout_margin="0dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    app:cardCornerRadius="0dp">
+    app:cardCornerRadius="0dp"
+    app:cardBackgroundColor="@color/good_transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bad_transparent"
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingEnd="20dp"
@@ -48,9 +48,11 @@
             android:id="@+id/weather_icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="36dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/aqi_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/art_clouds" />
@@ -63,7 +65,6 @@
             android:gravity="center"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
-            app:layout_constraintHorizontal_bias="0.25"
             app:layout_constraintLeft_toLeftOf="@+id/weather_icon"
             app:layout_constraintRight_toRightOf="@+id/weather_icon"
             app:layout_constraintTop_toBottomOf="@+id/weather_icon"
@@ -73,11 +74,15 @@
             android:id="@+id/high_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/secondary_text"
             android:textSize="36sp"
             app:layout_constraintBottom_toBottomOf="@+id/weather_icon"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/aqi_card"
             app:layout_constraintTop_toTopOf="@+id/weather_icon"
             tools:text="19\u00b0" />
 
@@ -85,14 +90,27 @@
             android:id="@+id/low_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/secondary_text"
             android:textSize="20sp"
+            app:layout_constraintHorizontal_bias="0.583"
             app:layout_constraintLeft_toLeftOf="@+id/high_temperature"
             app:layout_constraintRight_toRightOf="@+id/high_temperature"
-            app:layout_constraintTop_toBottomOf="@+id/high_temperature"
+            app:layout_constraintTop_toBottomOf="@+id/feels_like"
             tools:text="10\u00b0" />
+
+        <TextView
+            android:id="@+id/feels_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/feels_like"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/high_temperature"
+            app:layout_constraintRight_toRightOf="@+id/high_temperature"
+            app:layout_constraintTop_toBottomOf="@+id/high_temperature" />
 
         <include
             android:id="@+id/aqi_card"

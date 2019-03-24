@@ -32,8 +32,9 @@ public class ConverterWeather {
             //time
             weatherEntity.setLast_updated(weatherDTO.getCurrent().getLastUpdated());
             weatherEntity.setLast_updated_epoch(weatherDTO.getCurrent().getLastUpdateEpoch());
+            weatherEntity.setIsDay(weatherDTO.getCurrent().getIsDay());
 
-            //weather metric
+        //weather metric
             weatherEntity.setTemp_c(weatherDTO.getCurrent().getTempC());
             weatherEntity.setFeelslike_c(weatherDTO.getCurrent().getFeelslikeC());
             weatherEntity.setPressure_mb(weatherDTO.getCurrent().getPressureMb());

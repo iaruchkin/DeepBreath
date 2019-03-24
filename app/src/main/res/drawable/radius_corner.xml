@@ -4,7 +4,7 @@
         <!--android:width="2dp"-->
         <!--android:color="@color/detail_accent_label" />-->
 
-    <solid android:color="@color/bad" />
+    <solid android:color="@color/good" />
 
     <padding
         android:left="5dp"

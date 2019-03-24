@@ -14,8 +14,10 @@ import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.utils.AqiUtils;
 import com.iaruchkin.deepbreath.utils.ConditionUtils;
 import com.iaruchkin.deepbreath.utils.StringUtils;
+import com.iaruchkin.deepbreath.utils.WeatherUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,24 +75,33 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, final int position) {
         ForecastEntity forecastItem = forecastItemList.get(position);
-        String dayText;
+        String conditionText;
+        int icon;
         if(conditionItemList.size()!=0) {
-            dayText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
+            icon = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
+
+            if (weatherItem.getIsDay() == 1) {
+                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
+            } else {
+                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getNightText();
+            }
+
         } else {
-            dayText = null;
+            conditionText = null;
+            icon = 0;
         }
         //todo set images
-//        int weatherImageId;
+        int weatherImageId;
         int viewType = getItemViewType(position);
 
         switch (viewType) {
             case VIEW_TYPE_TODAY:
-                holder.bindFirst(forecastItem, weatherItem ,aqiItem, dayText);
 //                weatherImageId = WeatherUtils
-//                        .getLargeArtResourceIdForWeatherCondition(weatherId);
+//                        .getLargeArtResource(weatherItem.getConditionCode());
+                holder.bindFirst(forecastItem, weatherItem ,aqiItem, conditionText, icon);
                 break;
             case VIEW_TYPE_FUTURE_DAY:
-                holder.bindFuture(forecastItem);
+                holder.bindFuture(forecastItem, icon);
 //                weatherImageId = WeatherUtils
 //                        .getSmallArtResourceIdForWeatherCondition(weatherId);
                 break;
@@ -124,11 +135,15 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         private final TextView lowTemperatureTextView;
 
         private final TextView aqiTextView;
+        private final TextView aqiDesc;
+        private final View aqiCard;
+        private final View weatherCard;
 
 
-        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, AqiEntity aqiItem, String dayText) {
 
-            imageView.setImageResource(R.drawable.art_snow);
+        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, AqiEntity aqiItem, String dayText, int icon) {
+
+            imageView.setImageResource(WeatherUtils.getLargeArtResource(icon));
 
             aqiTextView.setText(String.valueOf(aqiItem.getAqi()));
             locationTextView.setText(forecastItem.getLocationName());
@@ -138,11 +153,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             dateTextView.setText(String.format(Locale.getDefault(), "updated"+" %s", (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
             highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
             lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getFeelslike_c()));
+
+            aqiDesc.setText(AqiUtils.getPollutionLevel(aqiItem.getAqi()));
+            aqiCard.setBackgroundResource(AqiUtils.getColor(aqiItem.getAqi()));
+            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqiItem.getAqi()));
+
         }
 
-        public void bindFuture(ForecastEntity forecastItem) {
+        public void bindFuture(ForecastEntity forecastItem, int icon) {
 
-            imageView.setImageResource(R.drawable.day_113);
+            imageView.setImageResource(WeatherUtils.getSmallArtResource(icon, forecastItem.getIsDay()));
 
 //            weatherDescTextView.setText(forecastItem.getParameter());
 
@@ -164,6 +184,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             lowTemperatureTextView = view.findViewById(R.id.low_temperature);
 
             aqiTextView = view.findViewById(R.id.aqi);
+            aqiDesc = view.findViewById(R.id.aqi_description);
+            aqiCard = view.findViewById(R.id.aqi_card);
+            weatherCard = view.findViewById(R.id.today_card);
+
             view.setOnClickListener(this);
         }
 

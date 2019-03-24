@@ -34,6 +34,10 @@ public class ForecastEntity {
     private int date_epoch;
 
     @NonNull
+    @ColumnInfo(name ="isDay")
+    private int isDay;
+
+    @NonNull
     @ColumnInfo(name ="maxtemp_c")
     private double maxtemp_c;
 
@@ -156,6 +160,10 @@ public class ForecastEntity {
         return date_epoch;
     }
 
+    public int getIsDay() {
+        return isDay;
+    }
+
     public double getMaxtemp_c() {
         return maxtemp_c;
     }
@@ -276,6 +284,10 @@ public class ForecastEntity {
 
     public void setDate_epoch(int date_epoch) {
         this.date_epoch = date_epoch;
+    }
+
+    public void setIsDay(int isDay) {
+        this.isDay = isDay;
     }
 
     public void setMaxtemp_c(double maxtemp_c) {

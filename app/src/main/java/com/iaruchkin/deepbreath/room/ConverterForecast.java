@@ -41,8 +41,10 @@ public class ConverterForecast {
                 //date
                 forecastEntity.setDate(dto.getDate());
                 forecastEntity.setDate_epoch(dto.getDateEpoch());
+                forecastEntity.setIsDay(weatherDTO.getCurrent().getIsDay());
 
-                //weather metric
+
+            //weather metric
                 forecastEntity.setMaxtemp_c(dto.getDay().getMaxtempC());
                 forecastEntity.setAvgtemp_c(dto.getDay().getAvgtempC());
                 forecastEntity.setMintemp_c(dto.getDay().getMintempC());

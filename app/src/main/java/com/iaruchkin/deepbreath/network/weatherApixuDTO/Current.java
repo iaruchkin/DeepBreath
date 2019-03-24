@@ -31,6 +31,9 @@ public class Current implements Serializable{
 	
 	@SerializedName("temp_f")
     private double temp_f;
+
+    @SerializedName("is_day")
+    private Integer isDay;
 	
 	@SerializedName("wind_mph")
     private double wind_mph;
@@ -94,7 +97,15 @@ public class Current implements Serializable{
      {
      	this.temp_f = mTempF;
      }
-     
+
+     public Integer getIsDay() {
+        return isDay;
+    }
+
+     public void setIsDay(Integer isDay) {
+        this.isDay = isDay;
+    }
+
      public Condition getCondition()
      {
      	return mCondition;

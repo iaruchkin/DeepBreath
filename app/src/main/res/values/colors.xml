@@ -25,7 +25,16 @@
     <color name="bg_screen4">#20d2bb</color>
 
     <!--aqi number color-->
-    <color name="bad">#FFEA98</color>
-    <color name="bad_transparent">#8DFFEA98</color>
-
+    <color name="good">#B9F6CA</color>
+    <color name="good_transparent">#8DB9F6CA</color>
+    <color name="moderate">#FFEA98</color>
+    <color name="moderate_transparent">#8DFFEA98</color>
+    <color name="pre_unhealthy">#FFD180</color>
+    <color name="pre_unhealthy_transparent">#8DFFD180</color>
+    <color name="unhealthy">#FF8A80</color>
+    <color name="unhealthy_transparent">#8DFF8A80</color>
+    <color name="very_unhealthy">#FF80AB</color>
+    <color name="very_unhealthy_transparent">#8DFF80AB</color>
+    <color name="hazardous">#B388FF</color>
+    <color name="hazardous_transparent">#8DB388FF</color>
 </resources>
