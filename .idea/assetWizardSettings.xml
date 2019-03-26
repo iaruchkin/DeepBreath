@@ -24,6 +24,18 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="clipartAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="url" value="jar:file:/snap/android-studio/73/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/places/ic_spa_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -35,7 +47,32 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="paddingPercent" value="5" />
                                                 <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="text">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="textAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="fontFamily" value="DejaVu Sans Light" />
+                                                <entry key="text" value="Deep Breath" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -46,9 +83,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_factory_2.xml" />
-                                      <entry key="theme" value="HOLO_DARK" />
-                                      <entry key="themeColor" value="ffffff" />
+                                      <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_factory.xml" />
+                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="themeColor" value="696969" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -59,17 +96,6 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
-                                      <entry key="backgroundImage">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="scalingPercent" value="50" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
                                       <entry key="foregroundClipArt">
                                         <value>
                                           <PersistentState>
@@ -100,6 +126,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="scalingPercent" value="82" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -134,8 +161,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundColor" value="1d8aa6" />
-                                      <entry key="backgroundImage" value="$PROJECT_DIR$/app/src/main/res/drawable-anydpi-v24/ic_factory_background.xml" />
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/app/src/main/res/drawable-anydpi-v24/ic_factory_3.xml" />
+                                      <entry key="backgroundImage" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml" />
+                                      <entry key="foregroundImage" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_factory.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -184,6 +211,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="paddingPercent" value="20" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -195,7 +223,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_factory_2.xml" />
+                                      <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_factory.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -219,14 +247,26 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
+                        <option name="children">
+                          <map>
+                            <entry key="clipartAsset">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="url" value="jar:file:/snap/android-studio/73/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_keyboard_arrow_down_black_24dp.xml" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="353" />
-                            <entry key="outputName" value="ic_factory_2" />
+                            <entry key="outputName" value="ic_keyboard_arrow_down_black_24dp" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$USER_HOME$/Загрузки/factory (2).svg" />
-                            <entry key="width" value="353" />
+                            <entry key="sourceFile" value="$USER_HOME$/Загрузки/factory (4).svg" />
                           </map>
                         </option>
                       </PersistentState>

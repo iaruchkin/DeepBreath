@@ -20,6 +20,7 @@ import com.iaruchkin.deepbreath.common.AppConstants;
 import com.iaruchkin.deepbreath.common.GpsUtils;
 import com.iaruchkin.deepbreath.ui.fragments.AqiFragment;
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
+import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 
@@ -47,11 +48,13 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     private FragmentManager mFragmentManager;
     private ForecastFragment mForecastFragment;
     private AqiFragment mDetailsFragment;
+    private GroupieFragment mGroupieFragment;
     private SettingsFragment mSettingsFragment;
     //    private IntroFragment mIntroFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Forecast);
         super.onCreate(savedInstanceState);
 
         init();
@@ -83,11 +86,20 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 .commit();
     }
 
+//    private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
+//        mGroupieFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.frame_list, mDetailsFragment)
+//                .addToBackStack(null)
+//                .commit();
+//    }
+
     private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
-        mDetailsFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
+        mGroupieFragment = new GroupieFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_list, mDetailsFragment)
+                .replace(R.id.frame_list, mGroupieFragment)
                 .addToBackStack(null)
                 .commit();
     }

@@ -178,10 +178,11 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         setHasOptionsMenu(true);
 //        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
 
-        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_logo));
+        actionBar.setTitle("deep breath");
+        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
     }
 
     private void setHomeButton(View view) {
