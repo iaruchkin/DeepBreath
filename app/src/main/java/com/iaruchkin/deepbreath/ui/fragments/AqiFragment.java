@@ -42,7 +42,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     public static final String TAG = AqiFragment.class.getSimpleName();
     private MessageFragmentListener listener;
 
-    @InjectPresenter
+//    @InjectPresenter
     AqiPresenter aqiPresenter;
 
     TextView date;
@@ -60,7 +60,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
 
 //    Toolbar toolbar;
 
-    @ProvidePresenter
+//    @ProvidePresenter
     AqiPresenter providePresenter() {
             String idForecast = getArguments() != null ? getArguments().getString(FORECAST_ID, "") : null;
             String idWeather = getArguments() != null ? getArguments().getString(WEATHER_ID, "") : null;
@@ -144,8 +144,8 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
 //        toolbar = view.findViewById(R.id.toolbar);
         date = view.findViewById(R.id.date);
         weather_description = view.findViewById(R.id.weather_description);
-        high_temperature = view.findViewById(R.id.high_temperature);
-        low_temperature = view.findViewById(R.id.low_temperature);
+        high_temperature = view.findViewById(R.id.high_value);
+        low_temperature = view.findViewById(R.id.low_value);
         humidity = view.findViewById(R.id.humidity);
         pressure = view.findViewById(R.id.pressure);
         wind_measurement = view.findViewById(R.id.wind_measurement);
@@ -168,6 +168,11 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     @Override
     public void showAqiData(@NonNull AqiEntity data) {
         setAqiView(data);
+    }
+
+    @Override
+    public void showData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity) {
+
     }
 
     @Override

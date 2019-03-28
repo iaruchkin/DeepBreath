@@ -59,7 +59,7 @@
         <!-- Text that describes weather condition -->
         <TextView
             android:id="@+id/weather_description"
-            android:layout_width="110dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/secondary_text"
@@ -70,7 +70,7 @@
             tools:text="Rainy light snow" />
 
         <TextView
-            android:id="@+id/high_temperature"
+            android:id="@+id/high_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
@@ -84,7 +84,7 @@
             tools:text="19\u00b0" />
 
         <TextView
-            android:id="@+id/low_temperature"
+            android:id="@+id/low_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
@@ -105,9 +105,9 @@
             android:text="@string/feels_like"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="@+id/high_temperature"
-            app:layout_constraintRight_toRightOf="@+id/high_temperature"
-            app:layout_constraintTop_toBottomOf="@+id/high_temperature" />
+            app:layout_constraintLeft_toLeftOf="@+id/high_value"
+            app:layout_constraintRight_toRightOf="@+id/high_value"
+            app:layout_constraintTop_toBottomOf="@+id/high_value" />
 
         <include
             android:id="@+id/aqi_card"

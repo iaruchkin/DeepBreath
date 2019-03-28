@@ -18,6 +18,7 @@ public interface AqiView extends MvpView {
     void showWeatherData(@NonNull WeatherEntity data);
     void showForecastData(@NonNull ForecastEntity data);
     void showAqiData(@NonNull AqiEntity data);
+    void showData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity);
     void showState(@NonNull State state);
 
 }

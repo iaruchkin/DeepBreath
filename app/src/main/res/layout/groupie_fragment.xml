@@ -20,6 +20,12 @@
 
     <!--</com.google.android.material.appbar.AppBarLayout>-->
 
+    <!--<include-->
+        <!--android:id="@+id/primary_info"-->
+        <!--layout="@layout/aqi_detail"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/>-->
+    <!---->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.network.weatherApixuDTO.OfflineCondition.WeatherCondition;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
@@ -184,8 +183,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             weatherDescTextView = view.findViewById(R.id.weather_description);
             locationTextView = view.findViewById(R.id.location_desc);
             dateTextView = view.findViewById(R.id.date);
-            highTemperatureTextView = view.findViewById(R.id.high_temperature);
-            lowTemperatureTextView = view.findViewById(R.id.low_temperature);
+            highTemperatureTextView = view.findViewById(R.id.high_value);
+            lowTemperatureTextView = view.findViewById(R.id.low_value);
 
             aqiTextView = view.findViewById(R.id.aqi);
             aqiDesc = view.findViewById(R.id.aqi_description);

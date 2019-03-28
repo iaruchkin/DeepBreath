@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 androidExtensions {
     experimental = true
@@ -84,6 +83,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$versionRoom"
     implementation "androidx.room:room-rxjava2:$versionRoom"
     annotationProcessor "androidx.room:room-compiler:$versionRoom"
+    kapt "android.arch.persistence.room:compiler:$versionRoom"
 
     //circle indicator
     implementation "me.relex:circleindicator:2.1.0"
@@ -95,6 +95,7 @@ dependencies {
     //moxy
     implementation "com.arello-mobile:moxy:$versionMoxy"
     annotationProcessor "com.arello-mobile:moxy-compiler:$versionMoxy"
+    kapt "com.arello-mobile:moxy-compiler:$versionMoxy"
 
     //location
     implementation "com.google.android.gms:play-services-location:16.0.0"

@@ -23,7 +23,7 @@
 
             <include
                 android:id="@+id/primary_info"
-                layout="@layout/aqi_detail"
+                layout="@layout/weather_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
 //    private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
-//        mGroupieFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
+//        mAqiFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
 //        getSupportFragmentManager()
 //                .beginTransaction()
 //                .replace(R.id.frame_list, mDetailsFragment)
@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //    }
 
     private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
-        mGroupieFragment = new GroupieFragment();
+        mGroupieFragment = GroupieFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
+//        mGroupieFragment = new GroupieFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mGroupieFragment)

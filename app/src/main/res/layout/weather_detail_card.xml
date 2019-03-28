@@ -3,10 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/aqi_detail_card"
+    android:id="@+id/weather_detail_card"
     android:layout_margin="1dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:padding="20dp"
     app:cardCornerRadius="0dp">
 
@@ -51,7 +54,7 @@
         <!--tools:text="Rainy"/>-->
 
         <TextView
-            android:id="@+id/high_temperature"
+            android:id="@+id/high_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -65,15 +68,15 @@
             tools:text="19 м/с" />
 
         <TextView
-            android:id="@+id/low_temperature"
+            android:id="@+id/low_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="sans-serif-light"
             android:gravity="end"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/high_temperature"
-            app:layout_constraintStart_toEndOf="@+id/high_temperature"
+            app:layout_constraintBottom_toBottomOf="@+id/high_value"
+            app:layout_constraintStart_toEndOf="@+id/high_value"
             tools:text="до 10 м/с" />
 
         <!--<androidx.constraintlayout.widget.Guideline-->

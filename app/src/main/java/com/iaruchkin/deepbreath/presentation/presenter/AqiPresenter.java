@@ -120,14 +120,18 @@ public class AqiPresenter extends BasePresenter<AqiView> {
 
 
     private void updateWeatherData(@Nullable WeatherEntity data) {
-        getViewState().showWeatherData(data);
+//        getViewState().showWeatherData(data);
+        weatherEntity = data;
+        updateData();
 //        getViewState().showState(State.HasData);
         Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.getId() + " / " + data.getLocation());
         Log.i(PRESENTER_WEATHER_TAG, "updateWeatherData executed on thread: " + Thread.currentThread().getName());
     }
 
     private void updateForecastData(@Nullable ForecastEntity data) {
-        getViewState().showForecastData(data);
+//        getViewState().showForecastData(data);
+        forecastEntity = data;
+        updateData();
 //        getViewState().showState(State.Forecast);
 //        getViewState().showState(State.HasData);
         Log.i(PRESENTER_WEATHER_TAG, "loaded ForecastData from DB: " + data.getId() + " / " + data.getLocationName());
@@ -136,7 +140,9 @@ public class AqiPresenter extends BasePresenter<AqiView> {
     }
 
     private void updateAqiData(@Nullable AqiEntity data) {
-        getViewState().showAqiData(data);
+//        getViewState().showAqiData(data);
+        aqiEntity = data;
+        updateData();
 //        getViewState().showState(State.HasData);
         Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.getId() + " / " + data.getAqi());
         Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
@@ -147,4 +153,14 @@ public class AqiPresenter extends BasePresenter<AqiView> {
         Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
         Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
     }
+
+    private void updateData(){
+        if (weatherEntity != null && aqiEntity != null){
+                    getViewState().showData(weatherEntity, aqiEntity);
+        }else if (forecastEntity != null) {
+            getViewState().showForecastData(forecastEntity);
+        }
+
+    }
+
 }

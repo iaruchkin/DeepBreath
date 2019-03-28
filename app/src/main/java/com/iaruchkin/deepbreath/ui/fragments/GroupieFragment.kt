@@ -1,11 +1,10 @@
 package com.iaruchkin.deepbreath.ui.fragments
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -19,6 +18,7 @@ import com.iaruchkin.deepbreath.room.AqiEntity
 import com.iaruchkin.deepbreath.room.ForecastEntity
 import com.iaruchkin.deepbreath.room.WeatherEntity
 import com.iaruchkin.deepbreath.ui.adapter.ExpandableHeaderItem
+import com.iaruchkin.deepbreath.ui.adapter.ExpandableHeaderItemAqi
 import com.iaruchkin.deepbreath.ui.adapter.FancyItem
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -34,20 +34,28 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
     //    private val LAYOUT = R.layout.layout_detail
     private val LAYOUT = R.layout.groupie_fragment
 
-
-    internal var context1 = App.INSTANCE.getApplicationContext()
-
-    internal val FORECAST_ID = "extra:forecast"
-    internal val WEATHER_ID = "extra:weather"
-    internal val AQI_ID = "extra:aqi"
-    internal val VIEW_TYPE = "extra:viewType"
+    internal var context = App.INSTANCE.getApplicationContext()
 
     private val compositeDisposable = CompositeDisposable()
     val TAG = GroupieFragment::class.java.getSimpleName()
     private var listener: MessageFragmentListener? = null
 
+    internal lateinit var weather: WeatherEntity
+    internal lateinit var forecast: ForecastEntity
+    internal lateinit var aqi: AqiEntity
+
+
+//    val boringFancyItems = generateFancyItems(7, 10)
+//    val excitingFancyItems = generateFancyItems(6, 10)
+//    val groupAdapter = GroupAdapter<ViewHolder>().apply {
+//        spanCount = 2
+//    }
+
+//    var boringFancyItems : MutableList<FancyItem>? = null
+
+    @JvmField
     @InjectPresenter
-    internal var aqiPresenter: AqiPresenter? = null
+    var aqiPresenter: AqiPresenter? = null
 
 //    internal var date: TextView
 //    internal var weather_description: TextView
@@ -73,136 +81,89 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
 
     private val excitingSection = Section()
 
-    fun newInstance(idForecast: String, idWeather: String, idAqi: String, viewType: Int): GroupieFragment {
-        val fragmentAqi = GroupieFragment()
-        val bundle = Bundle()
-        bundle.putString(FORECAST_ID, idForecast)
-        bundle.putString(WEATHER_ID, idWeather)
-        bundle.putString(AQI_ID, idAqi)
-        bundle.putInt(VIEW_TYPE, viewType)
+    companion object {
 
-        fragmentAqi.setArguments(bundle)
-        return fragmentAqi
+        internal val FORECAST_ID = "extra:forecast"
+        internal val WEATHER_ID = "extra:weather"
+        internal val AQI_ID = "extra:aqi"
+        internal val VIEW_TYPE = "extra:viewType"
+
+        @JvmStatic
+        fun newInstance(idForecast: String, idWeather: String, idAqi: String, viewType: Int): GroupieFragment {
+            val fragmentAqi = GroupieFragment()
+            val bundle = Bundle()
+            bundle.putString(FORECAST_ID, idForecast)
+            bundle.putString(WEATHER_ID, idWeather)
+            bundle.putString(AQI_ID, idAqi)
+            bundle.putInt(VIEW_TYPE, viewType)
+
+            fragmentAqi.setArguments(bundle)
+            return fragmentAqi
+        }
     }
 
     override fun  onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val boringFancyItems = generateFancyItems(6)
-        val excitingFancyItems = generateFancyItems(12)
-
-        val groupAdapter = GroupAdapter<ViewHolder>().apply {
-            spanCount = 3
-        }
-
-        recycler_view.apply {
-            layoutManager = GridLayoutManager(context1, groupAdapter.spanCount).apply {
-                spanSizeLookup = groupAdapter.spanSizeLookup
-            }
-            adapter = groupAdapter
-        }
-
-        ExpandableGroup(ExpandableHeaderItem("Boring Group"), true).apply {
-            add(Section(boringFancyItems))
-            groupAdapter.add(this)
-        }
-
-        ExpandableGroup(ExpandableHeaderItem("Exciting Group"), false).apply {
-            excitingSection.addAll(excitingFancyItems)
-            add(excitingSection)
-            groupAdapter.add(this)
-        }
-
-        fab.setOnClickListener {
-            excitingFancyItems.shuffle()
-            excitingSection.update(excitingFancyItems)
-        }
     }
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        retainInstance = true
+//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(LAYOUT, container, false)
 
-//        findViews(view)
-//        setupToolbar()
-
-//        setSupportActionBar(toolbar)
-
-//        val boringFancyItems = generateFancyItems(6)
-//        val excitingFancyItems = generateFancyItems(12)
-//
-//        val groupAdapter = GroupAdapter<ViewHolder>().apply {
-//            spanCount = 3
-//        }
-//
-//        recycler_view.apply {
-//            layoutManager = GridLayoutManager(context1, groupAdapter.spanCount).apply {
-//                spanSizeLookup = groupAdapter.spanSizeLookup
-//            }
-//            adapter = groupAdapter
-//        }
-
-//        ExpandableGroup(ExpandableHeaderItem("Boring Group"), true).apply {
-//            add(Section(boringFancyItems))
-//            groupAdapter.add(this)
-//        }
-//
-//        ExpandableGroup(ExpandableHeaderItem("Exciting Group"), false).apply {
-//            excitingSection.addAll(excitingFancyItems)
-//            add(excitingSection)
-//            groupAdapter.add(this)
-//        }
-
-//        fab.setOnClickListener {
-//            excitingFancyItems.shuffle()
-//            excitingSection.update(excitingFancyItems)
-//        }
-
         return view
     }
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-//        setSupportActionBar(toolbar)
-//
-//        val boringFancyItems = generateFancyItems(6)
-//        val excitingFancyItems = generateFancyItems(12)
-//
-//        val groupAdapter = GroupAdapter<ViewHolder>().apply {
-//            spanCount = 3
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // RecyclerView node initialized here
+//        list_recycler_view.apply {
+//            // set a LinearLayoutManager to handle Android
+//            // RecyclerView behavior
+//            layoutManager = LinearLayoutManager(activity)
+//            // set the custom adapter to the RecyclerView
+//            adapter = ListAdapter(mNicolasCageMovies)
 //        }
-//
 //        recycler_view.apply {
-//            layoutManager = GridLayoutManager(this@GroupieFragment, groupAdapter.spanCount).apply {
+//            layoutManager = GridLayoutManager(context, groupAdapter.spanCount).apply {
 //                spanSizeLookup = groupAdapter.spanSizeLookup
 //            }
 //            adapter = groupAdapter
 //        }
-//
-//        ExpandableGroup(ExpandableHeaderItem("Boring Group"), true).apply {
-//            add(Section(boringFancyItems))
-//            groupAdapter.add(this)
-//        }
-//
-//        ExpandableGroup(ExpandableHeaderItem("Exciting Group"), false).apply {
-//            excitingSection.addAll(excitingFancyItems)
-//            add(excitingSection)
-//            groupAdapter.add(this)
-//        }
-//
-//        fab.setOnClickListener {
-//            excitingFancyItems.shuffle()
-//            excitingSection.update(excitingFancyItems)
-//        }
-//    }
 
-    private fun generateFancyItems(count: Int): MutableList<FancyItem>{
+//        setupFirst()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is MessageFragmentListener) {
+            listener = context
+        }
+    }
+
+    override fun onDetach() {
+        listener = null
+        super.onDetach()
+    }
+
+    private fun generateFancyItems(count: Int, data: Int): MutableList<FancyItem>{
         val rnd = Random()
+
         return MutableList(count){
             val color = Color.argb(255, rnd.nextInt(256),
                     rnd.nextInt(256), rnd.nextInt(256))
-            FancyItem(color, rnd.nextInt(100))
+            FancyItem(color, data)
         }
     }
 
@@ -222,23 +183,87 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
         }
     }
 
+    private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity){
 
+        val boringFancyItems = generateFancyItems(7, weatherEntity.conditionCode)
+        val excitingFancyItems = generateFancyItems(6, aqiEntity.aqi)
+
+        val groupAdapter = GroupAdapter<ViewHolder>().apply {
+            spanCount = 2
+        }
+
+        recycler_view.apply {
+            layoutManager = GridLayoutManager(context, groupAdapter.spanCount).apply {
+                spanSizeLookup = groupAdapter.spanSizeLookup
+            }
+            adapter = groupAdapter
+        }
+
+        ExpandableGroup(ExpandableHeaderItem("Weather weatherEntity"), true).apply {
+            add(Section(boringFancyItems))
+            groupAdapter.add(this)
+        }
+
+        ExpandableGroup(ExpandableHeaderItemAqi("Air quality weatherEntity"), false).apply {
+            if(true){
+                excitingSection.addAll(excitingFancyItems)
+                add(excitingSection)
+                groupAdapter.add(this)} //todo  здесь будет флаг в зависимости от того какой элемент был нажат на предыдущем экране
+        }
+
+//        fab.setOnClickListener {
+//            excitingFancyItems.shuffle()
+//            excitingSection.update(excitingFancyItems)
+//        }
+
+    }
+
+    private fun setupForecast(data : ForecastEntity){
+
+        val boringFancyItems = generateFancyItems(7, data.conditionCode)
+
+        val groupAdapter = GroupAdapter<ViewHolder>().apply {
+            spanCount = 2
+        }
+
+        recycler_view.apply {
+            layoutManager = GridLayoutManager(context, groupAdapter.spanCount).apply {
+                spanSizeLookup = groupAdapter.spanSizeLookup
+            }
+            adapter = groupAdapter
+        }
+
+        ExpandableGroup(ExpandableHeaderItem("Forecast data"), true).apply {
+            add(Section(boringFancyItems))
+            groupAdapter.add(this)
+        }
+    }
 
 
     override fun showWeatherData(data: WeatherEntity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showForecastData(data: ForecastEntity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showAqiData(data: AqiEntity) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun showState(state: State) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when (state) {
+            State.Current -> {
+            }
+
+            State.Forecast -> {
+            }
+//todo теперь это не нужно. вроде
+            else -> throw IllegalArgumentException("Unknown state: $state")
+        }    }
+
+    override fun showData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity) {
+        setupFirst(weatherEntity, aqiEntity)
+    }
+
+    override fun showForecastData(data: ForecastEntity) {
+        setupForecast(data)
     }
 
 }
