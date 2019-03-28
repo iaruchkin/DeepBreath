@@ -1,7 +1,6 @@
 
 package com.iaruchkin.deepbreath.utils;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.R;
@@ -218,41 +217,74 @@ public final class WeatherUtils {
             }
         }
 
-    public static int getLargeArtResource(int weatherId) {
+    public static int getLargeArtResource(int weatherId, int isDay) {
 
-        if (weatherId == 200 || weatherId == 230) {
-            return R.drawable.art_storm;
-        } else if (weatherId >= 386 && weatherId <= 395) { //386 389 392 395
-            return R.drawable.art_storm;
-        } else if (weatherId == 176) {
-            return R.drawable.art_light_rain;
-        } else if (weatherId >= 263 && weatherId <= 302) {
-            return R.drawable.art_light_rain;//263 266 281 284 293 296 299 302
-        } else if (weatherId >= 305 && weatherId <= 320) {
-            return R.drawable.art_rain; //305 308 311 314 317 320
-        } else if (weatherId >= 353 && weatherId <= 365) {
-            return R.drawable.art_rain; //353 356 359 362 365
-        } else if (weatherId >= 179 && weatherId <= 185) {
-            return R.drawable.art_snow;//182, 185
-        } else if (weatherId == 227) {
-            return R.drawable.art_snow;//227
-        } else if (weatherId >= 323 && weatherId <= 338) {
-            return R.drawable.art_snow;//323 326 329 332 335 338
-        } else if (weatherId == 143) {
-            return R.drawable.art_fog;
-        } else if (weatherId == 248 || weatherId == 260) {
-            return R.drawable.art_fog;//248 260
-        } else if (weatherId == 113) {
-            return R.drawable.art_clear;
-        } else if (weatherId == 116) {
-            return R.drawable.art_light_clouds;
-        } else if (weatherId >= 176 && weatherId <= 182) {//176 179 182
-            return R.drawable.art_light_clouds;
-        } else if (weatherId == 119 || weatherId == 122 || weatherId == 350) {
-            return R.drawable.art_clouds;
+        if(isDay == 1) {
+            if (weatherId == 200 || weatherId == 230) {
+                return R.drawable.ic_storm;
+            } else if (weatherId >= 386 && weatherId <= 395) { //386 389 392 395
+                return R.drawable.ic_storm;
+            } else if (weatherId == 176) {
+                return R.drawable.ic_morning_rain;
+            } else if (weatherId >= 263 && weatherId <= 302) {
+                return R.drawable.ic_umbrellas;//263 266 281 284 293 296 299 302
+            } else if (weatherId >= 305 && weatherId <= 320) {
+                return R.drawable.ic_raining; //305 308 311 314 317 320
+            } else if (weatherId >= 353 && weatherId <= 365) {
+                return R.drawable.ic_raining; //353 356 359 362 365
+            } else if (weatherId >= 179 && weatherId <= 185) {
+                return R.drawable.ic_morning_snow;//182, 185
+            } else if (weatherId == 227) {
+                return R.drawable.ic_snowing_cloud_day;//227
+            } else if (weatherId >= 323 && weatherId <= 338) {
+                return R.drawable.ic_snowing_cloud_day;//323 326 329 332 335 338
+            } else if (weatherId == 143) {
+                return R.drawable.ic_tide;
+            } else if (weatherId == 248 || weatherId == 260) {
+                return R.drawable.ic_tide_1;//248 260
+            } else if (weatherId == 113) {
+                return R.drawable.ic_sunny;
+            } else if (weatherId == 116) {
+                return R.drawable.ic_clouds_sun_1;
+            } else if (weatherId >= 176 && weatherId <= 182) {//176 179 182
+                return R.drawable.ic_clouds_and_sun;
+            } else if (weatherId == 119 || weatherId == 122 || weatherId == 350) {
+                return R.drawable.ic_clouds;
+            }
+        }else {
+            if (weatherId == 200 || weatherId == 230) {
+                return R.drawable.ic_storm_night_2;
+            } else if (weatherId >= 386 && weatherId <= 395) { //386 389 392 395
+                return R.drawable.ic_storm_night;
+            } else if (weatherId == 176) {
+                return R.drawable.ic_night_rain;
+            } else if (weatherId >= 263 && weatherId <= 302) {
+                return R.drawable.ic_umbrellas;//263 266 281 284 293 296 299 302
+            } else if (weatherId >= 305 && weatherId <= 320) {
+                return R.drawable.ic_raining; //305 308 311 314 317 320
+            } else if (weatherId >= 353 && weatherId <= 365) {
+                return R.drawable.ic_raining; //353 356 359 362 365
+            } else if (weatherId >= 179 && weatherId <= 185) {
+                return R.drawable.ic_snow_cloud_night;//182, 185
+            } else if (weatherId == 227) {
+                return R.drawable.ic_snow_cloud_night;//227
+            } else if (weatherId >= 323 && weatherId <= 338) {
+                return R.drawable.ic_night_snow;//323 326 329 332 335 338
+            } else if (weatherId == 143) {
+                return R.drawable.ic_tide;
+            } else if (weatherId == 248 || weatherId == 260) {
+                return R.drawable.ic_tide_1;//248 260
+            } else if (weatherId == 113) {
+                return R.drawable.ic_moon_1;
+            } else if (weatherId == 116) {
+                return R.drawable.ic_cloudy_night;
+            } else if (weatherId >= 176 && weatherId <= 182) {//176 179 182
+                return R.drawable.ic_cloudy_night;
+            } else if (weatherId == 119 || weatherId == 122 || weatherId == 350) {
+                return R.drawable.ic_clouds;
+            }
         }
-
         Log.e(LOG_TAG, "Unknown Weather: " + weatherId);
-        return R.drawable.art_clouds;
+        return R.drawable.ic_clouds;
     }
 }

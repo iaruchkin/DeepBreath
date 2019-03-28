@@ -146,7 +146,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, int aqi, String dayText, int icon) {
 
-            imageView.setImageResource(WeatherUtils.getLargeArtResource(icon));
+            imageView.setImageResource(WeatherUtils.getLargeArtResource(icon, forecastItem.getIsDay()));
 
             aqiTextView.setText(String.valueOf(aqi));
             locationTextView.setText(forecastItem.getLocationName());

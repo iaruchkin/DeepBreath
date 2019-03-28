@@ -53,7 +53,7 @@
             app:layout_constraintEnd_toStartOf="@+id/aqi_pre_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/art_clouds" />
+            tools:src="@drawable/ic_snow_cloud_night" />
 
         <!-- Text that describes weather condition -->
         <TextView
