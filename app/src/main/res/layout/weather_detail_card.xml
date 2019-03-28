@@ -3,14 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/weather_detail_card"
-    android:layout_margin="1dp"
+    android:id="@+id/weather_expandable_header_root"
+    android:layout_margin="2dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:padding="20dp"
+    app:cardElevation="1dp"
     app:cardCornerRadius="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +20,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryLight2"
+        android:background="@color/colorPrimaryLight"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:padding="8dp">
 
@@ -34,13 +35,13 @@
             tools:src="@drawable/art_clouds" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/value_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            app:layout_constraintLeft_toRightOf="@+id/weather_icon"
-            app:layout_constraintTop_toTopOf="@+id/weather_icon"
+            app:layout_constraintStart_toEndOf="@+id/weather_icon"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Wind" />
 
         <!--<TextView-->
@@ -57,14 +58,13 @@
             android:id="@+id/high_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/primary_text"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/weather_icon"
-            app:layout_constraintTop_toBottomOf="@+id/date"
+            app:layout_constraintStart_toStartOf="@+id/value_header"
+            app:layout_constraintTop_toBottomOf="@+id/value_header"
             tools:text="19 м/с" />
 
         <TextView
@@ -85,22 +85,6 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:orientation="horizontal"-->
         <!--app:layout_constraintGuide_percent="0.5" />-->
-
-        <TextView
-            android:id="@+id/wind_direction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="sans-serif-light"
-            android:gravity="end"
-            android:textColor="@color/primary_text"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/date"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="NSW" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

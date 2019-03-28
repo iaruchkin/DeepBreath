@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:id="@+id/aqi_expandable_header_root">
+
+    <TextView
+        android:id="@+id/aqi_location_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="14dp"
+        android:text="Station name:"
+        android:textColor="@color/secondary_text"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aqi_exp_card" />
+
+    <TextView
+        android:id="@+id/aqi_level_full"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textColor="@color/secondary_text"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/aqi_location_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/aqi_exp_card"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution." />
+
+    <TextView
+        android:id="@+id/aqi_location_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/secondary_text"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/item_expandable_header_title"
+        app:layout_constraintStart_toStartOf="@+id/aqi_location_header"
+        app:layout_constraintTop_toBottomOf="@+id/aqi_location_header"
+        tools:text="Moskva, Zhulebino 24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="0dp"/>
+
+    <TextView
+        android:id="@+id/aqi_date_exp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/secondary_text"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/aqi_location_desc"
+        app:layout_constraintStart_toStartOf="@+id/aqi_location_desc"
+        app:layout_constraintTop_toBottomOf="@+id/aqi_location_desc"
+        tools:text="Saturday, September 24" />
+
+    <include
+        android:id="@+id/aqi_exp_card"
+        layout="@layout/aqi_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_expandable_header_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        tools:text="more"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_expandable_header_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_expandable_header_icon"
+        app:layout_constraintTop_toTopOf="@+id/item_expandable_header_icon" />
+
+    <ImageView
+        android:id="@+id/item_expandable_header_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/item_expandable_header_title"
+        android:layout_alignBottom="@+id/item_expandable_header_title"
+        android:layout_toEndOf="@id/item_expandable_header_title"
+        android:tint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,18 +7,19 @@
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
     android:focusable="true"
-    app:cardUseCompatPadding="true"
+    app:cardUseCompatPadding="false"
     app:cardElevation="4dp"
     app:cardCornerRadius="2dp"
-    app:cardBackgroundColor="@color/good">
+    tools:cardBackgroundColor="@color/good">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="6dp">
 
-        <TextView
-            android:id="@+id/aqi"
-            android:layout_width="match_parent"
+    <TextView
+            android:id="@+id/aqi_value"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:minWidth="70dp"
@@ -42,9 +43,9 @@
             android:text="aqi"
             android:textColor="@color/secondary_text"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/aqi"
-            app:layout_constraintStart_toStartOf="@+id/aqi"
-            app:layout_constraintTop_toTopOf="@+id/aqi" />
+            app:layout_constraintEnd_toEndOf="@+id/aqi_value"
+            app:layout_constraintStart_toStartOf="@+id/aqi_value"
+            app:layout_constraintTop_toTopOf="@+id/aqi_value" />
 
         <TextView
             android:id="@+id/aqi_description"
@@ -55,9 +56,9 @@
             android:maxLines="2"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/aqi"
-            app:layout_constraintEnd_toEndOf="@+id/aqi"
-            app:layout_constraintStart_toStartOf="@+id/aqi"
+            app:layout_constraintBottom_toBottomOf="@+id/aqi_value"
+            app:layout_constraintEnd_toEndOf="@+id/aqi_value"
+            app:layout_constraintStart_toStartOf="@+id/aqi_value"
             tools:text="pre unhealthy" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

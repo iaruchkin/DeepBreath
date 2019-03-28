@@ -143,5 +143,13 @@
     <string name="pollution_very_unhealthy">very unhealthy</string>
     <string name="pollution_hazardous">hazardous</string>
     <string name="feels_like">feels like</string>
+    <string name="good_full">Air quality is considered satisfactory, and air pollution poses little or no risk</string>
+    <string name="moderate_full">Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.</string>
+    <string name="pre_unhealthy_full">Members of sensitive groups may experience health effects. The general public is not likely to be affected.</string>
+    <string name="unhealthy_full">Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects</string>
+    <string name="very_unhealty_full">Health warnings of emergency conditions. The entire population is more likely to be affected.</string>
+    <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
+    <string name="expandaple_less">less</string>
+    <string name="expandaple_more">more</string>
 
 </resources>

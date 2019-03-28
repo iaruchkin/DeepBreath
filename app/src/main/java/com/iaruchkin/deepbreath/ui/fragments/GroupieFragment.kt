@@ -1,7 +1,6 @@
 package com.iaruchkin.deepbreath.ui.fragments
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 
@@ -17,9 +16,10 @@ import com.iaruchkin.deepbreath.presentation.view.AqiView
 import com.iaruchkin.deepbreath.room.AqiEntity
 import com.iaruchkin.deepbreath.room.ForecastEntity
 import com.iaruchkin.deepbreath.room.WeatherEntity
-import com.iaruchkin.deepbreath.ui.adapter.ExpandableHeaderItem
+import com.iaruchkin.deepbreath.ui.adapter.AqiItem
+import com.iaruchkin.deepbreath.ui.adapter.ExpandableHeaderItemWeather
 import com.iaruchkin.deepbreath.ui.adapter.ExpandableHeaderItemAqi
-import com.iaruchkin.deepbreath.ui.adapter.FancyItem
+import com.iaruchkin.deepbreath.ui.adapter.WeatherItem
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -27,7 +27,6 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
 
 import kotlinx.android.synthetic.main.groupie_fragment.*
-import java.util.*
 
 class GroupieFragment : MvpAppCompatFragment(), AqiView{
 
@@ -45,13 +44,13 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
     internal lateinit var aqi: AqiEntity
 
 
-//    val boringFancyItems = generateFancyItems(7, 10)
-//    val excitingFancyItems = generateFancyItems(6, 10)
+//    val boringFancyItems = generateWeather(7, 10)
+//    val excitingFancyItems = generateWeather(6, 10)
 //    val groupAdapter = GroupAdapter<ViewHolder>().apply {
 //        spanCount = 2
 //    }
 
-//    var boringFancyItems : MutableList<FancyItem>? = null
+//    var boringFancyItems : MutableList<WeatherItem>? = null
 
     @JvmField
     @InjectPresenter
@@ -157,14 +156,52 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
         super.onDetach()
     }
 
-    private fun generateFancyItems(count: Int, data: Int): MutableList<FancyItem>{
-        val rnd = Random()
+    private fun generateWeather(data: WeatherEntity): MutableList<WeatherItem>{
 
-        return MutableList(count){
-            val color = Color.argb(255, rnd.nextInt(256),
-                    rnd.nextInt(256), rnd.nextInt(256))
-            FancyItem(color, data)
-        }
+        val wind = data.wind_kph
+        val pressureMb = data.pressure_mb
+        val precipMm = data.precip_mm
+        val humidity = data.humidity
+        val windDir = data.wind_dir
+
+        val dataList: MutableList<WeatherItem> = mutableListOf()
+
+        dataList.add(WeatherItem(wind.toString(), "wind"))
+        dataList.add(WeatherItem(windDir, "wind direction"))
+        dataList.add(WeatherItem(pressureMb.toString(), "pressure"))
+        dataList.add(WeatherItem(precipMm.toString(), "precipitation"))
+        dataList.add(WeatherItem(humidity.toString(), "humidity"))
+
+        return dataList
+    }
+
+    private fun generateAqi(data: AqiEntity): MutableList<AqiItem>{
+
+        val pm25 = data.pm25.toDouble()
+        val pm10 = data.pm10.toDouble()
+        val co = data.co
+        val no2 = data.no2
+        val so2 = data.so2
+        val w = data.w
+        val wg = data.wg
+        val h = data.h
+        val p = data.p
+        val o3 = data.o3
+
+        val dataList: MutableList<AqiItem> = mutableListOf()
+
+        dataList.add(AqiItem(pm25, "pm25"))
+        dataList.add(AqiItem(pm10, "pm10"))
+        if (co!=null) dataList.add(AqiItem(co, "co"))
+        if (no2!=null) dataList.add(AqiItem(no2, "no2"))
+        if (so2!=null) dataList.add(AqiItem(so2, "so2"))
+        if (w!=null) dataList.add(AqiItem(w, "w"))
+        if (wg!=null) dataList.add(AqiItem(wg, "wg"))
+        if (p!=null) dataList.add(AqiItem(p, "p"))
+        if (h!=null) dataList.add(AqiItem(h, "h"))
+        if (o3!=null) dataList.add(AqiItem(o3, "o3"))
+
+        return dataList
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -172,6 +209,29 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
 //        menuInflater.inflate(R.menu.menu_main, menu)
 //        return true
 //    }
+
+    private fun generateForecast(data: ForecastEntity): MutableList<WeatherItem>{
+
+        val wind = data.maxwind_kph
+        val precipMm = data.totalprecip_mm
+        val moonrise = data.moonrise
+        val moonset = data.moonset
+        val sunset = data.sunset
+        val sunrise = data.sunrise
+
+
+        val dataList: MutableList<WeatherItem> = mutableListOf()
+
+        dataList.add(WeatherItem(wind.toString(), "wind"))
+        dataList.add(WeatherItem(precipMm.toString(), "precipitation"))
+        dataList.add(WeatherItem(moonrise, "moonrise"))
+        dataList.add(WeatherItem(moonset, "moonset"))
+        dataList.add(WeatherItem(sunset, "sunset"))
+        dataList.add(WeatherItem(sunrise, "sunrise"))
+
+
+        return dataList
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
@@ -185,8 +245,8 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
 
     private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity){
 
-        val boringFancyItems = generateFancyItems(7, weatherEntity.conditionCode)
-        val excitingFancyItems = generateFancyItems(6, aqiEntity.aqi)
+        val boringFancyItems = generateWeather(weatherEntity)
+        val excitingFancyItems = generateAqi(aqiEntity)
 
         val groupAdapter = GroupAdapter<ViewHolder>().apply {
             spanCount = 2
@@ -199,16 +259,16 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
             adapter = groupAdapter
         }
 
-        ExpandableGroup(ExpandableHeaderItem("Weather weatherEntity"), true).apply {
-            add(Section(boringFancyItems))
+        ExpandableGroup(ExpandableHeaderItemAqi(aqiEntity), false).apply {
+//            excitingSection.addAll(excitingFancyItems)
+//            add(excitingSection)
+            add(Section(excitingFancyItems))
             groupAdapter.add(this)
         }
 
-        ExpandableGroup(ExpandableHeaderItemAqi("Air quality weatherEntity"), false).apply {
-            if(true){
-                excitingSection.addAll(excitingFancyItems)
-                add(excitingSection)
-                groupAdapter.add(this)} //todo  здесь будет флаг в зависимости от того какой элемент был нажат на предыдущем экране
+        ExpandableGroup(ExpandableHeaderItemWeather("Weather weatherEntity"), false).apply {
+            add(Section(boringFancyItems))
+            groupAdapter.add(this)
         }
 
 //        fab.setOnClickListener {
@@ -220,7 +280,7 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
 
     private fun setupForecast(data : ForecastEntity){
 
-        val boringFancyItems = generateFancyItems(7, data.conditionCode)
+        val boringFancyItems = generateForecast(data)
 
         val groupAdapter = GroupAdapter<ViewHolder>().apply {
             spanCount = 2
@@ -233,7 +293,7 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
             adapter = groupAdapter
         }
 
-        ExpandableGroup(ExpandableHeaderItem("Forecast data"), true).apply {
+        ExpandableGroup(ExpandableHeaderItemWeather("Forecast data"), true).apply {
             add(Section(boringFancyItems))
             groupAdapter.add(this)
         }

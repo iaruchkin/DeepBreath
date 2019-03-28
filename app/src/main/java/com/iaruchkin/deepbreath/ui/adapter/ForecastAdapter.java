@@ -186,9 +186,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             highTemperatureTextView = view.findViewById(R.id.high_value);
             lowTemperatureTextView = view.findViewById(R.id.low_value);
 
-            aqiTextView = view.findViewById(R.id.aqi);
+            aqiTextView = view.findViewById(R.id.aqi_value);
             aqiDesc = view.findViewById(R.id.aqi_description);
-            aqiCard = view.findViewById(R.id.aqi_card);
+            aqiCard = view.findViewById(R.id.aqi_pre_card);
             weatherCard = view.findViewById(R.id.today_card);
 
             view.setOnClickListener(this);
