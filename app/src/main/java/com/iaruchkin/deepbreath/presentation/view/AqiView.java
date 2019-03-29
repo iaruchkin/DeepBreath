@@ -5,6 +5,7 @@ import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.room.AqiEntity;
+import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 
@@ -16,9 +17,9 @@ import androidx.annotation.NonNull;
 public interface AqiView extends MvpView {
 
     void showWeatherData(@NonNull WeatherEntity data);
-    void showForecastData(@NonNull ForecastEntity data);
+    void showForecastData(@NonNull ForecastEntity data, @NonNull ConditionEntity condition);
     void showAqiData(@NonNull AqiEntity data);
-    void showData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity);
+    void showData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity, @NonNull ConditionEntity condition);
     void showState(@NonNull State state);
 
 }

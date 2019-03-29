@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //                .commit();
 //    }
 
-    private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
-        mGroupieFragment = GroupieFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
+    private void startDetails(String idForecast, String idWeather, String idAqi, String idCondition, int viewType) {
+        mGroupieFragment = GroupieFragment.newInstance(idForecast, idWeather, idAqi, idCondition, viewType);//todo set correct string messages
 //        mGroupieFragment = new GroupieFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
     @Override
-    public void onListClicked(String idF, String idW, String idA, int viewType) {
-        startDetails(idF, idW, idA, viewType);
+    public void onListClicked(String idF, String idW, String idA, String idC, int viewType) {
+        startDetails(idF, idW, idA, idC, viewType);
     }
 
     @Override

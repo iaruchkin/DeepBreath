@@ -23,7 +23,7 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
         viewHolder.aqi_description.setText(AqiUtils.getPollutionLevel(aqiEntity.aqi))
         viewHolder.aqi_level_full.setText(AqiUtils.getPollutionLevelFull(aqiEntity.aqi))
         viewHolder.aqi_exp_card.setBackgroundResource(AqiUtils.getColor(aqiEntity.aqi))
-        viewHolder.aqi_date_exp.setText(StringUtils.formatDate(aqiEntity.dateEpoch * 1000L, "HH:mm, EEEE"))
+        viewHolder.aqi_date_exp.setText(StringUtils.formatDateAqi(aqiEntity.dateEpoch * 1L, "HH:mm, EEEE"))
 
         viewHolder.item_expandable_header_icon.setImageResource(getRotatedIconResId())
         viewHolder.item_expandable_header_title.setText(getRotatedTextResId())

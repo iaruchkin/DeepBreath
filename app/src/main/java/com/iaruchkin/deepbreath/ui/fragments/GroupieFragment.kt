@@ -11,15 +11,10 @@ import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment
 import com.iaruchkin.deepbreath.common.State
-import com.iaruchkin.deepbreath.presentation.presenter.AqiPresenter
+import com.iaruchkin.deepbreath.presentation.presenter.DetailPresenter
 import com.iaruchkin.deepbreath.presentation.view.AqiView
-import com.iaruchkin.deepbreath.room.AqiEntity
-import com.iaruchkin.deepbreath.room.ForecastEntity
-import com.iaruchkin.deepbreath.room.WeatherEntity
-import com.iaruchkin.deepbreath.ui.adapter.AqiItem
-import com.iaruchkin.deepbreath.ui.adapter.ExpandableHeaderItemWeather
-import com.iaruchkin.deepbreath.ui.adapter.ExpandableHeaderItemAqi
-import com.iaruchkin.deepbreath.ui.adapter.WeatherItem
+import com.iaruchkin.deepbreath.room.*
+import com.iaruchkin.deepbreath.ui.adapter.*
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -54,7 +49,7 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
 
     @JvmField
     @InjectPresenter
-    var aqiPresenter: AqiPresenter? = null
+    var detailPresenter: DetailPresenter? = null
 
 //    internal var date: TextView
 //    internal var weather_description: TextView
@@ -70,12 +65,13 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
 //    internal var aqiLabel: TextView
 
     @ProvidePresenter
-    internal fun providePresenter(): AqiPresenter {
+    internal fun providePresenter(): DetailPresenter {
         val idForecast = if (arguments != null) arguments!!.getString(FORECAST_ID, "") else null
         val idWeather = if (arguments != null) arguments!!.getString(WEATHER_ID, "") else null
         val idAqi = if (arguments != null) arguments!!.getString(AQI_ID, "") else null
+        val idCondition = if (arguments != null) arguments!!.getString(CONDITION_ID, "") else null
         val viewType = if (arguments != null) arguments!!.getInt(VIEW_TYPE, 1) else 0
-        return AqiPresenter(idForecast, idWeather, idAqi, viewType)
+        return DetailPresenter(idForecast, idWeather, idAqi, idCondition, viewType)
     }
 
     private val excitingSection = Section()
@@ -85,15 +81,17 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
         internal val FORECAST_ID = "extra:forecast"
         internal val WEATHER_ID = "extra:weather"
         internal val AQI_ID = "extra:aqi"
+        internal val CONDITION_ID = "extra:condition"
         internal val VIEW_TYPE = "extra:viewType"
 
         @JvmStatic
-        fun newInstance(idForecast: String, idWeather: String, idAqi: String, viewType: Int): GroupieFragment {
+        fun newInstance(idForecast: String, idWeather: String, idAqi: String, idCondition: String, viewType: Int): GroupieFragment {
             val fragmentAqi = GroupieFragment()
             val bundle = Bundle()
             bundle.putString(FORECAST_ID, idForecast)
             bundle.putString(WEATHER_ID, idWeather)
             bundle.putString(AQI_ID, idAqi)
+            bundle.putString(CONDITION_ID, idCondition)
             bundle.putInt(VIEW_TYPE, viewType)
 
             fragmentAqi.setArguments(bundle)
@@ -243,7 +241,7 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
         }
     }
 
-    private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity){
+    private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity){
 
         val boringFancyItems = generateWeather(weatherEntity)
         val excitingFancyItems = generateAqi(aqiEntity)
@@ -266,7 +264,12 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
             groupAdapter.add(this)
         }
 
-        ExpandableGroup(ExpandableHeaderItemWeather("Weather weatherEntity"), false).apply {
+
+        ExpandableGroup(StripeItem(), false).apply {
+            groupAdapter.add(this) //todo это костыль, надо поправить
+        }
+
+        ExpandableGroup(ExpandableHeaderItemWeather(weatherEntity, condition), false).apply {
             add(Section(boringFancyItems))
             groupAdapter.add(this)
         }
@@ -278,9 +281,9 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
 
     }
 
-    private fun setupForecast(data : ForecastEntity){
+    private fun setupForecast(forecastEntity : ForecastEntity, condition: ConditionEntity){
 
-        val boringFancyItems = generateForecast(data)
+        val boringFancyItems = generateForecast(forecastEntity)
 
         val groupAdapter = GroupAdapter<ViewHolder>().apply {
             spanCount = 2
@@ -293,7 +296,7 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
             adapter = groupAdapter
         }
 
-        ExpandableGroup(ExpandableHeaderItemWeather("Forecast data"), true).apply {
+        ExpandableGroup(ExpandableHeaderItemForecast(forecastEntity, condition), true).apply {
             add(Section(boringFancyItems))
             groupAdapter.add(this)
         }
@@ -318,12 +321,12 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
             else -> throw IllegalArgumentException("Unknown state: $state")
         }    }
 
-    override fun showData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity) {
-        setupFirst(weatherEntity, aqiEntity)
+    override fun showData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity) {
+        setupFirst(weatherEntity, aqiEntity, condition)
     }
 
-    override fun showForecastData(data: ForecastEntity) {
-        setupForecast(data)
+    override fun showForecastData(forecastEntity: ForecastEntity, condition: ConditionEntity) {
+        setupForecast(forecastEntity, condition)
     }
 
 }

@@ -43,7 +43,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
     private final ForecastAdapterOnClickHandler mClickHandler;
 
     public interface ForecastAdapterOnClickHandler {
-        void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, int viewType);
+        void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, ConditionEntity conditionEntity, int viewType);
     }
 
     public ForecastAdapter(ForecastAdapterOnClickHandler clickHandler) {
@@ -75,9 +75,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, final int position) {
         ForecastEntity forecastItem = forecastItemList.get(position);
+        int aqi;
+
         String conditionText;
         int icon;
-        int aqi;
         if(conditionItemList.size()!=0) {
             icon = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
 
@@ -89,7 +90,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         } else {
             conditionText = null;
-            icon = 0;
+            icon = 0;//todo это причина по которой отображаются сначала только солнышки
         }
 
         if (aqiItem.getAqi() != null){
@@ -146,7 +147,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, int aqi, String dayText, int icon) {
 
-            imageView.setImageResource(WeatherUtils.getLargeArtResource(icon, forecastItem.getIsDay()));
+            imageView.setImageResource(WeatherUtils.getLargeArtResource(icon, weatherItem.getIsDay()));
 
             aqiTextView.setText(String.valueOf(aqi));
             locationTextView.setText(forecastItem.getLocationName());
@@ -197,8 +198,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            ForecastEntity dataItem = forecastItemList.get(adapterPosition);
-            mClickHandler.onClickList(dataItem, weatherItem, aqiItem, getItemViewType());
+            ForecastEntity forecastItem = forecastItemList.get(adapterPosition);
+            int code;
+                if(adapterPosition == 0) code = weatherItem.getConditionCode();
+                else code = forecastItem.getConditionCode();
+
+            ConditionEntity conditionItem = conditionItemList.get(ConditionUtils.getConditionCode(code)); //todo тут внимание
+            mClickHandler.onClickList(forecastItem, weatherItem, aqiItem, conditionItem, getItemViewType());
         }
     }
 

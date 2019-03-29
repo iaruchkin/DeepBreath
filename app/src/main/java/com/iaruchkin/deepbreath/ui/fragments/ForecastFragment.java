@@ -170,8 +170,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     }
 
     @Override
-    public void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, int viewType) {
-        listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId(), viewType);//todo передать нужное значение
+    public void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, ConditionEntity conditionEntity, int viewType) {
+        listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId(), conditionEntity.getId(), viewType);//todo передать нужное значение
+
     }
 
     private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест

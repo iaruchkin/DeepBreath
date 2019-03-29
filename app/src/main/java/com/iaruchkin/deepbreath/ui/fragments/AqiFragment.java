@@ -8,15 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.presentation.presenter.AqiPresenter;
+import com.iaruchkin.deepbreath.presentation.presenter.DetailPresenter;
 import com.iaruchkin.deepbreath.presentation.view.AqiView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
+import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.utils.StringUtils;
@@ -36,6 +35,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     static final String FORECAST_ID = "extra:forecast";
     static final String WEATHER_ID = "extra:weather";
     static final String AQI_ID = "extra:aqi";
+    static final String CONDITION_ID = "extra:condition";
     static final String VIEW_TYPE = "extra:viewType";
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -43,7 +43,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     private MessageFragmentListener listener;
 
 //    @InjectPresenter
-    AqiPresenter aqiPresenter;
+    DetailPresenter detailPresenter;
 
     TextView date;
     TextView weather_description;
@@ -61,12 +61,14 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
 //    Toolbar toolbar;
 
 //    @ProvidePresenter
-    AqiPresenter providePresenter() {
+    DetailPresenter providePresenter() {
             String idForecast = getArguments() != null ? getArguments().getString(FORECAST_ID, "") : null;
             String idWeather = getArguments() != null ? getArguments().getString(WEATHER_ID, "") : null;
             String idAqi = getArguments() != null ? getArguments().getString(AQI_ID, "") : null;
-            int viewType = getArguments() != null ? getArguments().getInt(VIEW_TYPE, 1) : 0;
-        return new AqiPresenter(idForecast, idWeather, idAqi, viewType);
+            String idCondition = getArguments() != null ? getArguments().getString(CONDITION_ID, "") : null;
+
+        int viewType = getArguments() != null ? getArguments().getInt(VIEW_TYPE, 1) : 0;
+        return new DetailPresenter(idForecast, idWeather, idAqi, idCondition, viewType);
     }
 
     public static AqiFragment newInstance(String idForecast, String idWeather, String idAqi, int viewType){
@@ -161,8 +163,8 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     }
 
     @Override
-    public void showForecastData(@NonNull ForecastEntity data) {
-        setForecastView(data);
+    public void showForecastData(@NonNull ForecastEntity data, @NonNull ConditionEntity condition) {
+
     }
 
     @Override
@@ -171,7 +173,7 @@ public class AqiFragment extends MvpAppCompatFragment implements AqiView {
     }
 
     @Override
-    public void showData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity) {
+    public void showData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity, @NonNull ConditionEntity condition) {
 
     }
 

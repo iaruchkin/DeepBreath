@@ -2,7 +2,9 @@ package com.iaruchkin.deepbreath.ui.adapter
 
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.ConditionEntity
+import com.iaruchkin.deepbreath.room.ForecastEntity
 import com.iaruchkin.deepbreath.room.WeatherEntity
+import com.iaruchkin.deepbreath.utils.ConditionUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import com.iaruchkin.deepbreath.utils.WeatherUtils
 import com.xwray.groupie.ExpandableGroup
@@ -11,31 +13,34 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.expandable_header_weather.*
 import java.lang.String.valueOf
+import java.util.*
 
-class ExpandableHeaderItemWeather(private val weatherEntity: WeatherEntity, private val condition: ConditionEntity)
+class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, private val condition: ConditionEntity)
     : Item(), ExpandableItem{
 
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        if (weatherEntity.getIsDay() == 1) {
-            viewHolder.weather_description.text = condition.dayText
+        if (forecastEntity.getIsDay() == 1) {
+                viewHolder.weather_description.text = condition.dayText
         } else {
-            viewHolder.weather_description.text = condition.nightText
+                viewHolder.weather_description.text = condition.nightText
         }
 
-        viewHolder.high_value.text = valueOf(weatherEntity.temp_c)
-        viewHolder.low_value.text = valueOf(weatherEntity.feelslike_c)
+        viewHolder.high_value.text = valueOf(forecastEntity.maxtemp_c)
+        viewHolder.low_value.text = valueOf(forecastEntity.mintemp_c)
 
-        viewHolder.location_desc.text = weatherEntity.location
+        var format = "%s, %s"
+        if(forecastEntity.locationRegion != "") format = "%s, %s, %s"
+        viewHolder.location_desc.text = String.format(Locale.getDefault(), format, forecastEntity.locationCountry, forecastEntity.locationName, forecastEntity.locationRegion)
 
-        viewHolder.weather_icon.setImageResource(WeatherUtils.getLargeArtResource(condition.icon, weatherEntity.getIsDay()))
+        viewHolder.weather_icon.setImageResource(WeatherUtils.getLargeArtResource(condition.icon, forecastEntity.getIsDay()))
 
-        viewHolder.weather_date.setText(StringUtils.formatDate(weatherEntity.last_updated_epoch*1L, "HH:mm, EEEE"))
+        viewHolder.weather_date.setText(StringUtils.formatDate(forecastEntity.date_epoch*1L, "d MMMM, EEEE"))
 
-        viewHolder.feels_like_detail.setText(R.string.feels_like)
-
+        viewHolder.feels_like_detail.setText(R.string.night_feels_like)
+        
         viewHolder.item_expandable_header_icon.setImageResource(getRotatedIconResId())
         viewHolder.item_expandable_header_title.setText(getRotatedTextResId())
 

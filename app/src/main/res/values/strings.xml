@@ -143,6 +143,7 @@
     <string name="pollution_very_unhealthy">very unhealthy</string>
     <string name="pollution_hazardous">hazardous</string>
     <string name="feels_like">feels like</string>
+    <string name="night_feels_like">night</string>
     <string name="good_full">Air quality is considered satisfactory, and air pollution poses little or no risk</string>
     <string name="moderate_full">Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.</string>
     <string name="pre_unhealthy_full">Members of sensitive groups may experience health effects. The general public is not likely to be affected.</string>
