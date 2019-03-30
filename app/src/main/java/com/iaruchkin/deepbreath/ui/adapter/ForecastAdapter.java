@@ -78,9 +78,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         int aqi;
 
         String conditionText;
-        int icon;
+        int iconForecast;
+        int iconToday;
+
         if(conditionItemList.size()!=0) {
-            icon = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
+            iconForecast = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
+            iconToday  = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
 
             if (weatherItem.getIsDay() == 1) {
                 conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
@@ -90,7 +93,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         } else {
             conditionText = null;
-            icon = 0;//todo это причина по которой отображаются сначала только солнышки
+            iconForecast = 0;
+            iconToday = 0;//todo это причина по которой отображаются сначала только солнышки
         }
 
         if (aqiItem.getAqi() != null){
@@ -104,10 +108,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         switch (viewType) {
             case VIEW_TYPE_TODAY:
-                holder.bindFirst(forecastItem, weatherItem  , aqi, conditionText, icon);
+                holder.bindFirst(forecastItem, weatherItem  , aqi, conditionText, iconToday);
                 break;
             case VIEW_TYPE_FUTURE_DAY:
-                holder.bindFuture(forecastItem, icon);
+                holder.bindFuture(forecastItem, iconForecast);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
@@ -142,6 +146,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         private final TextView aqiDesc;
         private final View aqiCard;
         private final View weatherCard;
+        private final View weatherList;
 
 
 
@@ -160,7 +165,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             aqiDesc.setText(AqiUtils.getPollutionLevel(aqi));
             aqiCard.setBackgroundResource(AqiUtils.getColor(aqi));
-            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
+//            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
+//            weatherList.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
 
         }
 
@@ -191,6 +197,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiDesc = view.findViewById(R.id.aqi_description);
             aqiCard = view.findViewById(R.id.aqi_pre_card);
             weatherCard = view.findViewById(R.id.today_card);
+            weatherList = view.findViewById(R.id.weather_list);
 
             view.setOnClickListener(this);
         }

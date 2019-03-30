@@ -11,44 +11,41 @@
 
     <TextView
         android:id="@+id/feels_like_detail"
-        android:layout_width="wrap_content"
+        android:layout_width="56dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-light"
         android:text="@string/feels_like"
         android:textColor="@color/secondary_text"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/low_value"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/low_value" />
+        app:layout_constraintEnd_toEndOf="@+id/low_value" />
 
     <TextView
         android:id="@+id/location_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:textColor="@color/secondary_text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weather_icon"
+        app:layout_constraintTop_toBottomOf="@+id/weather_description"
         tools:text="Moskva, Zhulebino 24" />
 
     <TextView
         android:id="@+id/weather_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
         android:textColor="@color/secondary_text"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/weather_icon"
-        app:layout_constraintEnd_toStartOf="@+id/high_value"
-        app:layout_constraintStart_toEndOf="@+id/weather_icon"
-        app:layout_constraintTop_toTopOf="@+id/weather_icon"
+        app:layout_constraintEnd_toStartOf="@+id/horizontal_middle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather_icon"
         tools:text="Rainy light snow" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -75,10 +72,12 @@
 
     <ImageView
         android:id="@+id/weather_icon"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="16dp"
         android:adjustViewBounds="true"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/horizontal_middle"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_clouds" />
 
@@ -102,10 +101,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:textSize="30sp"
         android:textColor="@color/secondary_text"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/high_value"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/high_value"
         tools:text="10\u00b0" />
 
     <TextView

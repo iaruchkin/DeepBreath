@@ -10,9 +10,8 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment
-import com.iaruchkin.deepbreath.common.State
 import com.iaruchkin.deepbreath.presentation.presenter.DetailPresenter
-import com.iaruchkin.deepbreath.presentation.view.AqiView
+import com.iaruchkin.deepbreath.presentation.view.DetailView
 import com.iaruchkin.deepbreath.room.*
 import com.iaruchkin.deepbreath.ui.adapter.*
 import com.xwray.groupie.ExpandableGroup
@@ -23,7 +22,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 import kotlinx.android.synthetic.main.groupie_fragment.*
 
-class GroupieFragment : MvpAppCompatFragment(), AqiView{
+class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
     //    private val LAYOUT = R.layout.layout_detail
     private val LAYOUT = R.layout.groupie_fragment
@@ -302,26 +301,26 @@ class GroupieFragment : MvpAppCompatFragment(), AqiView{
         }
     }
 
+//
+//    override fun showWeatherData(data: WeatherEntity) {
+//    }
+//
+//    override fun showAqiData(data: AqiEntity) {
+//
+//    }
+//
+//    override fun showState(state: State) {
+//        when (state) {
+//            State.Current -> {
+//            }
+//
+//            State.Forecast -> {
+//            }
+////todo теперь это не нужно. вроде
+//            else -> throw IllegalArgumentException("Unknown state: $state")
+//        }    }
 
-    override fun showWeatherData(data: WeatherEntity) {
-    }
-
-    override fun showAqiData(data: AqiEntity) {
-
-    }
-
-    override fun showState(state: State) {
-        when (state) {
-            State.Current -> {
-            }
-
-            State.Forecast -> {
-            }
-//todo теперь это не нужно. вроде
-            else -> throw IllegalArgumentException("Unknown state: $state")
-        }    }
-
-    override fun showData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity) {
+    override fun showTodayData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity) {
         setupFirst(weatherEntity, aqiEntity, condition)
     }
 

@@ -1,34 +1,15 @@
 package com.iaruchkin.deepbreath.ui;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.common.AppConstants;
-import com.iaruchkin.deepbreath.common.GpsUtils;
-import com.iaruchkin.deepbreath.ui.fragments.AqiFragment;
+//import com.iaruchkin.deepbreath.ui.fragments.DetailFragment;
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 
-import java.util.Locale;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
@@ -47,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //    private FusedLocationProviderClient mFusedLocationClient;
     private FragmentManager mFragmentManager;
     private ForecastFragment mForecastFragment;
-    private AqiFragment mDetailsFragment;
+//    private DetailFragment mDetailsFragment;
     private GroupieFragment mGroupieFragment;
     private SettingsFragment mSettingsFragment;
     //    private IntroFragment mIntroFragment;
@@ -87,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
 //    private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
-//        mAqiFragment = AqiFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
+//        mAqiFragment = DetailFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
 //        getSupportFragmentManager()
 //                .beginTransaction()
 //                .replace(R.id.frame_list, mDetailsFragment)

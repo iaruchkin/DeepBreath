@@ -9,7 +9,7 @@ import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.AqiApi;
 import com.iaruchkin.deepbreath.network.WeatherApi;
-import com.iaruchkin.deepbreath.presentation.view.AqiView;
+import com.iaruchkin.deepbreath.presentation.view.DetailView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ConverterAqi;
@@ -18,9 +18,6 @@ import com.iaruchkin.deepbreath.room.ConverterForecast;
 import com.iaruchkin.deepbreath.room.ConverterWeather;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
-import com.iaruchkin.deepbreath.utils.LangUtils;
-
-import java.util.List;
 
 import androidx.annotation.Nullable;
 import io.reactivex.Single;
@@ -29,7 +26,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
-public class DetailPresenter extends BasePresenter<AqiView> {
+public class DetailPresenter extends BasePresenter<DetailView> {
     private Context context = App.INSTANCE.getApplicationContext();
 
     private ForecastEntity forecastEntity;
@@ -74,10 +71,10 @@ public class DetailPresenter extends BasePresenter<AqiView> {
     private void setView(){
         if (VIEW_TYPE == 0){
             loadCurrent();
-            getViewState().showState(State.Current);
+//            getViewState().showState(State.Current);
         } else {
             loadForecast();
-            getViewState().showState(State.Forecast);
+//            getViewState().showState(State.Forecast);
         }
     }
 
@@ -189,7 +186,7 @@ public class DetailPresenter extends BasePresenter<AqiView> {
 
     private void updateData(){
         if (weatherEntity != null && aqiEntity != null && conditionEntity != null){
-                    getViewState().showData(weatherEntity, aqiEntity, conditionEntity);
+                    getViewState().showTodayData(weatherEntity, aqiEntity, conditionEntity);
         }else if (forecastEntity != null && conditionEntity != null) {
             getViewState().showForecastData(forecastEntity, conditionEntity);
         }

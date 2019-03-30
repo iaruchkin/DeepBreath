@@ -14,12 +14,14 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 @StateStrategyType(value = SingleStateStrategy.class)
-public interface AqiView extends MvpView {
+public interface DetailView extends MvpView {
 
-    void showWeatherData(@NonNull WeatherEntity data);
+//    void showWeatherData(@NonNull WeatherEntity data);
+//    void showAqiData(@NonNull AqiEntity data);
+//    void showState(@NonNull State state);
+
+    void showTodayData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity, @NonNull ConditionEntity condition);
     void showForecastData(@NonNull ForecastEntity data, @NonNull ConditionEntity condition);
-    void showAqiData(@NonNull AqiEntity data);
-    void showData(@NonNull WeatherEntity weatherEntity, @NonNull AqiEntity aqiEntity, @NonNull ConditionEntity condition);
-    void showState(@NonNull State state);
+
 
 }

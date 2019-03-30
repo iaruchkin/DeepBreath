@@ -18,8 +18,10 @@
     <!--</androidx.appcompat.widget.Toolbar >-->
 
     <FrameLayout
+        android:id="@+id/weather_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:background="@color/good_transparent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/idRecyclerView"

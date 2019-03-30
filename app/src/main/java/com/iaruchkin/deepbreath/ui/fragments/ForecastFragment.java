@@ -136,7 +136,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private void setupUi(View view) {
         findViews(view);
         setupToolbar();
-        setupOrientation(mRecyclerView);
+        setupOrientation();
         setupRecyclerViewAdapter();
 
         setHomeButton(view);
@@ -198,16 +198,20 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private void setupRecyclerViewAdapter(){
         mAdapter = new ForecastAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
+
+
     }
 
-    private void setupOrientation(RecyclerView recyclerView) {
+    private void setupOrientation() {
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        } else {
-            final int columnsCount = getResources().getInteger(R.integer.landscape_news_columns_count);
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), columnsCount));
-        }
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        } else {
+//            final int columnsCount = getResources().getInteger(R.integer.landscape_news_columns_count);
+//            mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), columnsCount));
+//        }
     }
 
     private void setupUx() {
@@ -252,35 +256,35 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     public void showState(@NonNull State state) {
         switch (state) {
             case HasData:
-                mError.setVisibility(View.GONE);
-                mLoadingIndicator.setVisibility(View.GONE);
+//                mError.setVisibility(View.GONE);
+//                mLoadingIndicator.setVisibility(View.GONE);
 
-                mRecyclerView.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.VISIBLE);
 
                 showRefresher(false);
                 break;
 
             case HasNoData:
-                mLoadingIndicator.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.GONE);
+//                mLoadingIndicator.setVisibility(View.GONE);
+//                mRecyclerView.setVisibility(View.GONE);
 
-                mError.setVisibility(View.VISIBLE);
+//                mError.setVisibility(View.VISIBLE);
 
                 showRefresher(false);
                 break;
 
             case NetworkError:
-                mLoadingIndicator.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.GONE);
+//                mLoadingIndicator.setVisibility(View.GONE);
+//                mRecyclerView.setVisibility(View.GONE);
 
-                mError.setVisibility(View.VISIBLE);
+//                mError.setVisibility(View.VISIBLE);
 
                 showRefresher(false);
                 break;
 
             case ServerError:
-                mLoadingIndicator.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.GONE);
+//                mLoadingIndicator.setVisibility(View.GONE);
+//                mRecyclerView.setVisibility(View.GONE);
 
                 mError.setVisibility(View.VISIBLE);
 
@@ -289,7 +293,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
             case Loading:
                 mError.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
 
 //                mLoadingIndicator.setVisibility(View.VISIBLE);
 
