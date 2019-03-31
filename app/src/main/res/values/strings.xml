@@ -164,13 +164,13 @@
     <string name="pm25">PM2.5</string>
     <string name="pm10">PM10</string>
     <string name="co">CO</string>
-    <string name="no2">NO2</string>
-    <string name="so2">SO2</string>
+    <string name="no2">NO₂</string>
+    <string name="so2">SO₂</string>
     <string name="w">W</string>
     <string name="wg">Wg</string>
     <string name="p">P</string>
     <string name="h">H</string>
-    <string name="o3">O3</string>
+    <string name="o3">O₃</string>
     <string name="aqi_dimention">мкг/м³</string>
     <string name="wind_dimention">м/c</string>
     <string name="pressure_dimention">мм рт.ст.</string>
