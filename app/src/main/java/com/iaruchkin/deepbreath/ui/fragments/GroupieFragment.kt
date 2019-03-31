@@ -14,6 +14,7 @@ import com.iaruchkin.deepbreath.presentation.presenter.DetailPresenter
 import com.iaruchkin.deepbreath.presentation.view.DetailView
 import com.iaruchkin.deepbreath.room.*
 import com.iaruchkin.deepbreath.ui.adapter.*
+import com.iaruchkin.deepbreath.utils.StringUtils
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -24,7 +25,6 @@ import kotlinx.android.synthetic.main.groupie_fragment.*
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
-    //    private val LAYOUT = R.layout.layout_detail
     private val LAYOUT = R.layout.groupie_fragment
 
     internal var context = App.INSTANCE.getApplicationContext()
@@ -37,31 +37,9 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
     internal lateinit var forecast: ForecastEntity
     internal lateinit var aqi: AqiEntity
 
-
-//    val boringFancyItems = generateWeather(7, 10)
-//    val excitingFancyItems = generateWeather(6, 10)
-//    val groupAdapter = GroupAdapter<ViewHolder>().apply {
-//        spanCount = 2
-//    }
-
-//    var boringFancyItems : MutableList<WeatherItem>? = null
-
     @JvmField
     @InjectPresenter
     var detailPresenter: DetailPresenter? = null
-
-//    internal var date: TextView
-//    internal var weather_description: TextView
-//    internal var high_temperature: TextView
-//    internal var low_temperature: TextView
-//    internal var imageView: ImageView
-//
-//    internal var humidity: TextView
-//    internal var pressure: TextView
-//    internal var wind_measurement: TextView
-//
-//    internal var aqiDetails: View
-//    internal var aqiLabel: TextView
 
     @ProvidePresenter
     internal fun providePresenter(): DetailPresenter {
@@ -102,11 +80,6 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         super.onActivityCreated(savedInstanceState)
 
     }
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        retainInstance = true
-//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -163,19 +136,19 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
-        dataList.add(WeatherItem(wind.toString(), "wind"))
-        dataList.add(WeatherItem(windDir, "wind direction"))
-        dataList.add(WeatherItem(pressureMb.toString(), "pressure"))
-        dataList.add(WeatherItem(precipMm.toString(), "precipitation"))
-        dataList.add(WeatherItem(humidity.toString(), "humidity"))
+        dataList.add(WeatherItem(wind.toString(), R.string.wind))
+        dataList.add(WeatherItem(windDir, R.string.wind_direction))
+        dataList.add(WeatherItem(pressureMb.toString(), R.string.pressure))
+        dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))
+        dataList.add(WeatherItem(humidity.toString(), R.string.humidity))
 
         return dataList
     }
 
     private fun generateAqi(data: AqiEntity): MutableList<AqiItem>{
 
-        val pm25 = data.pm25.toDouble()
-        val pm10 = data.pm10.toDouble()
+        val pm25 = data.pm25
+        val pm10 = data.pm10
         val co = data.co
         val no2 = data.no2
         val so2 = data.so2
@@ -187,16 +160,16 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<AqiItem> = mutableListOf()
 
-        dataList.add(AqiItem(pm25, "pm25"))
-        dataList.add(AqiItem(pm10, "pm10"))
-        if (co!=null) dataList.add(AqiItem(co, "co"))
-        if (no2!=null) dataList.add(AqiItem(no2, "no2"))
-        if (so2!=null) dataList.add(AqiItem(so2, "so2"))
-        if (w!=null) dataList.add(AqiItem(w, "w"))
-        if (wg!=null) dataList.add(AqiItem(wg, "wg"))
-        if (p!=null) dataList.add(AqiItem(p, "p"))
-        if (h!=null) dataList.add(AqiItem(h, "h"))
-        if (o3!=null) dataList.add(AqiItem(o3, "o3"))
+        dataList.add(AqiItem(pm25.toString(), R.string.pm25))
+        dataList.add(AqiItem(pm10.toString(), R.string.pm10))
+        if (co!=null) dataList.add(AqiItem(co.toString(), R.string.co))
+        if (no2!=null) dataList.add(AqiItem(no2.toString(), R.string.no2))
+        if (so2!=null) dataList.add(AqiItem(so2.toString(), R.string.so2))
+        if (w!=null) dataList.add(AqiItem(w.toString(), R.string.w))
+        if (wg!=null) dataList.add(AqiItem(wg.toString(), R.string.wg))
+        if (p!=null) dataList.add(AqiItem(p.toString(), R.string.p))
+        if (h!=null) dataList.add(AqiItem(h.toString(), R.string.h))
+        if (o3!=null) dataList.add(AqiItem(o3.toString(), R.string.o3))
 
         return dataList
     }
@@ -211,20 +184,19 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val wind = data.maxwind_kph
         val precipMm = data.totalprecip_mm
-        val moonrise = data.moonrise
-        val moonset = data.moonset
-        val sunset = data.sunset
-        val sunrise = data.sunrise
-
+        val moonrise = StringUtils.formatTime(data.moonrise, "HH:mm")
+        val moonset = StringUtils.formatTime(data.moonset, "HH:mm")
+        val sunset = StringUtils.formatTime(data.sunset, "HH:mm")
+        val sunrise = StringUtils.formatTime(data.sunrise, "HH:mm")
 
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
-        dataList.add(WeatherItem(wind.toString(), "wind"))
-        dataList.add(WeatherItem(precipMm.toString(), "precipitation"))
-        dataList.add(WeatherItem(moonrise, "moonrise"))
-        dataList.add(WeatherItem(moonset, "moonset"))
-        dataList.add(WeatherItem(sunset, "sunset"))
-        dataList.add(WeatherItem(sunrise, "sunrise"))
+        dataList.add(WeatherItem(wind.toString(), R.string.wind))
+        dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))
+        dataList.add(WeatherItem(sunrise, R.string.sunrise))
+        dataList.add(WeatherItem(sunset, R.string.sunset))
+        dataList.add(WeatherItem(moonrise, R.string.moonrise))
+        dataList.add(WeatherItem(moonset, R.string.moonset))
 
 
         return dataList
@@ -242,8 +214,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
     private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity){
 
-        val boringFancyItems = generateWeather(weatherEntity)
-        val excitingFancyItems = generateAqi(aqiEntity)
+        val weatherItems = generateWeather(weatherEntity)
+        val aqiItems = generateAqi(aqiEntity)
 
         val groupAdapter = GroupAdapter<ViewHolder>().apply {
             spanCount = 2
@@ -257,9 +229,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         }
 
         ExpandableGroup(ExpandableHeaderItemAqi(aqiEntity), false).apply {
-//            excitingSection.addAll(excitingFancyItems)
-//            add(excitingSection)
-            add(Section(excitingFancyItems))
+            add(Section(aqiItems))
             groupAdapter.add(this)
         }
 
@@ -269,7 +239,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         }
 
         ExpandableGroup(ExpandableHeaderItemWeather(weatherEntity, condition), false).apply {
-            add(Section(boringFancyItems))
+            add(Section(weatherItems))
             groupAdapter.add(this)
         }
 

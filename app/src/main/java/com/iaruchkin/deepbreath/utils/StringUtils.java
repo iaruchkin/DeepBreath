@@ -1,5 +1,7 @@
 package com.iaruchkin.deepbreath.utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -29,6 +31,41 @@ public final class StringUtils {
 
         return sdf.format(date);
     }
+
+    public static String formatTime(@NonNull String dateStr, String DATE_FORMAT){
+        DateFormat readFormat = new SimpleDateFormat( "hh:mm aa");
+//        DateFormat writeFormat = new SimpleDateFormat( "HH:mm");
+
+        Date date = null;
+
+        try {
+                date = readFormat.parse(dateStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+//        if (date != null) {
+//                String formattedDate = writeFormat.format(date);
+//                return formattedDate;
+//            }
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+
+        return sdf.format(date);
+    }
+
+//    String dateStr = "Jul 27, 2011 8:35:29 AM";
+//    DateFormat readFormat = new SimpleDateFormat( "MMM dd, yyyy hh:mm:ss aa");
+//    DateFormat writeFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+//    Date date = null;
+//try {
+//        date = readFormat.parse(dateStr);
+//    } catch (ParseException e) {
+//        e.printStackTrace();
+//    }
+//
+//if (date != null) {
+//        String formattedDate = writeFormat.format(date);
+//    }
 //
 //    public static CharSequence formatEpoch(@NonNull Context context, @NonNull long epoch) {
 //        int flags = FORMAT_ABBREV_RELATIVE |

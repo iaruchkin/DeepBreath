@@ -287,4 +287,46 @@ public final class WeatherUtils {
         Log.e(LOG_TAG, "Unknown Weather: " + weatherId);
         return R.drawable.ic_clouds;
     }
+
+    public static int getWeatherDetailIcon(int value) {
+
+        switch (value) {
+            case R.string.wind:
+                return R.drawable.ic_wind;
+            case R.string.wind_direction:
+                return R.drawable.ic_014_compass;
+            case R.string.pressure:
+                return R.drawable.ic_meter;
+            case R.string.precipitation:
+                return R.drawable.ic_raining;
+            case R.string.humidity:
+                return R.drawable.ic_raindrops;
+            case R.string.moonrise:
+                return R.drawable.ic_moon_10;
+            case R.string.moonset:
+                return R.drawable.ic_moon_12;
+            case R.string.sunset:
+                return R.drawable.ic_sunset_1;
+            case R.string.sunrise:
+                return R.drawable.ic_sunrise;
+            default:
+                return R.drawable.ic_meter;
+        }
+    }
+
+    public static int getWeatherDimention(int value) {
+
+        switch (value) {
+            case R.string.wind:
+                return R.string.wind_dimention;
+            case R.string.pressure:
+                return R.string.pressure_dimention;
+            case R.string.precipitation:
+                return R.string.precip_dimention;
+            case R.string.humidity:
+                return R.string.humidity_dimention;
+            default:
+                return R.string.wind_dimention;
+        }
+    }
 }

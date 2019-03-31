@@ -152,5 +152,30 @@
     <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
     <string name="expandaple_less">less</string>
     <string name="expandaple_more">more</string>
+    <string name="wind">Wind</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="moonrise">Moonrise</string>
+    <string name="moonset">Moonset</string>
+    <string name="sunset">Sunset</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="wind_direction">Wind direction</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="pm25">PM2.5</string>
+    <string name="pm10">PM10</string>
+    <string name="co">CO</string>
+    <string name="no2">NO2</string>
+    <string name="so2">SO2</string>
+    <string name="w">W</string>
+    <string name="wg">Wg</string>
+    <string name="p">P</string>
+    <string name="h">H</string>
+    <string name="o3">O3</string>
+    <string name="aqi_dimention">мкг/м³</string>
+    <string name="wind_dimention">м/c</string>
+    <string name="pressure_dimention">мм рт.ст.</string>
+    <string name="precip_dimention">мм</string>
+    <string name="humidity_dimention">%</string>
+
 
 </resources>

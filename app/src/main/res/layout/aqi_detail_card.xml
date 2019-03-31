@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/weather_detail_card"
+    android:id="@+id/aqi_detail_card"
     android:layout_margin="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,55 +24,47 @@
         android:minHeight="80dp"
         android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/weather_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/value_header"
-            tools:src="@drawable/art_clouds" />
-
         <TextView
             android:id="@+id/value_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="@color/secondary_text"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/high_value"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Wind" />
+            tools:text="PM10" />
 
         <TextView
             android:id="@+id/high_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif-light"
             android:textColor="@color/primary_text"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/weather_icon"
-            app:layout_constraintStart_toEndOf="@+id/weather_icon"
-            app:layout_constraintTop_toTopOf="@+id/weather_icon"
-            tools:text="19" />
+            app:layout_constraintBottom_toBottomOf="@+id/value_header"
+            app:layout_constraintEnd_toStartOf="@+id/low_value"
+            app:layout_constraintTop_toTopOf="@+id/value_header"
+            tools:text="55" />
 
         <TextView
-            android:id="@+id/dimention_weather"
+            android:id="@+id/low_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif-light"
             android:gravity="end"
+            android:text="@string/aqi_dimention"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/high_value"
-            app:layout_constraintStart_toEndOf="@+id/high_value"
-            tools:text="@string/pressure_dimention" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/high_value" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
