@@ -1,6 +1,5 @@
 package com.iaruchkin.deepbreath.utils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,13 +7,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
-
-//import static android.text.format.DateUtils.FORMAT_ABBREV_MONTH;
-//import static android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE;
-//import static android.text.format.DateUtils.FORMAT_ABBREV_TIME;
-//import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
-//import static android.text.format.DateUtils.MINUTE_IN_MILLIS;
-//import static android.text.format.DateUtils.WEEK_IN_MILLIS;
 
 public final class StringUtils {
 
@@ -33,54 +25,17 @@ public final class StringUtils {
     }
 
     public static String formatTime(@NonNull String dateStr, String DATE_FORMAT){
-        DateFormat readFormat = new SimpleDateFormat( "hh:mm aa");
-//        DateFormat writeFormat = new SimpleDateFormat( "HH:mm");
 
-        Date date = null;
+        SimpleDateFormat date12Format = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        SimpleDateFormat date24Format = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
         try {
-                date = readFormat.parse(dateStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-//        if (date != null) {
-//                String formattedDate = writeFormat.format(date);
-//                return formattedDate;
-//            }
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-
-        return sdf.format(date);
+            return date24Format.format(date12Format.parse(dateStr));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateStr;
     }
-
-//    String dateStr = "Jul 27, 2011 8:35:29 AM";
-//    DateFormat readFormat = new SimpleDateFormat( "MMM dd, yyyy hh:mm:ss aa");
-//    DateFormat writeFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
-//    Date date = null;
-//try {
-//        date = readFormat.parse(dateStr);
-//    } catch (ParseException e) {
-//        e.printStackTrace();
-//    }
-//
-//if (date != null) {
-//        String formattedDate = writeFormat.format(date);
-//    }
-//
-//    public static CharSequence formatEpoch(@NonNull Context context, @NonNull long epoch) {
-//        int flags = FORMAT_ABBREV_RELATIVE |
-//                FORMAT_SHOW_DATE | FORMAT_ABBREV_TIME | FORMAT_ABBREV_MONTH;
-//        return DateUtils.getRelativeDateTimeString(context, new Date(epoch*1000).getTime(),
-//                MINUTE_IN_MILLIS, WEEK_IN_MILLIS, flags);
-//    }
-//
-//    public static CharSequence formatDate(@NonNull Context context, @NonNull Date date) {
-//        int flags = FORMAT_ABBREV_RELATIVE |
-//                FORMAT_SHOW_DATE | FORMAT_ABBREV_TIME | FORMAT_ABBREV_MONTH;
-//
-//        return DateUtils.getRelativeDateTimeString(context, date.getTime(),
-//                MINUTE_IN_MILLIS, WEEK_IN_MILLIS, flags);
-//    }
 
     private StringUtils() {
         throw new AssertionError("No instances");

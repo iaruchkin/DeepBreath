@@ -11,6 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.expandable_header_weather.*
 import java.lang.String.valueOf
+import java.util.*
 
 class ExpandableHeaderItemWeather(private val weatherEntity: WeatherEntity, private val condition: ConditionEntity)
     : Item(), ExpandableItem{
@@ -25,8 +26,8 @@ class ExpandableHeaderItemWeather(private val weatherEntity: WeatherEntity, priv
             viewHolder.weather_description.text = condition.nightText
         }
 
-        viewHolder.high_value.text = valueOf(weatherEntity.temp_c)
-        viewHolder.low_value.text = valueOf(weatherEntity.feelslike_c)
+        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", weatherEntity.temp_c)
+        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", weatherEntity.feelslike_c)
 
         viewHolder.location_desc.text = weatherEntity.location
 

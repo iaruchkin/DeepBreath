@@ -2,12 +2,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!--<style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">-->
+    <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="preferenceTheme">@style/PrefsTheme</item>
+        <!--<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
+    </style>
+
+    <style name="PrefsTheme" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="android:layout">@layout/fragment_settings</item>
+        <!--<item name="android:listPreferredItemPaddingLeft">@dimen/activity_horizontal_margin</item>-->
+        <!--<item name="android:listPreferredItemPaddingRight">@dimen/activity_horizontal_margin</item>-->
     </style>
 
     <style name="TextAppearance.Category" parent="@style/TextAppearance.AppCompat.Body1">
@@ -34,20 +43,12 @@
     <style name="ActionBar.Solid.Sunshine" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="displayOptions">useLogo|showHome</item>
         <item name="titleTextStyle">@style/MyActionBar.TitleTextStyle</item>
-
-        <!--<item name="logo">@drawable/ic_ecology</item>-->
     </style>
 
     <style name="MyActionBar.TitleTextStyle"
         parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/secondary_text</item>
     </style>
-
-
-    <!--<style name="ActionBar.Solid.Sunshine.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">-->
-        <!--<item name="displayOptions">useLogo|showHome</item>-->
-        <!--<item name="logo">@drawable/ic_ecology</item>-->
-    <!--</style>-->
 
     <style name="AppTheme.Forecast" parent="@style/AppTheme">
         <item name="actionBarStyle">@style/ActionBar.Solid.Sunshine</item>
@@ -67,13 +68,9 @@
         <item name="android:textColor">@android:color/secondary_text_light</item>
     </style>
 
-        <!-- Ваша AppTheme или другие темы и стили здесь -->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
 
-        <!-- Кастомная AppTheme.Launcher. Устанавливает в качестве фона вашу drawable -->
-        <style name="AppTheme.Launcher">
-            <item name="android:windowBackground">@drawable/launch_screen</item>
-            <!-- для Android 5+ вы можете поменять цвет colorPrimaryDark, чтобы соответствовать цвету windowBackground -->
-            <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
-        </style>
 
 </resources>

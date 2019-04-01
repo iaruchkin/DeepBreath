@@ -3,6 +3,8 @@ package com.iaruchkin.deepbreath.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -22,6 +24,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
 
 import kotlinx.android.synthetic.main.groupie_fragment.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
@@ -37,6 +40,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
     internal lateinit var forecast: ForecastEntity
     internal lateinit var aqi: AqiEntity
 
+    private var toolbar: Toolbar? = null
+
     @JvmField
     @InjectPresenter
     var detailPresenter: DetailPresenter? = null
@@ -50,8 +55,6 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         val viewType = if (arguments != null) arguments!!.getInt(VIEW_TYPE, 1) else 0
         return DetailPresenter(idForecast, idWeather, idAqi, idCondition, viewType)
     }
-
-    private val excitingSection = Section()
 
     companion object {
 
@@ -85,28 +88,11 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(LAYOUT, container, false)
 
+        toolbar = view.findViewById(R.id.toolbar)
+
+        setupToolbar()
+
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // RecyclerView node initialized here
-//        list_recycler_view.apply {
-//            // set a LinearLayoutManager to handle Android
-//            // RecyclerView behavior
-//            layoutManager = LinearLayoutManager(activity)
-//            // set the custom adapter to the RecyclerView
-//            adapter = ListAdapter(mNicolasCageMovies)
-//        }
-//        recycler_view.apply {
-//            layoutManager = GridLayoutManager(context, groupAdapter.spanCount).apply {
-//                spanSizeLookup = groupAdapter.spanSizeLookup
-//            }
-//            adapter = groupAdapter
-//        }
-
-//        setupFirst()
-
     }
 
     override fun onStop() {
@@ -174,11 +160,10 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         return dataList
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.detail, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
     private fun generateForecast(data: ForecastEntity): MutableList<WeatherItem>{
 
@@ -242,12 +227,6 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             add(Section(weatherItems))
             groupAdapter.add(this)
         }
-
-//        fab.setOnClickListener {
-//            excitingFancyItems.shuffle()
-//            excitingSection.update(excitingFancyItems)
-//        }
-
     }
 
     private fun setupForecast(forecastEntity : ForecastEntity, condition: ConditionEntity){
@@ -271,24 +250,18 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         }
     }
 
-//
-//    override fun showWeatherData(data: WeatherEntity) {
-//    }
-//
-//    override fun showAqiData(data: AqiEntity) {
-//
-//    }
-//
-//    override fun showState(state: State) {
-//        when (state) {
-//            State.Current -> {
-//            }
-//
-//            State.Forecast -> {
-//            }
-////todo теперь это не нужно. вроде
-//            else -> throw IllegalArgumentException("Unknown state: $state")
-//        }    }
+    private fun setupToolbar() {
+        setHasOptionsMenu(true)
+        (getContext() as AppCompatActivity).setSupportActionBar(toolbar)
+        val actionBar = (getContext() as AppCompatActivity).getSupportActionBar()
+
+        actionBar!!.setDisplayHomeAsUpEnabled(true)
+        actionBar.setDisplayShowTitleEnabled(true)
+//        actionBar.setDisplayUseLogoEnabled(true)
+
+        actionBar.setTitle("details")
+//        actionBar.setLogo(resources.getDrawable(R.drawable.ic_action_name))
+    }
 
     override fun showTodayData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity) {
         setupFirst(weatherEntity, aqiEntity, condition)
@@ -297,5 +270,4 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
     override fun showForecastData(forecastEntity: ForecastEntity, condition: ConditionEntity) {
         setupForecast(forecastEntity, condition)
     }
-
 }

@@ -9,7 +9,10 @@ import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
@@ -18,8 +21,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String WEATHER_DETAILS_TAG = "WEATHER_DETAILS";
     public final static String SETTINGS_TAG = "SETTINGS";
     public final static String INTRO_TAG = "INTRO";
-
-//    private String option = "forecast";
+    //    private String option = "forecast";
 //    private LocationRequest locationRequest;
 //    private LocationCallback locationCallback;
 //    private StringBuilder stringBuilder;
@@ -33,6 +35,17 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     private SettingsFragment mSettingsFragment;
     //    private IntroFragment mIntroFragment;
 
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.pref_with_actionbar);
+//
+//        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(uk.japplications.jcommon.R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyPreferenceFragment()).commit();
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_Forecast);
@@ -41,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         init();
 //        setupLocation();
         startForecast();
+//        setupToolbar();
 
 //        if (savedInstanceState == null){
 //            if (Storage.needToShowIntro(this)) {
@@ -50,7 +64,16 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //            }
 //        }
     }
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayUseLogoEnabled(true);
+
+        actionBar.setTitle("Settings");
+    }
 //    private void startIntro(){
 //        mIntroFragment = new IntroFragment();
 //        getSupportFragmentManager()

@@ -146,7 +146,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         private final TextView aqiDesc;
         private final View aqiCard;
         private final View weatherCard;
-        private final View weatherList;
+//        private final View weatherList;
 
 
 
@@ -197,7 +197,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiDesc = view.findViewById(R.id.aqi_description);
             aqiCard = view.findViewById(R.id.aqi_pre_card);
             weatherCard = view.findViewById(R.id.today_card);
-            weatherList = view.findViewById(R.id.weather_list);
+//            weatherList = view.findViewById(R.id.weather_list);
 
             view.setOnClickListener(this);
         }

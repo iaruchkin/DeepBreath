@@ -28,8 +28,8 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
                 viewHolder.weather_description.text = condition.nightText
         }
 
-        viewHolder.high_value.text = valueOf(forecastEntity.maxtemp_c)
-        viewHolder.low_value.text = valueOf(forecastEntity.mintemp_c)
+        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.maxtemp_c)
+        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.mintemp_c)
 
         var format = "%s, %s"
         if(forecastEntity.locationRegion != "") format = "%s, %s, %s"

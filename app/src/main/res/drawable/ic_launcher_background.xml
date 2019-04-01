@@ -19,7 +19,7 @@
               <group android:translateX="74.57143"
                   android:translateY="74.57143">
                   <path
-                      android:fillColor="#324A5E"
+                      android:fillColor="@color/colorPrimaryDark"
                       android:pathData="M0,0h108v108h-108z" />
 
                   <!--<path-->

@@ -1,48 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <!--<androidx.appcompat.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="?attr/colorPrimary"-->
-        <!--android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar.Primary" >-->
+    <include layout="@layout/toolbar" />
 
-    <!--</androidx.appcompat.widget.Toolbar >-->
-
-    <FrameLayout
-        android:id="@+id/weather_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:background="@color/good_transparent">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/idRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            tools:context=".ui.fragments.ForecastFragment"
-            tools:listitem="@layout/item_forecast"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/idRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context=".ui.fragments.ForecastFragment"
+                tools:listitem="@layout/item_forecast"/>
 
-        <ProgressBar
-            android:id="@+id/pb_loading_indicator"
-            android:layout_height="42dp"
-            android:layout_width="42dp"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <include
-            android:id="@+id/error_layout"
-            layout="@layout/layout_error"
-            android:visibility="gone" />
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_height="42dp"
+        android:layout_width="42dp"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
-    </FrameLayout>
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/layout_error"
+        android:visibility="gone" />
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

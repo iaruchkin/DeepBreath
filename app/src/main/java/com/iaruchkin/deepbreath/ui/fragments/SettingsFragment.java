@@ -27,6 +27,7 @@ import com.iaruchkin.deepbreath.common.SunshinePreferences;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -35,6 +36,19 @@ import androidx.preference.PreferenceScreen;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements
         SharedPreferences.OnSharedPreferenceChangeListener {
+    Toolbar toolbar;
+
+    private static final String ARG_KEY = "extra:key";
+
+    public static SettingsFragment newInstance(String key){
+        SettingsFragment settingsFragment = new SettingsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_KEY, key);
+
+        settingsFragment.setArguments(bundle);
+        return settingsFragment;
+    }
+
 
     private void setPreferenceSummary(Preference preference, Object value) {
         String stringValue = value.toString();
@@ -56,7 +70,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         // Add 'general' preferences, defined in the XML file
-        addPreferencesFromResource(R.xml.pref_general);
+        addPreferencesFromResource(R.xml.preferences);
 
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
         PreferenceScreen prefScreen = getPreferenceScreen();
@@ -84,8 +98,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         // register the preference change listener
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
-
-        setupToolbar();
     }
 
     @Override
@@ -109,28 +121,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         }
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.xml.pref_general, container, false);
-//
-//        setupToolbar();
-//        return view;
-//    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        setupToolbar(view);
+        return view;
+    }
 
-    private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест
+    private void setupToolbar(View view) {
 
-        ActionBar supportActionBar = ((AppCompatActivity) getContext()).getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
 
-        setHasOptionsMenu(true);
-//        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) getContext()).getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayUseLogoEnabled(false);
-        actionBar.setTitle("Settings");
-
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+//            setHasOptionsMenu(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(false);
+            actionBar.setTitle("Settings");
+        }
     }
 }

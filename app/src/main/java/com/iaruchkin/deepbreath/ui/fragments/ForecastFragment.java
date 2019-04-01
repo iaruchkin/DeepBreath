@@ -45,6 +45,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -83,10 +84,19 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private Button errorAction;
     @Nullable
     private SwipeRefreshLayout mRefresh;
-//    @Nullable
-//    private Toolbar toolbar;
+    @Nullable
+    private Toolbar toolbar;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    public static ForecastFragment newInstance(String idGeo){
+        ForecastFragment fragmentForecast = new ForecastFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("GEO", idGeo);
+
+        fragmentForecast.setArguments(bundle);
+        return fragmentForecast;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -177,7 +187,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест
         setHasOptionsMenu(true);
-//        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
@@ -187,8 +197,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     }
 
     private void setHomeButton(View view) {
-//        final Toolbar toolbar = view.findViewById(R.id.toolbar);
-//        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
+        final Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getContext()).setSupportActionBar(toolbar);
         ActionBar supportActionBar = ((AppCompatActivity) getContext()).getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(false);
@@ -198,8 +208,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private void setupRecyclerViewAdapter(){
         mAdapter = new ForecastAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-
-
     }
 
     private void setupOrientation() {
@@ -315,7 +323,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     }
 
     private void findViews(View view) {
-//        toolbar = view.findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.toolbar);
         mRecyclerView = view.findViewById(R.id.idRecyclerView);
         mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         mError = view.findViewById(R.id.error_layout);
