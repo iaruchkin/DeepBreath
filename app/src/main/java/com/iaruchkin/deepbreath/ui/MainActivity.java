@@ -1,18 +1,36 @@
 package com.iaruchkin.deepbreath.ui;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.iaruchkin.deepbreath.R;
 //import com.iaruchkin.deepbreath.ui.fragments.DetailFragment;
+import com.iaruchkin.deepbreath.common.AppConstants;
+import com.iaruchkin.deepbreath.common.GpsUtils;
+import com.iaruchkin.deepbreath.common.SunshinePreferences;
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
@@ -21,13 +39,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String WEATHER_DETAILS_TAG = "WEATHER_DETAILS";
     public final static String SETTINGS_TAG = "SETTINGS";
     public final static String INTRO_TAG = "INTRO";
-    //    private String option = "forecast";
-//    private LocationRequest locationRequest;
-//    private LocationCallback locationCallback;
-//    private StringBuilder stringBuilder;
-//    private boolean isGPS = false;
-//
-//    private FusedLocationProviderClient mFusedLocationClient;
+
     private FragmentManager mFragmentManager;
     private ForecastFragment mForecastFragment;
 //    private DetailFragment mDetailsFragment;
@@ -35,16 +47,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     private SettingsFragment mSettingsFragment;
     //    private IntroFragment mIntroFragment;
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.pref_with_actionbar);
-//
-//        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(uk.japplications.jcommon.R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        getFragmentManager().beginTransaction().replace(R.id.content_frame, new MyPreferenceFragment()).commit();
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +54,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         super.onCreate(savedInstanceState);
 
         init();
-//        setupLocation();
+        setupLocation();
         startForecast();
-//        setupToolbar();
 
 //        if (savedInstanceState == null){
 //            if (Storage.needToShowIntro(this)) {
@@ -64,16 +65,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //            }
 //        }
     }
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayUseLogoEnabled(true);
-
-        actionBar.setTitle("Settings");
-    }
 //    private void startIntro(){
 //        mIntroFragment = new IntroFragment();
 //        getSupportFragmentManager()
@@ -83,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //    }
 
     private void startForecast() {
-        mForecastFragment = new ForecastFragment();
+//        mForecastFragment = new ForecastFragment();
+        mForecastFragment = ForecastFragment.newInstance(isGPS);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mForecastFragment)
@@ -152,108 +145,131 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         }
     }
 
-//    private void setupLocation() {
-//
-//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//
-//        locationRequest = LocationRequest.create();
-//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        locationRequest.setInterval(10 * 1000); // 10 seconds
-//        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-//
-//        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
-//            @Override
-//            public void gpsStatus(boolean isGPSEnable) {
-//                // turn on GPS
-//                isGPS = isGPSEnable;
-//            }
-//        });
-//
-//        locationCallback = new LocationCallback() {
-//
-//            @Override
-//            public void onLocationResult(LocationResult locationResult) {
-//                if (locationResult == null) {
-//                    return;
-//                }
-//                for (Location location : locationResult.getLocations()) {
-//                    if (location != null) {
-//                        wayLatitude = location.getLatitude();
-//                        wayLongitude = location.getLongitude();
-//                        Log.w("MAIN ACTIVITY 2", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
-//
-//                        if (mFusedLocationClient != null) {
-//                            mFusedLocationClient.removeLocationUpdates(locationCallback);
-//                        }
-//                    }
-//                }
-//            }
-//        };
-//
-//            if (!isGPS) {
-//                Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//            getLocation();
-//    }
-//
-//    private void getLocation() {
-//        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-//                    AppConstants.LOCATION_REQUEST);
-//
-//        } else {
-//                mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
-//                    if (location != null) {
-//                        wayLatitude = location.getLatitude();
-//                        wayLongitude = location.getLongitude();
-//                        Log.w("MAIN ACTIVITY 1", String.format(Locale.ENGLISH, "%s - %s", wayLatitude, wayLongitude));
-//
-//                    } else {
-//                        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-//                    }
-//                });
-//        }
-//    }
+    private void setupLocation() {
 
-//    @SuppressLint("MissingPermission")
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case 1000: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                        mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
-//                            if (location != null) {
-//                                wayLatitude = location.getLatitude();
-//                                wayLongitude = location.getLongitude();
-////                                txtLocation.setText(String.format(Locale.US, "%s - %s", wayLatitude, wayLongitude));
-//                            } else {
-//                                mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-//                            }
-//                        });
-//
-//                } else {
-//                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-//                }
-//                break;
-//            }
-//        }
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            if (requestCode == AppConstants.GPS_REQUEST) {
-//                isGPS = true; // flag maintain before get location
-//            }
-//        }
-//    }
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000); // 10 seconds
+        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+
+        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
+            @Override
+            public void gpsStatus(boolean isGPSEnable) {
+                // turn on GPS
+                Log.w("GPS isGPSEnable: ", String.valueOf(isGPSEnable));
+                isGPS = isGPSEnable;
+//                startForecast();
+            }
+        });
+
+        locationCallback = new LocationCallback() {
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    if (location != null) {
+                        saveLocation(location);
+                        startForecast();
+                        Log.w("GPS setupLocation", location.toString());
+
+                        if (mFusedLocationClient != null) {
+                            mFusedLocationClient.removeLocationUpdates(locationCallback);
+                        }
+                    }
+                }
+            }
+        };
+
+            if (!isGPS) {
+                Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
+                resetLocation();
+                Log.w("GPS isGPS :", "not enabled");
+                return;
+            }
+
+            getLocation();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    AppConstants.LOCATION_REQUEST);
+
+        } else {
+                mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+                    if (location != null) {
+                        saveLocation(location);
+                        startForecast();
+                        Log.w("GPS getLocation", location.toString());
+
+                    } else {
+                        mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+                    }
+                });
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1000: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                        mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
+                            if (location != null) {
+                                saveLocation(location);
+                                Log.w("GPS missingPermission", location.toString());
+                            } else {
+                                mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+                            }
+                        });
+
+                } else {
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                    resetLocation();
+                    Log.w("GPS missingPermission :", "Permission denied");
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == AppConstants.GPS_REQUEST) {
+                isGPS = true; // flag maintain before get location
+//                startForecast();
+                setupLocation();
+//                getLocation();
+            }
+        }
+    }
+
+//Location
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private boolean isGPS = false;
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    private void saveLocation(Location location){
+        SunshinePreferences.setLocationDetails(this, location.getLatitude(), location.getLongitude());
+//        startForecast();
+    }
+
+    private void resetLocation(){
+        SunshinePreferences.resetLocationCoordinates(this);
+//        startForecast();
+    }
 }

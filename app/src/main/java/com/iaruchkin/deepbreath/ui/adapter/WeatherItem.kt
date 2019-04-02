@@ -12,7 +12,12 @@ class WeatherItem(private val number: String, private val name: Int) : Item(){
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        if(name == R.string.sunrise || name == R.string.sunset || name == R.string.moonrise || name == R.string.moonset){
+        if(name == R.string.sunrise ||
+                name == R.string.sunset ||
+                name == R.string.moonrise ||
+                name == R.string.moonset ||
+                name == R.string.wind_direction)
+        {
             viewHolder.dimention_weather.visibility = View.GONE
         }
         else {

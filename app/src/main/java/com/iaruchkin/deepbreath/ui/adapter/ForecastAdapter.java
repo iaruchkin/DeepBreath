@@ -81,42 +81,65 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         int iconForecast;
         int iconToday;
 
-        if(conditionItemList.size()!=0) {
-            iconForecast = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
-            iconToday  = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
-
-            if (weatherItem.getIsDay() == 1) {
-                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
-            } else {
-                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getNightText();
-            }
-
-        } else {
-            conditionText = null;
-            iconForecast = 0;
-            iconToday = 0;//todo это причина по которой отображаются сначала только солнышки
-        }
-
-        if (aqiItem.getAqi() != null){
-            Log.e("ADAPTER", aqiItem.toString());
-            Log.e("ADAPTER", weatherItem.toString());
-            aqi = aqiItem.getAqi();
-        } //todo выяснить почему приходит null с weatherItem такого нет
-        else aqi = 0;
-
+//        if(conditionItemList.size()!=0) {
+//            iconForecast = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
+//            iconToday  = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
+//
+//            if (weatherItem.getIsDay() == 1) {
+//                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
+//            } else {
+//                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getNightText();
+//            }
+//
+//        } else {
+//            conditionText = null;
+//            iconForecast = 0;
+//            iconToday = 0;//todo это причина по которой отображаются сначала только солнышки
+//        }
         int viewType = getItemViewType(position);
 
         switch (viewType) {
             case VIEW_TYPE_TODAY:
+
+                if (aqiItem.getAqi() != null){
+                    Log.i("ADAPTER", aqiItem.toString());
+                    Log.i("ADAPTER", weatherItem.toString());
+                    aqi = aqiItem.getAqi();
+                } //todo выяснить почему приходит null с weatherItem такого нет
+                else aqi = 0;
+
+                if(conditionItemList.size()!=0) {
+                    iconToday  = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
+                    if (weatherItem.getIsDay() == 1) {
+                        conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
+                    } else {
+                        conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getNightText();
+                    }
+                    Log.i("ADAPTER", forecastItem.toString());
+                    Log.i("ADAPTER", conditionText);
+                } else {
+                    conditionText = null;
+                    iconToday = 0;//todo это причина по которой отображаются сначала только солнышки
+                }
+
                 holder.bindFirst(forecastItem, weatherItem  , aqi, conditionText, iconToday);
                 break;
+
             case VIEW_TYPE_FUTURE_DAY:
+                if(conditionItemList.size()!=0) {
+                    iconForecast = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
+                    Log.i("ADAPTER", forecastItem.toString());
+                    Log.i("ADAPTER", String.valueOf(iconForecast));
+                } else {
+                    iconForecast = 0;
+                }
+
                 holder.bindFuture(forecastItem, iconForecast);
                 break;
+
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
         }
-
     }
 
     @Override
@@ -215,27 +238,45 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         }
     }
 
-        public void setForecastItems(List<ForecastEntity> forecastData) {
+//        public void setForecastItems(List<ForecastEntity> forecastData) {
+//            forecastItemList.clear();
+//            forecastItemList.add(forecastData.get(0));
+//            forecastItemList.addAll(forecastData);
+//            notifyDataSetChanged();
+//        }
+//
+//        public void setWeatherItem(WeatherEntity data){
+//            weatherItem = data;
+//            notifyDataSetChanged();
+//        }
+//
+//        public void setAqiItem(AqiEntity data){
+//            aqiItem = data;
+//            notifyDataSetChanged();
+//        }
+//
+//        public void setConditionItems(List<ConditionEntity> conditionItems) {
+////            if (conditionItemList.size() == 0){
+//                conditionItemList.addAll(conditionItems);
+//                notifyDataSetChanged();
+////            }
+//        }
+
+        public void setData(@NonNull List<ForecastEntity> forecastEntity,
+                            @NonNull WeatherEntity weatherEntity,
+                            @NonNull AqiEntity aqiEntity,
+                            @NonNull List<ConditionEntity> conditionEntity){
             forecastItemList.clear();
-            forecastItemList.add(forecastData.get(0));
-            forecastItemList.addAll(forecastData);
-            notifyDataSetChanged();
-        }
+            forecastItemList.add(forecastEntity.get(0));
+            forecastItemList.addAll(forecastEntity);
 
-        public void setWeatherItem(WeatherEntity data){
-            weatherItem = data;
-            notifyDataSetChanged();
-        }
+            weatherItem = weatherEntity;
 
-        public void setAqiItem(AqiEntity data){
-            aqiItem = data;
-            notifyDataSetChanged();
-        }
+            aqiItem = aqiEntity;
 
-        public void setConditionItems(List<ConditionEntity> conditionItems) {
-            if (conditionItemList.size() == 0){
-                conditionItemList.addAll(conditionItems);
-                notifyDataSetChanged();
-            }
+            conditionItemList.clear();
+            conditionItemList.addAll(conditionEntity);
+
+            notifyDataSetChanged();
         }
 }

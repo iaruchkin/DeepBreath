@@ -48,7 +48,7 @@ public class ConverterCondition {
 
             }
             listDao.add(conditionEntity);
-            Log.w(TAG, conditionEntity.toString());
+            Log.i(TAG, conditionEntity.toString());
         }
         return listDao;
     }

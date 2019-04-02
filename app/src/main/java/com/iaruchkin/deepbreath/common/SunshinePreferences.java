@@ -17,6 +17,7 @@ package com.iaruchkin.deepbreath.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.preference.PreferenceManager;
 
 import com.iaruchkin.deepbreath.R;
@@ -132,6 +133,15 @@ public final class SunshinePreferences {
                 .longBitsToDouble(sp.getLong(PREF_COORD_LONG, Double.doubleToRawLongBits(0.0)));
 
         return preferredCoordinates;
+    }
+
+    public static Location getLocation(Context context) { //todo сделать нормально
+        Location location = new Location("DEFAULT_LOCATION");
+
+        location.setLatitude(getLocationCoordinates(context)[0]);
+        location.setLongitude(getLocationCoordinates(context)[1]);
+
+        return location;
     }
 
     /**

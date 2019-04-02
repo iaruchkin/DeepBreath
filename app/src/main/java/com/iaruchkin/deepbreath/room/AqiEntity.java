@@ -137,12 +137,10 @@ public class AqiEntity {
         return mP;
     }
 
-    @NonNull
     public Integer getPm10() {
         return mPm10;
     }
 
-    @NonNull
     public Integer getPm25() {
         return mPm25;
     }

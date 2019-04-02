@@ -146,8 +146,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<AqiItem> = mutableListOf()
 
-        dataList.add(AqiItem(pm25.toString(), R.string.pm25))
-        dataList.add(AqiItem(pm10.toString(), R.string.pm10))
+        if (pm25!=null) dataList.add(AqiItem(pm25.toString(), R.string.pm25))
+        if (pm10!=null) dataList.add(AqiItem(pm10.toString(), R.string.pm10))
         if (co!=null) dataList.add(AqiItem(co.toString(), R.string.co))
         if (no2!=null) dataList.add(AqiItem(no2.toString(), R.string.no2))
         if (so2!=null) dataList.add(AqiItem(so2.toString(), R.string.so2))

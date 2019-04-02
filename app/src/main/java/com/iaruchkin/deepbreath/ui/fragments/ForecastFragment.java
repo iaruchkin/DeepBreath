@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -31,6 +32,7 @@ import com.iaruchkin.deepbreath.common.AppConstants;
 import com.iaruchkin.deepbreath.common.GpsUtils;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
+import com.iaruchkin.deepbreath.common.SunshinePreferences;
 import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
@@ -62,12 +64,12 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private static final int LAYOUT = R.layout.layout_weather_list;
     private MessageFragmentListener listener;
 
-    //Location
-    private Location mLocation;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    private boolean isGPS = false;
-    private FusedLocationProviderClient mFusedLocationClient;
+//    //Location
+//    private Location mLocation;
+//    private LocationRequest locationRequest;
+//    private LocationCallback locationCallback;
+//    private boolean isGPS = false;
+//    private FusedLocationProviderClient mFusedLocationClient;
 
     @InjectPresenter
     ForecastPresenter forecastPresenter;
@@ -76,8 +78,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private ForecastAdapter mAdapter;
     @Nullable
     private RecyclerView mRecyclerView;
-    @Nullable
-    private ProgressBar mLoadingIndicator;
     @Nullable
     private View mError;
     @Nullable
@@ -89,12 +89,20 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public static ForecastFragment newInstance(String idGeo){
+    @ProvidePresenter
+    ForecastPresenter providePresenter() {
+        Boolean idGPS = getArguments() != null ? getArguments().getBoolean("GEO", false) : null;
+
+        return new ForecastPresenter(idGPS);
+    }
+
+    public static ForecastFragment newInstance(Boolean isGPS){
         ForecastFragment fragmentForecast = new ForecastFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("GEO", idGeo);
+        bundle.putBoolean("GEO", isGPS);
 
         fragmentForecast.setArguments(bundle);
+
         return fragmentForecast;
     }
 
@@ -135,6 +143,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         super.onAttach(context);
         if (context instanceof MessageFragmentListener) {
             listener = (MessageFragmentListener) context;
+//            if(isGPS) setupLocation();
         }
     }
 
@@ -222,43 +231,63 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 //        }
     }
 
+    @Override
+    public void onRefresh() {
+//        loadData(true);
+        listener.onActionClicked(WEATHER_LIST_TAG);
+    }
+
     private void setupUx() {
-        errorAction.setOnClickListener(v -> loadData());
-        setupLocation();
-        loadData();
+//        setupLocation();
+        errorAction.setOnClickListener(v -> listener.onActionClicked(WEATHER_LIST_TAG));
+//        loadData(false);
     }
 
     public void loadData() {
-        forecastPresenter.loadData(false, mLocation);
+//        if(mLocation != null) {
+//            mLocation.setLongitude(SunshinePreferences.getLocationCoordinates(getContext())[0]);
+//            mLocation.setLatitude(SunshinePreferences.getLocationCoordinates(getContext())[1]);
+//        }
+//        forecastPresenter.loadData(force, SunshinePreferences.getLocation(getContext()));
+
     }
 
     @Override
-    public void showWeatherData(@NonNull List<WeatherEntity> data) {
-        if (mAdapter != null) {
-            mAdapter.setWeatherItem(data.get(0));
-        }
+    public void showData(@NonNull List<ForecastEntity> forecastEntity,
+                         @NonNull List<WeatherEntity> weatherEntity,
+                         @NonNull List<AqiEntity> aqiEntity,
+                         @NonNull List<ConditionEntity> conditionEntity) {
+
+        mAdapter.setData(forecastEntity, weatherEntity.get(0), aqiEntity.get(0), conditionEntity);
     }
 
-    @Override
-    public void showForecastData(List<ForecastEntity> data) {
-        if (mAdapter != null) {
-            mAdapter.setForecastItems(data);
-        }
-    }
+//    @Override
+//    public void showWeatherData(@NonNull List<WeatherEntity> data) {
+////        if (mAdapter != null) {
+////            mAdapter.setWeatherItem(data.get(0));
+////        }
+//    }
 
-    @Override
-    public void showAqiData(@NonNull List<AqiEntity> data) {
-        if (mAdapter != null) {
-            mAdapter.setAqiItem(data.get(0));
-        }
-    }
+//    @Override
+//    public void showForecastData(List<ForecastEntity> data) {
+////        if (mAdapter != null) {
+////            mAdapter.setForecastItems(data);
+////        }
+//    }
 
-    @Override
-    public void showConditionData(@NonNull List<ConditionEntity> data) {
-        if (mAdapter != null) {
-            mAdapter.setConditionItems(data);
-        }
-    }
+//    @Override
+//    public void showAqiData(@NonNull List<AqiEntity> data) {
+////        if (mAdapter != null) {
+////            mAdapter.setAqiItem(data.get(0));
+////        }
+//    }
+
+//    @Override
+//    public void showConditionData(@NonNull List<ConditionEntity> data) {
+////        if (mAdapter != null) {
+////            mAdapter.setConditionItems(data);
+////        }
+//    }
 
     @Override
     public void showState(@NonNull State state) {
@@ -268,7 +297,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 //                mLoadingIndicator.setVisibility(View.GONE);
 
 //                mRecyclerView.setVisibility(View.VISIBLE);
-
                 showRefresher(false);
                 break;
 
@@ -277,31 +305,29 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 //                mRecyclerView.setVisibility(View.GONE);
 
 //                mError.setVisibility(View.VISIBLE);
-
+                mRefresh.setVisibility(View.GONE);
+                mError.setVisibility(View.VISIBLE);
                 showRefresher(false);
                 break;
 
             case NetworkError:
 //                mLoadingIndicator.setVisibility(View.GONE);
-//                mRecyclerView.setVisibility(View.GONE);
-
-//                mError.setVisibility(View.VISIBLE);
-
+                mRefresh.setVisibility(View.GONE);
+                mError.setVisibility(View.VISIBLE);
                 showRefresher(false);
                 break;
 
             case ServerError:
 //                mLoadingIndicator.setVisibility(View.GONE);
 //                mRecyclerView.setVisibility(View.GONE);
-
+                mRefresh.setVisibility(View.GONE);
                 mError.setVisibility(View.VISIBLE);
-
                 showRefresher(false);
                 break;
 
             case Loading:
                 mError.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                mRefresh.setVisibility(View.VISIBLE);
 
 //                mLoadingIndicator.setVisibility(View.VISIBLE);
 
@@ -313,11 +339,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         }
     }
 
-    @Override
-    public void onRefresh() {
-        forecastPresenter.loadData(true, mLocation);
-    }
-
     public void showRefresher(boolean show) {
         mRefresh.setRefreshing(show);
     }
@@ -325,109 +346,116 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     private void findViews(View view) {
         toolbar = view.findViewById(R.id.toolbar);
         mRecyclerView = view.findViewById(R.id.idRecyclerView);
-        mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
         mError = view.findViewById(R.id.error_layout);
         errorAction = view.findViewById(R.id.action_button);
         mRefresh = view.findViewById(R.id.refresh);
     }
 
-    private void setupLocation() {
+//    private void saveLocation(Location location){
+//        SunshinePreferences.setLocationDetails(getContext(), location.getLatitude(), location.getLongitude());
+//    }
+//
+//    private void setupLocation() {
+//
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+//
+//        locationRequest = LocationRequest.create();
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        locationRequest.setInterval(10 * 1000); // 10 seconds
+//        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
+//
+//        new GpsUtils(getContext()).turnGPSOn(new GpsUtils.onGpsListener() {
+//            @Override
+//            public void gpsStatus(boolean isGPSEnable) {
+//                // turn on GPS
+//                isGPS = isGPSEnable;
+//            }
+//        });
+//
+//        locationCallback = new LocationCallback() {
+//
+//            @Override
+//            public void onLocationResult(LocationResult locationResult) {
+//                if (locationResult == null) {
+//                    return;
+//                }
+//                for (Location location : locationResult.getLocations()) {
+//                    if (location != null) {
+//                        saveLocation(location);
+//                        loadData(true);
+//                        Log.w("GPS onLocationResult ", location.toString());
+//
+//                        if (mFusedLocationClient != null) {
+//                            mFusedLocationClient.removeLocationUpdates(locationCallback);
+//                        }
+//                    }
+//                }
+//            }
+//        };
+//
+//        if (!isGPS) {
+//            Toast.makeText(getContext(), "Please turn on GPS", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        getLocation();
+//    }
+//
+//    private void getLocation() {
+//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+//                    AppConstants.LOCATION_REQUEST);
+//
+//        } else {
+//            mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
+//                if (location != null) {
+//                    saveLocation(location);
+//                    loadData(true);
+//                    Log.w("GPS getLocation ", location.toString());
+//                } else {
+//                    mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+//                }
+//            });
+//        }
+//    }
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10 * 1000); // 10 seconds
-        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-
-        new GpsUtils(getContext()).turnGPSOn(new GpsUtils.onGpsListener() {
-            @Override
-            public void gpsStatus(boolean isGPSEnable) {
-                // turn on GPS
-                isGPS = isGPSEnable;
-            }
-        });
-
-        locationCallback = new LocationCallback() {
-
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        mLocation = location;
-                        Log.w("FRAGMENT 2", location.toString());
-
-                        if (mFusedLocationClient != null) {
-                            mFusedLocationClient.removeLocationUpdates(locationCallback);
-                        }
-                    }
-                }
-            }
-        };
-
-        if (!isGPS) {
-            Toast.makeText(getContext(), "Please turn on GPS", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        getLocation();
-    }
-
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    AppConstants.LOCATION_REQUEST);
-
-        } else {
-            mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
-                if (location != null) {
-                    mLocation = location;
-                    Log.w("FRAGMENT 2", location.toString());
-//                    loadData();
-                } else {
-                    mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                }
-            });
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1000: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
-                        if (location != null) {
-                            Log.w("FRAGMENT 3", location.toString());
-                        } else {
-                            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-                        }
-                    });
-
-                } else {
-                    Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == AppConstants.GPS_REQUEST) {
-                isGPS = true; // flag maintain before get location
-            }
-        }
-    }
+//    @SuppressLint("MissingPermission")
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        switch (requestCode) {
+//            case 1000: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
+//                        if (location != null) {
+//                            saveLocation(location);
+//                            loadData(true);
+//                            Log.w("GPS missingPermission ", location.toString());
+//                        } else {
+//                            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+//                        }
+//                    });
+//
+//                } else {
+//                    Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+//                    loadData(true);
+//                }
+//                break;
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            if (requestCode == AppConstants.GPS_REQUEST) {
+//                isGPS = true; // flag maintain before get location
+//            }
+//        }
+//    }
 }
