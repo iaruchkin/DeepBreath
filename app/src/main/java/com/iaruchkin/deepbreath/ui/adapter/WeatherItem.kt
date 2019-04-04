@@ -1,6 +1,7 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
 import android.view.View
+import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.utils.WeatherUtils
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -34,7 +35,7 @@ class WeatherItem(private val number: String, private val name: Int) : Item(){
         viewHolder.value_header.setText(name)
 
         viewHolder.weather_icon.setImageResource(WeatherUtils.getWeatherDetailIcon(name))
-        viewHolder.dimention_weather.setText(WeatherUtils.getWeatherDimention(name))
+        viewHolder.dimention_weather.setText(WeatherUtils.getWeatherUnit(App.INSTANCE.applicationContext, name))
     }
 
     override fun getLayout() = R.layout.weather_detail_card

@@ -1,5 +1,6 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
+import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.AqiEntity
 import com.iaruchkin.deepbreath.utils.AqiUtils
@@ -8,7 +9,7 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.aqi_card.*
+import kotlinx.android.synthetic.main.aqi_card_layout.*
 import kotlinx.android.synthetic.main.expandable_header_aqi.*
 import java.lang.String.valueOf
 
@@ -18,6 +19,9 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
+        val context = App.INSTANCE.applicationContext
+
+//        viewHolder.aqi_card.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqiEntity.aqi)))
         viewHolder.aqi_location_desc.text = aqiEntity.cityName
         viewHolder.aqi_value.text = valueOf(aqiEntity.aqi)
         viewHolder.aqi_description.setText(AqiUtils.getPollutionLevel(aqiEntity.aqi))

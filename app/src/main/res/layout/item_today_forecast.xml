@@ -119,7 +119,7 @@
 
         <include
             android:id="@+id/aqi_pre_card"
-            layout="@layout/aqi_card"
+            layout="@layout/aqi_card_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"

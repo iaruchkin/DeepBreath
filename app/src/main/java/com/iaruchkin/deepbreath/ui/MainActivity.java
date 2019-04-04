@@ -18,18 +18,15 @@ import com.google.android.gms.location.LocationServices;
 import com.iaruchkin.deepbreath.R;
 //import com.iaruchkin.deepbreath.ui.fragments.DetailFragment;
 import com.iaruchkin.deepbreath.common.AppConstants;
+import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.common.GpsUtils;
-import com.iaruchkin.deepbreath.common.SunshinePreferences;
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
@@ -264,12 +261,12 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     private FusedLocationProviderClient mFusedLocationClient;
 
     private void saveLocation(Location location){
-        SunshinePreferences.setLocationDetails(this, location.getLatitude(), location.getLongitude());
+        AppPreferences.setLocationDetails(this, location.getLatitude(), location.getLongitude());
 //        startForecast();
     }
 
     private void resetLocation(){
-        SunshinePreferences.resetLocationCoordinates(this);
+        AppPreferences.resetLocationCoordinates(this);
 //        startForecast();
     }
 }

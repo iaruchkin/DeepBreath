@@ -7,8 +7,14 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.network.AqiApi;
+import com.iaruchkin.deepbreath.network.AqiResponse;
+import com.iaruchkin.deepbreath.ui.MainActivity;
+import com.iaruchkin.deepbreath.utils.AqiUtils;
+import com.iaruchkin.deepbreath.utils.PreferencesHelper;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -16,7 +22,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.iaruchkin.deepbreath.service.NetworkUtils.CancelReceiver.ACTION_CANCEL;
 
@@ -40,7 +49,7 @@ public class WeatherRequestService extends Worker {
             Log.e(TAG, "logError: " + throwable.getMessage());
         } else
             Log.e(TAG, "logError: stopped unexpectedly : \n" + throwable.getMessage());
-        makeNotification(false);
+//        makeNotification(null, false);
     }
 
     @Override
@@ -50,20 +59,27 @@ public class WeatherRequestService extends Worker {
         super.onStopped();
     }
 
-    private void makeNotification(boolean success) {
+    private void makeNotification(Integer aqi, boolean success) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
         Intent cancelIntent = new Intent(getApplicationContext(), NetworkUtils.CancelReceiver.class);
         cancelIntent.setAction(ACTION_CANCEL);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, cancelIntent, 0);
+
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, cancelIntent, 0);
+        PendingIntent onClickPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+        String message = getApplicationContext().getString(AqiUtils.getPollutionLevel(aqi));
 
         NotificationCompat.Builder notificationBuilder;
         if (success)
             notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                    .setSmallIcon(R.drawable.art_clouds)
-                    .setContentTitle("Aqi app")
-                    .setContentText("Data succesfully downloaded to DB")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true)
-                    .addAction(R.drawable.art_clouds, getApplicationContext().getString(R.string.cancel_work), pendingIntent);
+                    .setSmallIcon(R.drawable.ic_factory_round)
+                    .setContentTitle(String.format(Locale.getDefault(), "AQI - %s", aqi))
+                    .setContentText(String.format(Locale.getDefault(), "air purity level - %s",  message))
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setContentIntent(onClickPendingIntent)
+                    .setAutoCancel(true);
+//                    .addAction(R.drawable.art_clouds, getApplicationContext().getString(R.string.cancel_work), pendingIntent);
 
         else
             notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
@@ -80,11 +96,29 @@ public class WeatherRequestService extends Worker {
     @NonNull
     @Override
     public ListenableWorker.Result doWork() {
-        Log.i(TAG, "onStartCommand: service starting");
+        Log.e(TAG, "onStartCommand: service starting");
+
+        String parameter = PreferencesHelper.getAqiParameter(getApplicationContext());
+
         downloadDisposable = NetworkUtils.getInstance().getOnlineNetwork()
                 .timeout(1, TimeUnit.MINUTES)
-                .subscribe(this::makeNotification, this::logError);
-        Log.i(TAG, "onStartCommand: service stopped");
+                .flatMap(aLong -> updateAqi(parameter))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        aqiEntities -> {
+                            makeNotification(aqiEntities.getData().getAqi(), true);
+                        },
+                        this::logError
+                );
+
+        Log.e(TAG, "onStartCommand: service stopped");
         return Result.SUCCESS;
+    }
+
+    private Single<AqiResponse> updateAqi(String parameter) {
+        return AqiApi.getInstance()
+                .airEndpoint()
+                .get(parameter);
     }
 }

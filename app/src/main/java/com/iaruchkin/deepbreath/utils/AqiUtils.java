@@ -10,6 +10,26 @@ public final class AqiUtils {
 
     private static final String LOG_TAG = AqiUtils.class.getSimpleName();
 
+    public static int getColor2(int aqi) {
+
+        if (aqi >= 0 && aqi <= 50) {
+            return R.color.good;
+        } else if (aqi > 50 && aqi <= 100) {
+            return R.color.moderate;
+        } else if (aqi > 100 && aqi <= 150) {
+            return R.color.pre_unhealthy;
+        } else if (aqi > 150 && aqi <= 200) {
+            return R.color.unhealthy;
+        } else if (aqi > 200 && aqi <= 300) {
+            return R.color.very_unhealthy;
+        } else if (aqi > 300) {
+            return R.color.hazardous;
+        }
+
+        Log.e(LOG_TAG, "Unknown Weather: " + aqi);
+        return R.color.moderate;
+    }
+
     public static int getColor(int aqi) {
 
         if (aqi >= 0 && aqi <= 50) {

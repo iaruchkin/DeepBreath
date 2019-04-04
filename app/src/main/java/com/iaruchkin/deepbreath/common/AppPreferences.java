@@ -17,31 +17,15 @@ package com.iaruchkin.deepbreath.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.preference.PreferenceManager;
 
 import com.iaruchkin.deepbreath.R;
 
-public final class SunshinePreferences {
-//todo create preferences for this app
-    /*
-     * In order to uniquely pinpoint the location on the map when we launch the map intent, we
-     * store the latitude and longitude. We will also use the latitude and longitude to create
-     * queries for the weather.
-     */
+public final class AppPreferences {
+
     public static final String PREF_COORD_LAT = "coord_lat";
     public static final String PREF_COORD_LONG = "coord_long";
 
-    /**
-     * Helper method to handle setting location details in Preferences (city name, latitude,
-     * longitude)
-     * <p>
-     * When the location details are updated, the database should to be cleared.
-     *
-     * @param context  Context used to get the SharedPreferences
-     * @param lat      the latitude of the city
-     * @param lon      the longitude of the city
-     */
     public static void setLocationDetails(Context context, double lat, double lon) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
@@ -51,11 +35,6 @@ public final class SunshinePreferences {
         editor.apply();
     }
 
-    /**
-     * Resets the location coordinates stores in SharedPreferences.
-     *
-     * @param context Context used to get the SharedPreferences
-     */
     public static void resetLocationCoordinates(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
@@ -66,30 +45,12 @@ public final class SunshinePreferences {
     }
 
     /**
-     * Returns the location currently set in Preferences. The default location this method
-     * will return is "94043,USA", which is Mountain View, California. Mountain View is the
-     * home of the headquarters of the Googleplex!
-     *
-     * @param context Context used to access SharedPreferences
-     * @return Location The current user has set in SharedPreferences. Will default to
-     * "94043,USA" if SharedPreferences have not been implemented yet.
-     */
-    public static String getPreferredWeatherLocation(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-
-        String keyForLocation = context.getString(R.string.pref_location_key);
-        String defaultLocation = context.getString(R.string.pref_location_default);
-
-        return sp.getString(keyForLocation, defaultLocation);
-    }
-
-    /**
      * Returns true if the user has selected metric temperature display.
      *
      * @param context Context used to get the SharedPreferences
      * @return true if metric display should be used, false if imperial display should be used
      */
-    public static boolean isMetric(Context context) {
+    public static boolean isTempMetric(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         String keyForUnits = context.getString(R.string.pref_units_key);
@@ -103,6 +64,42 @@ public final class SunshinePreferences {
         }
 
         return userPrefersMetric;
+    }
+
+    public static int pressureUnits(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String keyForUnits = context.getString(R.string.pref_press_key);
+        String defaultUnits = context.getString(R.string.pref_press_rus);
+        String preferredUnits = sp.getString(keyForUnits, defaultUnits);
+        String imperial = context.getString(R.string.pref_press_imperial);
+        String metric = context.getString(R.string.pref_press_metric);
+
+        int userPrefers = 0;
+        if (metric.equals(preferredUnits)) {
+            userPrefers = 1;
+        } else if(imperial.equals(preferredUnits)){
+            userPrefers = 2;
+        }
+        return userPrefers;
+    }
+
+    public static int windUnits(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String keyForUnits = context.getString(R.string.pref_wind_key);
+        String defaultUnits = context.getString(R.string.pref_wind_rus);
+        String preferredUnits = sp.getString(keyForUnits, defaultUnits);
+        String imperial = context.getString(R.string.pref_wind_imperial);
+        String metric = context.getString(R.string.pref_wind_metric);
+
+        int userPrefers = 0;
+        if (metric.equals(preferredUnits)) {
+            userPrefers = 1;
+        } else if(imperial.equals(preferredUnits)){
+            userPrefers = 2;
+        }
+        return userPrefers;
     }
 
     /**
@@ -133,15 +130,6 @@ public final class SunshinePreferences {
                 .longBitsToDouble(sp.getLong(PREF_COORD_LONG, Double.doubleToRawLongBits(0.0)));
 
         return preferredCoordinates;
-    }
-
-    public static Location getLocation(Context context) { //todo сделать нормально
-        Location location = new Location("DEFAULT_LOCATION");
-
-        location.setLatitude(getLocationCoordinates(context)[0]);
-        location.setLongitude(getLocationCoordinates(context)[1]);
-
-        return location;
     }
 
     /**
@@ -233,7 +221,7 @@ public final class SunshinePreferences {
      */
     public static long getEllapsedTimeSinceLastNotification(Context context) {
         long lastNotificationTimeMillis =
-                SunshinePreferences.getLastNotificationTimeInMillis(context);
+                AppPreferences.getLastNotificationTimeInMillis(context);
         long timeSinceLastNotification = System.currentTimeMillis() - lastNotificationTimeMillis;
         return timeSinceLastNotification;
     }

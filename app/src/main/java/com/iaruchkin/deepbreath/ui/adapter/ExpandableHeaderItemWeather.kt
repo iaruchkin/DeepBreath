@@ -1,5 +1,6 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
+import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.ConditionEntity
 import com.iaruchkin.deepbreath.room.WeatherEntity
@@ -16,6 +17,7 @@ import java.util.*
 class ExpandableHeaderItemWeather(private val weatherEntity: WeatherEntity, private val condition: ConditionEntity)
     : Item(), ExpandableItem{
 
+    internal var context = App.INSTANCE.applicationContext
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -26,8 +28,14 @@ class ExpandableHeaderItemWeather(private val weatherEntity: WeatherEntity, priv
             viewHolder.weather_description.text = condition.nightText
         }
 
-        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", weatherEntity.temp_c)
-        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", weatherEntity.feelslike_c)
+        val highString = WeatherUtils.formatTemperature(context, weatherEntity.getTemp_c())
+        val lowString = WeatherUtils.formatTemperature(context, weatherEntity.getFeelslike_c())
+
+//        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", weatherEntity.temp_c)
+//        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", weatherEntity.feelslike_c)
+
+        viewHolder.high_value.text = highString
+        viewHolder.low_value.text = lowString
 
         viewHolder.location_desc.text = weatherEntity.location
 

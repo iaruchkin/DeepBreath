@@ -17,6 +17,7 @@ import com.iaruchkin.deepbreath.presentation.view.DetailView
 import com.iaruchkin.deepbreath.room.*
 import com.iaruchkin.deepbreath.ui.adapter.*
 import com.iaruchkin.deepbreath.utils.StringUtils
+import com.iaruchkin.deepbreath.utils.WeatherUtils
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -122,9 +123,9 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
-        dataList.add(WeatherItem(wind.toString(), R.string.wind))
+        dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind))
         dataList.add(WeatherItem(windDir, R.string.wind_direction))
-        dataList.add(WeatherItem(pressureMb.toString(), R.string.pressure))
+        dataList.add(WeatherItem(WeatherUtils.formatPressure(context, pressureMb), R.string.pressure))
         dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))
         dataList.add(WeatherItem(humidity.toString(), R.string.humidity))
 
@@ -176,8 +177,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
-        dataList.add(WeatherItem(wind.toString(), R.string.wind))
-        dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))
+        dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind))
+        dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))//todo precip formatter
         dataList.add(WeatherItem(sunrise, R.string.sunrise))
         dataList.add(WeatherItem(sunset, R.string.sunset))
         dataList.add(WeatherItem(moonrise, R.string.moonrise))

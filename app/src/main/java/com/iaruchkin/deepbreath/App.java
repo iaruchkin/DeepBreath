@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
+import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.service.NetworkUtils;
 import com.iaruchkin.deepbreath.service.WeatherRequestService;
 
@@ -24,24 +25,48 @@ public class App extends Application {
         super.onCreate();
         INSTANCE = this;
 
-        registerReceiver(NetworkUtils.getInstance().getNetworkReceiver(),
-                new IntentFilter((ConnectivityManager.CONNECTIVITY_ACTION)));
-        registerReceiver(NetworkUtils.getInstance().getCancelReceiver(),
-                new IntentFilter());
-        performsScheduledWord();
+        if(AppPreferences.areNotificationsEnabled(INSTANCE.getApplicationContext())){
+
+            registerReceiver(NetworkUtils.getInstance().getNetworkReceiver(),
+                    new IntentFilter((ConnectivityManager.CONNECTIVITY_ACTION)));
+            registerReceiver(NetworkUtils.getInstance().getCancelReceiver(),
+                    new IntentFilter());
+
+        performsScheduledWork();
+
+        }
     }
 
-    private static void performsScheduledWord(){
+    private static void performsScheduledWork(){
         Constraints constraints = new Constraints.Builder()
-                .setRequiresCharging(true)
+//                .setRequiresCharging(true)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
-        WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class, 3, TimeUnit.HOURS)
+
+        WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class,
+                15, TimeUnit.MINUTES)//todo set correct repeat interval and ability to disable notifications
                 .setConstraints(constraints)
                 .addTag(WeatherRequestService.WORK_TAG)
                 .build();
-        NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(workRequest.getId());
-        WorkManager.getInstance()
-                .enqueue(workRequest);
+
+        if(AppPreferences.areNotificationsEnabled(INSTANCE.getApplicationContext())) {
+            NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(workRequest.getId());
+            WorkManager.getInstance()
+                    .enqueue(workRequest);
+        }
+        else {
+            WorkManager.getInstance().cancelWorkById(workRequest.getId());
+        }
+
+
+//        PeriodicWorkRequest work = new PeriodicWorkRequest.Builder(NewsUpdateWorker.class,
+//                15, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
+//                .addTag("UPDATE")
+//                .setConstraints(constraints)
+//                .build();
+
+//        NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(work.getId());//todo выяснить зачем это
+//        WorkManager.getInstance()
+//                .enqueueUniquePeriodicWork("UPDATE", ExistingPeriodicWorkPolicy.REPLACE, work);
     }
 }

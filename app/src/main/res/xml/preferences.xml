@@ -2,12 +2,12 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditTextPreference
-        android:defaultValue="false"
-        android:inputType="text"
-        android:key="@string/pref_location_key"
-        android:singleLine="true"
-        android:title="@string/pref_location_label" />
+    <!--<EditTextPreference-->
+        <!--android:defaultValue="auto"-->
+        <!--android:inputType="text"-->
+        <!--android:key="@string/pref_location_key"-->
+        <!--android:singleLine="true"-->
+        <!--android:title="@string/pref_location_label" />-->
 
     <ListPreference
         android:defaultValue="false"
@@ -15,6 +15,20 @@
         android:entryValues="@array/pref_units_values"
         android:key="@string/pref_units_key"
         android:title="@string/pref_units_label" />
+
+    <ListPreference
+        android:defaultValue="false"
+        android:entries="@array/pref_press_options"
+        android:entryValues="@array/pref_press_values"
+        android:key="@string/pref_press_key"
+        android:title="@string/pref_press_label" />
+
+    <ListPreference
+        android:defaultValue="false"
+        android:entries="@array/pref_wind_options"
+        android:entryValues="@array/pref_wind_values"
+        android:key="@string/pref_wind_key"
+        android:title="@string/pref_wind_label" />
 
     <CheckBoxPreference
         android:defaultValue="false"

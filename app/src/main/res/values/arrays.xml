@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--temperature, precipitation-->
     <string-array name="pref_units_options">
         <item>@string/pref_units_label_metric</item>
         <item>@string/pref_units_label_imperial</item>
@@ -9,4 +10,32 @@
         <item>@string/pref_units_metric</item>
         <item>@string/pref_units_imperial</item>
     </string-array>
+
+    <!--wind-->
+    <string-array name="pref_wind_options">
+        <item>@string/pref_wind_label_metric</item>
+        <item>@string/pref_wind_label_imperial</item>
+        <item>@string/pref_wind_label_rus</item>
+    </string-array>
+
+    <string-array name="pref_wind_values">
+        <item>@string/pref_wind_metric</item>
+        <item>@string/pref_wind_imperial</item>
+        <item>@string/pref_wind_rus</item>
+    </string-array>
+
+    <!--pressure-->
+    <string-array name="pref_press_options">
+        <item>@string/pref_press_label_metric</item>
+        <item>@string/pref_press_label_imperial</item>
+        <item>@string/pref_press_label_rus</item>
+    </string-array>
+
+    <string-array name="pref_press_values">
+        <item>@string/pref_press_metric</item>
+        <item>@string/pref_press_imperial</item>
+        <item>@string/pref_press_rus</item>
+    </string-array>
+
+
 </resources>

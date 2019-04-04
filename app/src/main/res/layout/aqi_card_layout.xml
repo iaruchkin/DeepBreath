@@ -9,8 +9,8 @@
     android:focusable="false"
     android:clickable="false"
     app:cardUseCompatPadding="false"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="2dp"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="@dimen/card_corner_radius"
     tools:cardBackgroundColor="@color/good">
 
     <androidx.constraintlayout.widget.ConstraintLayout

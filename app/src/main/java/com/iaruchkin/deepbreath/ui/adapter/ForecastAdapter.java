@@ -1,6 +1,7 @@
 package com.iaruchkin.deepbreath.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder>{
@@ -167,13 +169,15 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         private final TextView aqiTextView;
         private final TextView aqiDesc;
-        private final View aqiCard;
-        private final View weatherCard;
+        private final CardView aqiCard;
+        private final CardView weatherCard;
 //        private final View weatherList;
 
 
-
         public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, int aqi, String dayText, int icon) {
+
+            String highString = WeatherUtils.formatTemperature(context, weatherItem.getTemp_c());
+            String lowString = WeatherUtils.formatTemperature(context, weatherItem.getFeelslike_c());
 
             imageView.setImageResource(WeatherUtils.getLargeArtResource(icon, weatherItem.getIsDay()));
 
@@ -183,17 +187,25 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             weatherDescTextView.setText(dayText);
 
             dateTextView.setText(String.format(Locale.getDefault(), "updated"+" %s", (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
-            highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
-            lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getFeelslike_c()));
+
+//            highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
+//            lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getFeelslike_c()));
+            highTemperatureTextView.setText(highString);
+            lowTemperatureTextView.setText(lowString);
 
             aqiDesc.setText(AqiUtils.getPollutionLevel(aqi));
-            aqiCard.setBackgroundResource(AqiUtils.getColor(aqi));
+//            aqiCard.setBackgroundResource(AqiUtils.getColor(aqi));
+            aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqi)));
+
 //            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
 //            weatherList.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
 
         }
 
         public void bindFuture(ForecastEntity forecastItem, int icon) {
+
+            String highString = WeatherUtils.formatTemperature(context, forecastItem.getMaxtemp_c());
+            String lowString = WeatherUtils.formatTemperature(context, forecastItem.getMintemp_c());
 
             imageView.setImageResource(WeatherUtils.getSmallArtResource(icon, forecastItem.getIsDay()));
 
@@ -202,8 +214,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             dateTextView.setText(StringUtils.formatDate(forecastItem.getDate_epoch(), "EEEE"));
             weatherDescTextView.setText(StringUtils.formatDate(forecastItem.getDate_epoch(), "d MMMM"));
 
-            highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMaxtemp_c()));
-            lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMintemp_c()));
+//            highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMaxtemp_c()));
+//            lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMintemp_c()));
+            highTemperatureTextView.setText(highString);
+            lowTemperatureTextView.setText(lowString);
         }
 
         public WeatherViewHolder(View view) {

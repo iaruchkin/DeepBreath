@@ -8,7 +8,7 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.aqi_card.*
+import kotlinx.android.synthetic.main.aqi_card_layout.*
 import kotlinx.android.synthetic.main.expandable_header_aqi.*
 import java.lang.String.valueOf
 

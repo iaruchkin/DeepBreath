@@ -9,7 +9,6 @@ import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.common.SunshinePreferences;
 import com.iaruchkin.deepbreath.network.AqiApi;
 import com.iaruchkin.deepbreath.network.AqiResponse;
 import com.iaruchkin.deepbreath.network.ConditionParser;
@@ -26,10 +25,10 @@ import com.iaruchkin.deepbreath.room.ConverterWeather;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.utils.LangUtils;
+import com.iaruchkin.deepbreath.utils.PreferencesHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,16 +61,17 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     @Override
     protected void onFirstViewAttach() {
-        loadData(true, SunshinePreferences.getLocation(context));
+        loadData(true, PreferencesHelper.getLocation(context));
     }
 
     public void loadData(Boolean forceload, Location location){
 
 //        if(location != null) {
-//        if(SunshinePreferences.isLocationLatLonAvailable(context)) {
-        if(isGps && SunshinePreferences.isLocationLatLonAvailable(context)){
-             aqiCurrentLocation = String.format(Locale.ENGLISH, "geo:%s;%s", location.getLatitude(), location.getLongitude());
-             weatherCurrentLocation = String.format(Locale.ENGLISH, "%s,%s", location.getLatitude(), location.getLongitude());
+//        if(AppPreferences.isLocationLatLonAvailable(context)) {
+//        if(isGps && AppPreferences.isLocationLatLonAvailable(context)){
+        if(isGps){
+            aqiCurrentLocation = PreferencesHelper.getAqiParameter(context);
+            weatherCurrentLocation = PreferencesHelper.getWeatherParameter(context);
         }
 
         if(!forceload) {

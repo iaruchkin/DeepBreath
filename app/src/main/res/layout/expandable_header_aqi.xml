@@ -73,7 +73,7 @@
 
     <include
         android:id="@+id/aqi_exp_card"
-        layout="@layout/aqi_card"
+        layout="@layout/aqi_card_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

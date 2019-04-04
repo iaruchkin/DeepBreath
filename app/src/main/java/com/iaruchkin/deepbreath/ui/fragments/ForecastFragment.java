@@ -1,13 +1,6 @@
 package com.iaruchkin.deepbreath.ui.fragments;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,22 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.common.AppConstants;
-import com.iaruchkin.deepbreath.common.GpsUtils;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.common.SunshinePreferences;
 import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
@@ -48,8 +31,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -245,10 +226,10 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     public void loadData() {
 //        if(mLocation != null) {
-//            mLocation.setLongitude(SunshinePreferences.getLocationCoordinates(getContext())[0]);
-//            mLocation.setLatitude(SunshinePreferences.getLocationCoordinates(getContext())[1]);
+//            mLocation.setLongitude(AppPreferences.getLocationCoordinates(getContext())[0]);
+//            mLocation.setLatitude(AppPreferences.getLocationCoordinates(getContext())[1]);
 //        }
-//        forecastPresenter.loadData(force, SunshinePreferences.getLocation(getContext()));
+//        forecastPresenter.loadData(force, AppPreferences.getLocation(getContext()));
 
     }
 
@@ -258,7 +239,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                          @NonNull List<AqiEntity> aqiEntity,
                          @NonNull List<ConditionEntity> conditionEntity) {
 
-        mAdapter.setData(forecastEntity, weatherEntity.get(0), aqiEntity.get(0), conditionEntity);
+        if(weatherEntity.size() != 0 && aqiEntity.size() != 0) {
+            mAdapter.setData(forecastEntity, weatherEntity.get(0), aqiEntity.get(0), conditionEntity); //todo throws java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0
+        }
     }
 
 //    @Override
@@ -352,7 +335,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     }
 
 //    private void saveLocation(Location location){
-//        SunshinePreferences.setLocationDetails(getContext(), location.getLatitude(), location.getLongitude());
+//        AppPreferences.setLocationDetails(getContext(), location.getLatitude(), location.getLongitude());
 //    }
 //
 //    private void setupLocation() {

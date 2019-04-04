@@ -1,14 +1,93 @@
 
 package com.iaruchkin.deepbreath.utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.common.AppPreferences;
 
 public final class WeatherUtils {
 
     private static final String LOG_TAG = WeatherUtils.class.getSimpleName();
 
+    private static double celsiusToFahrenheit(double temperatureInCelsius) {
+        double temperatureInFahrenheit = (temperatureInCelsius * 1.8) + 32;
+        return temperatureInFahrenheit;
+    }
+
+    private static double pressureMetricToRus(double pressureMetric) {
+        double pressureRus = (pressureMetric * 0.750062);
+        return pressureRus;
+    }
+
+    private static double pressureMetricToImperial(double pressureMetric) {
+        double pressureImperial = (pressureMetric * 0.02954);
+        return pressureImperial;
+    }
+
+    public static String formatTemperature(Context context, double temperature) {
+        if (!AppPreferences.isTempMetric(context)) {
+            temperature = celsiusToFahrenheit(temperature);
+        }
+
+        int temperatureFormatResourceId = R.string.format_temperature;
+
+        /* For presentation, assume the user doesn't care about tenths of a degree. */
+        return String.format(context.getString(temperatureFormatResourceId), temperature);
+    }
+
+    public static String formatPressure(Context context, double pressure) {
+        switch (AppPreferences.pressureUnits(context)) {
+            case 0:
+                pressure = pressureMetricToRus(pressure);
+                break;
+            case 2:
+                pressure = pressureMetricToImperial(pressure);
+                break;
+        }
+
+        int pressureFormatResourceId = R.string.format_pressure;
+
+        return String.format(context.getString(pressureFormatResourceId), pressure);
+    }
+
+    public static int formatPressureUnit(Context context) {
+        switch (AppPreferences.pressureUnits(context)) {
+            case 0:
+                return R.string.pressure_unit_rus;
+            case 2:
+                return R.string.pressure_unit_imp;
+            default:
+                return R.string.pressure_unit_metric;
+        }
+    }
+
+    public static String formatWind(Context context, double wind) {
+        switch (AppPreferences.windUnits(context)) {
+            case 0:
+                wind = pressureMetricToRus(wind);
+                break;
+            case 2:
+                wind = pressureMetricToImperial(wind);
+                break;
+        }
+
+        int pressureFormatResourceId = R.string.format_pressure;
+
+        return String.format(context.getString(pressureFormatResourceId), wind);
+    }
+
+    public static int formatWindUnit(Context context) {
+        switch (AppPreferences.windUnits(context)) {
+            case 0:
+                return R.string.wind_unit_rus;
+            case 2:
+                return R.string.wind_unit_imp;
+            default:
+                return R.string.wind_unit_metric;
+        }
+    }
     public static int getSmallArtResource(int weatherId, int isDay) {
 
         if(isDay == 1){
@@ -314,13 +393,13 @@ public final class WeatherUtils {
         }
     }
 
-    public static int getWeatherDimention(int value) {
+    public static int getWeatherUnit(Context context, int value) {
 
         switch (value) {
             case R.string.wind:
-                return R.string.wind_dimention;
+                return formatWindUnit(context);
             case R.string.pressure:
-                return R.string.pressure_dimention;
+                return formatPressureUnit(context);
             case R.string.precipitation:
                 return R.string.precip_dimention;
             case R.string.humidity:
