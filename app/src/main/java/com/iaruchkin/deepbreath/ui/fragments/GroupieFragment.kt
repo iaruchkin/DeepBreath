@@ -15,9 +15,11 @@ import com.iaruchkin.deepbreath.common.MvpAppCompatFragment
 import com.iaruchkin.deepbreath.presentation.presenter.DetailPresenter
 import com.iaruchkin.deepbreath.presentation.view.DetailView
 import com.iaruchkin.deepbreath.room.*
+import com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG
 import com.iaruchkin.deepbreath.ui.adapter.*
 import com.iaruchkin.deepbreath.utils.StringUtils
 import com.iaruchkin.deepbreath.utils.WeatherUtils
+import com.iaruchkin.deepbreath.utils.WeatherUtils.formatPrecip
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -25,7 +27,6 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
 
 import kotlinx.android.synthetic.main.groupie_fragment.*
-import kotlinx.android.synthetic.main.toolbar.*
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
@@ -123,11 +124,11 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
-        dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind))
-        dataList.add(WeatherItem(windDir, R.string.wind_direction))
-        dataList.add(WeatherItem(WeatherUtils.formatPressure(context, pressureMb), R.string.pressure))
+        dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind_label))
+        dataList.add(WeatherItem(getString(WeatherUtils.getWindDirection(windDir)), R.string.wind_direction_label))
+        dataList.add(WeatherItem(WeatherUtils.formatPressure(context, pressureMb), R.string.pressure_label))
         dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))
-        dataList.add(WeatherItem(humidity.toString(), R.string.humidity))
+        dataList.add(WeatherItem(humidity.toString(), R.string.humidity_label))
 
         return dataList
     }
@@ -177,24 +178,25 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
-        dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind))
-        dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))//todo precip formatter
+        dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind_label))
+        dataList.add(WeatherItem(formatPrecip(context, precipMm), R.string.precipitation))//todo precip formatter
         dataList.add(WeatherItem(sunrise, R.string.sunrise))
         dataList.add(WeatherItem(sunset, R.string.sunset))
         dataList.add(WeatherItem(moonrise, R.string.moonrise))
         dataList.add(WeatherItem(moonset, R.string.moonset))
 
-
         return dataList
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.action_settings -> {
+                if (listener != null) {
+                    listener!!.onActionClicked(SETTINGS_TAG)
+                }
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 
@@ -260,7 +262,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         actionBar.setDisplayShowTitleEnabled(true)
 //        actionBar.setDisplayUseLogoEnabled(true)
 
-        actionBar.setTitle("details")
+        actionBar.setTitle(getString(R.string.title_activity_detail))
 //        actionBar.setLogo(resources.getDrawable(R.drawable.ic_action_name))
     }
 

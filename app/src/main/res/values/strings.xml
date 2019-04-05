@@ -141,8 +141,6 @@
         <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
     </string>
 
-
-
     <!-- - - - - - - - - - - - - - - - -
       - Used by WeatherUtils   -
       - - - - - - - - - - - - - - - - -->
@@ -156,7 +154,6 @@
     <!-- Wind in kph -->
     <string name="format_wind_kmh">
         <xliff:g id="speed">%1$1.0f</xliff:g>
-        <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
     <!-- Wind in mph -->
@@ -168,6 +165,27 @@
     <string name="wind_unit_rus">m/s</string>
     <string name="wind_unit_imp">m/h</string>
     <string name="wind_unit_metric">km/h</string>
+
+    <!--Wind direction-->
+    <string name="wind_direction_label">Wind direction</string>
+    <string name="wind_dimention">m/s</string>
+
+    <string name="n_label">N</string>
+    <string name="nne_label">NNE</string>
+    <string name="ne_label">NE</string>
+    <string name="ene_label">ENE</string>
+    <string name="e_label">E</string>
+    <string name="ese_label">ESE</string>
+    <string name="se_label">SE</string>
+    <string name="sse_label">SE</string>
+    <string name="s_label">S</string>
+    <string name="ssw_label">SSW</string>
+    <string name="sw_label">SW</string>
+    <string name="wsw_label">WSW</string>
+    <string name="w_label">W</string>
+    <string name="wnw_label">WNW</string>
+    <string name="nw_label">NW</string>
+    <string name="nnw_label">NNW</string>
 
 
     <string name="pressure_label">Pressure</string>
@@ -186,13 +204,20 @@
     <string name="pressure_unit_imp">in Hg</string>
     <string name="pressure_unit_metric">mb</string>
 
-
     <string name="humidity_label">Humidity</string>
     <!-- Humidity format -->
     <string name="format_humidity">
         <xliff:g id="humidity">%1.0f</xliff:g> %%
     </string>
 
+    <string name="humidity_dimention">%</string>
+
+    <!--precipitation-->
+    <string name="format_precip">
+        <xliff:g id="precip">%1.0f</xliff:g>
+    </string>
+    <string name="format_precip_metric">mm</string>
+    <string name="format_precip_imperial">in</string>
 
     <!-- Used by NotificationUtils -->
 
@@ -203,31 +228,20 @@
         Low:<xliff:g id="low">%3$s</xliff:g>
     </string>
 
-    <string name="pollution_good">good</string>
-    <string name="pollution_moderate">moderate</string>
-    <string name="pollution_pre_unhealthy">pre unhealthy</string>
-    <string name="pollution_unhealthy">unhealthy</string>
-    <string name="pollution_very_unhealthy">very unhealthy</string>
-    <string name="pollution_hazardous">hazardous</string>
+
     <string name="feels_like">feels like</string>
     <string name="night_feels_like">night</string>
-    <string name="good_full">Air quality is considered satisfactory, and air pollution poses little or no risk</string>
-    <string name="moderate_full">Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.</string>
-    <string name="pre_unhealthy_full">Members of sensitive groups may experience health effects. The general public is not likely to be affected.</string>
-    <string name="unhealthy_full">Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects</string>
-    <string name="very_unhealty_full">Health warnings of emergency conditions. The entire population is more likely to be affected.</string>
-    <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
+
     <string name="expandaple_less">less</string>
     <string name="expandaple_more">more</string>
-    <string name="wind">Wind</string>
+
     <string name="precipitation">Precipitation</string>
     <string name="moonrise">Moonrise</string>
     <string name="moonset">Moonset</string>
     <string name="sunset">Sunset</string>
     <string name="sunrise">Sunrise</string>
-    <string name="wind_direction">Wind direction</string>
-    <string name="pressure">Pressure</string>
-    <string name="humidity">Humidity</string>
+
+    <!--AQI detail values-->
     <string name="pm25">PM2.5</string>
     <string name="pm10">PM10</string>
     <string name="co">CO</string>
@@ -238,13 +252,22 @@
     <string name="p">P</string>
     <string name="h">H</string>
     <string name="o3">O₃</string>
-    <string name="aqi_dimention">мкг/м³</string>
-    <string name="wind_dimention">м/c</string>
+    <string name="aqi_dimention">µg/m³</string>
+    <!--мкг/м³-->
 
+    <!--AQI level-->
+    <string name="pollution_good">good</string>
+    <string name="pollution_moderate">moderate</string>
+    <string name="pollution_pre_unhealthy">pre unhealthy</string>
+    <string name="pollution_unhealthy">unhealthy</string>
+    <string name="pollution_very_unhealthy">very unhealthy</string>
+    <string name="pollution_hazardous">hazardous</string>
 
-
-    <string name="precip_dimention">мм</string>
-    <string name="humidity_dimention">%</string>
-
+    <string name="good_full">Air quality is considered satisfactory, and air pollution poses little or no risk</string>
+    <string name="moderate_full">Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.</string>
+    <string name="pre_unhealthy_full">Members of sensitive groups may experience health effects. The general public is not likely to be affected.</string>
+    <string name="unhealthy_full">Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects</string>
+    <string name="very_unhealty_full">Health warnings of emergency conditions. The entire population is more likely to be affected.</string>
+    <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
 
 </resources>

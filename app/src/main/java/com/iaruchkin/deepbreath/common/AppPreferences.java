@@ -50,7 +50,7 @@ public final class AppPreferences {
      * @param context Context used to get the SharedPreferences
      * @return true if metric display should be used, false if imperial display should be used
      */
-    public static boolean isTempMetric(Context context) {
+    public static boolean isMetric(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         String keyForUnits = context.getString(R.string.pref_units_key);

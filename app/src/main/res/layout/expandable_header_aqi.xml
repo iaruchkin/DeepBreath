@@ -71,11 +71,21 @@
         app:layout_constraintTop_toBottomOf="@+id/aqi_location_desc"
         tools:text="Saturday, September 24" />
 
-    <include
+    <androidx.cardview.widget.CardView
         android:id="@+id/aqi_exp_card"
-        layout="@layout/aqi_card_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="6dp">
+
+        <include
+            android:id="@+id/aqi_exp_card_imported"
+            layout="@layout/aqi_card_layout" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/item_expandable_header_title"

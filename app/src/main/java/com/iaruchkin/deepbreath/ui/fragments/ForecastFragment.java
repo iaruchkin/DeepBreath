@@ -182,7 +182,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayUseLogoEnabled(true);
 
-        actionBar.setTitle("deep breath");
+        actionBar.setTitle(" Deep Breath");
         actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
     }
 

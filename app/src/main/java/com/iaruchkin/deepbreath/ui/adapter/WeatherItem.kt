@@ -17,7 +17,7 @@ class WeatherItem(private val number: String, private val name: Int) : Item(){
                 name == R.string.sunset ||
                 name == R.string.moonrise ||
                 name == R.string.moonset ||
-                name == R.string.wind_direction)
+                name == R.string.wind_direction_label)
         {
             viewHolder.dimention_weather.visibility = View.GONE
         }
@@ -25,7 +25,7 @@ class WeatherItem(private val number: String, private val name: Int) : Item(){
             viewHolder.dimention_weather.visibility = View.VISIBLE
         }
 
-        if(name == R.string.pressure){
+        if(name == R.string.pressure_label){
             viewHolder.weather_icon.visibility = View.GONE
         } else {
             viewHolder.weather_icon.visibility = View.VISIBLE

@@ -26,14 +26,21 @@ public final class WeatherUtils {
         return pressureImperial;
     }
 
+    private static double windMetricToRus(double windMetric) {
+        double windRus = (windMetric * 0.277778);
+        return windRus;
+    }
+
+    private static double windMetricToImperial(double windMetric) {
+        double windImperial = (windMetric * 0.621371);
+        return windImperial;
+    }
+
     public static String formatTemperature(Context context, double temperature) {
-        if (!AppPreferences.isTempMetric(context)) {
+        if (!AppPreferences.isMetric(context)) {
             temperature = celsiusToFahrenheit(temperature);
         }
-
         int temperatureFormatResourceId = R.string.format_temperature;
-
-        /* For presentation, assume the user doesn't care about tenths of a degree. */
         return String.format(context.getString(temperatureFormatResourceId), temperature);
     }
 
@@ -66,16 +73,16 @@ public final class WeatherUtils {
     public static String formatWind(Context context, double wind) {
         switch (AppPreferences.windUnits(context)) {
             case 0:
-                wind = pressureMetricToRus(wind);
+                wind = windMetricToRus(wind);
                 break;
             case 2:
-                wind = pressureMetricToImperial(wind);
+                wind = windMetricToImperial(wind);
                 break;
         }
 
-        int pressureFormatResourceId = R.string.format_pressure;
+        int windFormatResourceId = R.string.format_wind_kmh;
 
-        return String.format(context.getString(pressureFormatResourceId), wind);
+        return String.format(context.getString(windFormatResourceId), wind);
     }
 
     public static int formatWindUnit(Context context) {
@@ -88,6 +95,28 @@ public final class WeatherUtils {
                 return R.string.wind_unit_metric;
         }
     }
+
+    public static int formatPrecipUnit(Context context) {
+        if (!AppPreferences.isMetric(context)) {
+            return R.string.format_precip_imperial;
+        }
+        return R.string.format_precip_metric;
+    }
+
+    private static double precipMetricToImperial(double precipMetric) {
+        double precipImperial = (precipMetric * 0.0394);
+        return precipImperial;
+    }
+
+    public static String formatPrecip(Context context, double precip) {
+        if (!AppPreferences.isMetric(context)) {
+            precip = precipMetricToImperial(precip);
+        }
+        int pressureFormatResourceId = R.string.format_precip;
+
+        return String.format(context.getString(pressureFormatResourceId), precip);
+    }
+
     public static int getSmallArtResource(int weatherId, int isDay) {
 
         if(isDay == 1){
@@ -370,15 +399,15 @@ public final class WeatherUtils {
     public static int getWeatherDetailIcon(int value) {
 
         switch (value) {
-            case R.string.wind:
+            case R.string.wind_label:
                 return R.drawable.ic_wind;
-            case R.string.wind_direction:
+            case R.string.wind_direction_label:
                 return R.drawable.ic_014_compass;
-            case R.string.pressure:
+            case R.string.pressure_label:
                 return R.drawable.ic_meter;
             case R.string.precipitation:
                 return R.drawable.ic_raining;
-            case R.string.humidity:
+            case R.string.humidity_label:
                 return R.drawable.ic_raindrops;
             case R.string.moonrise:
                 return R.drawable.ic_moon_10;
@@ -396,16 +425,54 @@ public final class WeatherUtils {
     public static int getWeatherUnit(Context context, int value) {
 
         switch (value) {
-            case R.string.wind:
+            case R.string.wind_label:
                 return formatWindUnit(context);
-            case R.string.pressure:
+            case R.string.pressure_label:
                 return formatPressureUnit(context);
             case R.string.precipitation:
-                return R.string.precip_dimention;
-            case R.string.humidity:
+                return formatPrecipUnit(context);
+            case R.string.humidity_label:
                 return R.string.humidity_dimention;
             default:
-                return R.string.wind_dimention;
+                return formatPrecipUnit(context);
+        }
+    }
+
+    public static int getWindDirection(String value) {
+
+        switch (value) {
+            case "N":
+                return R.string.n_label;
+            case "NNE":
+                return R.string.nne_label;
+            case "NE":
+                return R.string.ne_label;
+            case "ENE":
+                return R.string.ene_label;
+            case "E":
+                return R.string.e_label;
+            case "ESE":
+                return R.string.ese_label;
+            case "SE":
+                return R.string.se_label;
+            case "SSE":
+                return R.string.sse_label;
+            case "S":
+                return R.string.s_label;
+            case "SSW":
+                return R.string.ssw_label;
+            case "SW":
+                return R.string.sw_label;
+            case "WSW":
+                return R.string.wsw_label;
+            case "W":
+                return R.string.w_label;
+            case "WNW":
+                return R.string.wnw_label;
+            case "NW":
+                return R.string.nw_label;
+            default:
+                return R.string.n_label;
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
+import android.graphics.Color
+import androidx.cardview.widget.CardView
 import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.AqiEntity
@@ -10,6 +12,7 @@ import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.aqi_card_layout.*
+import kotlinx.android.synthetic.main.aqi_card_layout.view.*
 import kotlinx.android.synthetic.main.expandable_header_aqi.*
 import java.lang.String.valueOf
 
@@ -19,18 +22,18 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        val context = App.INSTANCE.applicationContext
 
-//        viewHolder.aqi_card.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqiEntity.aqi)))
         viewHolder.aqi_location_desc.text = aqiEntity.cityName
         viewHolder.aqi_value.text = valueOf(aqiEntity.aqi)
         viewHolder.aqi_description.setText(AqiUtils.getPollutionLevel(aqiEntity.aqi))
         viewHolder.aqi_level_full.setText(AqiUtils.getPollutionLevelFull(aqiEntity.aqi))
-        viewHolder.aqi_exp_card.setBackgroundResource(AqiUtils.getColor(aqiEntity.aqi))
         viewHolder.aqi_date_exp.setText(StringUtils.formatDateAqi(aqiEntity.dateEpoch * 1L, "HH:mm, EEEE"))
 
         viewHolder.item_expandable_header_icon.setImageResource(getRotatedIconResId())
         viewHolder.item_expandable_header_title.setText(getRotatedTextResId())
+
+        //setting color to imported card
+        viewHolder.aqi_exp_card_imported.setBackgroundResource(AqiUtils.getColor(aqiEntity.aqi))
 
         viewHolder.aqi_expandable_header_root.setOnClickListener {
             expandableGroup.onToggleExpanded()
@@ -56,4 +59,5 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
                 R.string.expandaple_less
             else
                 R.string.expandaple_more
+
 }

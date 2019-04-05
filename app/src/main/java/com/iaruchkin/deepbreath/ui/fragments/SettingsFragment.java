@@ -140,7 +140,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 //            setHasOptionsMenu(true);
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setDisplayUseLogoEnabled(false);
-            actionBar.setTitle("Settings");
+            actionBar.setTitle(getString(R.string.title_activity_settings));
         }
     }
 }
