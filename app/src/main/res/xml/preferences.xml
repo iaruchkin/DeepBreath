@@ -10,25 +10,28 @@
         <!--android:title="@string/pref_location_label" />-->
 
     <ListPreference
-        android:defaultValue="false"
+        android:defaultValue="@string/pref_units_metric"
         android:entries="@array/pref_units_options"
         android:entryValues="@array/pref_units_values"
         android:key="@string/pref_units_key"
-        android:title="@string/pref_units_label" />
+        android:title="@string/pref_units_label"
+        android:summary="@string/pref_units_label_metric"/>
 
     <ListPreference
-        android:defaultValue="false"
+        android:defaultValue="@string/pref_press_rus"
         android:entries="@array/pref_press_options"
         android:entryValues="@array/pref_press_values"
         android:key="@string/pref_press_key"
-        android:title="@string/pref_press_label" />
+        android:title="@string/pref_press_label"
+        android:summary="@string/pressure_unit_rus"/>
 
     <ListPreference
-        android:defaultValue="false"
+        android:defaultValue="@string/pref_wind_rus"
         android:entries="@array/pref_wind_options"
         android:entryValues="@array/pref_wind_values"
         android:key="@string/pref_wind_key"
-        android:title="@string/pref_wind_label" />
+        android:title="@string/pref_wind_label"
+        android:summary="@string/wind_unit_rus"/>
 
     <CheckBoxPreference
         android:defaultValue="false"

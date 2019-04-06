@@ -26,11 +26,11 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
 
-import kotlinx.android.synthetic.main.groupie_fragment.*
+import kotlinx.android.synthetic.main.fragment_details.*
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
-    private val LAYOUT = R.layout.groupie_fragment
+    private val LAYOUT = R.layout.fragment_details
 
     internal var context = App.INSTANCE.getApplicationContext()
 

@@ -36,13 +36,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
 public class ForecastFragment extends MvpAppCompatFragment implements ForecastAdapter.ForecastAdapterOnClickHandler,
         ForecastView, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int LAYOUT = R.layout.layout_weather_list;
+    private static final int LAYOUT = R.layout.fragment_weather_list;
     private MessageFragmentListener listener;
 
 //    //Location
@@ -161,7 +162,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                 return true;
             case R.id.action_about:
                 if (listener != null) {
-                    listener.onActionClicked(SETTINGS_TAG);
+                    listener.onActionClicked(ABOUT_TAG);
                 }
                 return true;
             default:

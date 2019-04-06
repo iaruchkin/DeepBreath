@@ -20,10 +20,12 @@ import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.AppConstants;
 import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.common.GpsUtils;
+import com.iaruchkin.deepbreath.ui.fragments.AboutFragment;
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
+import com.iaruchkin.deepbreath.ui.intro.IntroFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,13 +38,15 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String WEATHER_DETAILS_TAG = "WEATHER_DETAILS";
     public final static String SETTINGS_TAG = "SETTINGS";
     public final static String INTRO_TAG = "INTRO";
+    public final static String ABOUT_TAG = "ABOUT";
+    public boolean firstLaunch = false;
 
     private FragmentManager mFragmentManager;
     private ForecastFragment mForecastFragment;
-//    private DetailFragment mDetailsFragment;
+    private AboutFragment mAboutFragment;
     private GroupieFragment mGroupieFragment;
     private SettingsFragment mSettingsFragment;
-    //    private IntroFragment mIntroFragment;
+    private IntroFragment mIntroFragment;
 
 
     @Override
@@ -51,25 +55,43 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         super.onCreate(savedInstanceState);
 
         init();
-        setupLocation();
-        startForecast();
+//        setupLocation();
+//        startForecast();
 
-//        if (savedInstanceState == null){
-//            if (Storage.needToShowIntro(this)) {
-//                startIntro();
-//            } else {
-//                startForecast();
-//            }
-//        }
+        if (savedInstanceState == null){
+            firstLaunch = AppPreferences.needToShowIntro(this);
+            if (firstLaunch) {
+                startIntro();
+                setupLocation();
+            } else {
+                setupLocation();
+                startForecast();
+            }
+        }
     }
 
-//    private void startIntro(){
-//        mIntroFragment = new IntroFragment();
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_list, mIntroFragment)
-//                .commit();
-//    }
+    private void firstStart(){
+        startForecast();
+        setupLocation();
+    }
+
+
+    private void startIntro(){
+        mIntroFragment = new IntroFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_list, mIntroFragment)
+                .commit();
+    }
+
+    private void startAbout(){
+        mAboutFragment = new AboutFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_list, mAboutFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
     private void startForecast() {
 //        mForecastFragment = new ForecastFragment();
@@ -79,15 +101,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 .replace(R.id.frame_list, mForecastFragment)
                 .commit();
     }
-
-//    private void startDetails(String idForecast, String idWeather, String idAqi, int viewType) {
-//        mAqiFragment = DetailFragment.newInstance(idForecast, idWeather, idAqi, viewType);//todo set correct string messages
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_list, mDetailsFragment)
-//                .addToBackStack(null)
-//                .commit();
-//    }
 
     private void startDetails(String idForecast, String idWeather, String idAqi, String idCondition, int viewType) {
         mGroupieFragment = GroupieFragment.newInstance(idForecast, idWeather, idAqi, idCondition, viewType);//todo set correct string messages
@@ -125,20 +138,20 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
     @Override
-    public void onActionClicked(String fragmentTag) {
-        switch (fragmentTag) {
+    public void onActionClicked(String tag) {
+        switch (tag) {
             case WEATHER_LIST_TAG:
                 startForecast();
                 break;
-//            case WEATHER_DETAILS_TAG:
-//                startDetails(message);
-//                break;
             case SETTINGS_TAG:
                 startSettings();
                 break;
-//            case INTRO_TAG:
-//                startIntro();
-//                break;
+            case ABOUT_TAG:
+                startAbout();
+                break;
+            case INTRO_TAG:
+                startIntro();
+                break;
         }
     }
 
@@ -157,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 // turn on GPS
                 Log.w("GPS isGPSEnable: ", String.valueOf(isGPSEnable));
                 isGPS = isGPSEnable;
-//                startForecast();
             }
         });
 
@@ -171,8 +183,10 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 for (Location location : locationResult.getLocations()) {
                     if (location != null) {
                         saveLocation(location);
-                        startForecast();
-                        Log.w("GPS setupLocation", location.toString());
+
+                            if (!firstLaunch) startForecast();
+
+                            Log.w("GPS setupLocation", location.toString());
 
                         if (mFusedLocationClient != null) {
                             mFusedLocationClient.removeLocationUpdates(locationCallback);
@@ -202,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 mFusedLocationClient.getLastLocation().addOnSuccessListener(MainActivity.this, location -> {
                     if (location != null) {
                         saveLocation(location);
-                        startForecast();
+                        if (!firstLaunch) startForecast();
                         Log.w("GPS getLocation", location.toString());
 
                     } else {
@@ -247,9 +261,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == AppConstants.GPS_REQUEST) {
                 isGPS = true; // flag maintain before get location
-//                startForecast();
                 setupLocation();
-//                getLocation();
             }
         }
     }
@@ -262,11 +274,9 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
     private void saveLocation(Location location){
         AppPreferences.setLocationDetails(this, location.getLatitude(), location.getLongitude());
-//        startForecast();
     }
 
     private void resetLocation(){
         AppPreferences.resetLocationCoordinates(this);
-//        startForecast();
     }
 }

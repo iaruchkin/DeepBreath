@@ -270,4 +270,18 @@
     <string name="very_unhealty_full">Health warnings of emergency conditions. The entire population is more likely to be affected.</string>
     <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
 
+    <!--About layout-->
+    <string name="email_adress" translatable="false">iaruchkin@gmail.com</string>
+    <string name="error_no_email_app">Error! There is no email app!</string>
+    <string name="error_no_browser">Error! There is no browser app!</string>
+    <string name="github_link" translatable="false">https://github.com/iaruchkin/DeepBreath</string>
+    <string name="aqi_link" translatable="false">http://aqicn.org</string>
+    <string name="weather_link" translatable="false">https://www.apixu.com</string>
+    <string name="icons_link" translatable="false">https://www.flaticon.com/authors/smashicons</string>
+    <string name="logo_link" translatable="false">https://www.flaticon.com/authors/vectors-market</string>
+    <string name="subject_email">deep breath app</string>
+    <string name="intro_page1_title">hello</string>
+    <string name="intro_page2_title">world</string>
+    <string name="intro_page3_title">from viewpager</string>
+
 </resources>

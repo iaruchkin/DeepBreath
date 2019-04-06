@@ -1,5 +1,6 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
+import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.ConditionEntity
 import com.iaruchkin.deepbreath.room.ForecastEntity
@@ -18,6 +19,7 @@ import java.util.*
 class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, private val condition: ConditionEntity)
     : Item(), ExpandableItem{
 
+    internal var context = App.INSTANCE.applicationContext
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -28,9 +30,13 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
                 viewHolder.weather_description.text = condition.nightText
         }
 
-        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.maxtemp_c)
-        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.mintemp_c)
+        val highString = WeatherUtils.formatTemperature(context, forecastEntity.getMaxtemp_c())
+        val lowString = WeatherUtils.formatTemperature(context, forecastEntity.getMintemp_c())
 
+        viewHolder.high_value.text = highString
+        viewHolder.low_value.text = lowString
+//        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.maxtemp_c)
+//        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.mintemp_c)
         var format = "%s, %s"
         if(forecastEntity.locationRegion != "") format = "%s, %s, %s"
         viewHolder.location_desc.text = String.format(Locale.getDefault(), format, forecastEntity.locationCountry, forecastEntity.locationName, forecastEntity.locationRegion)
