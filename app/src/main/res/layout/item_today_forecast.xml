@@ -17,7 +17,7 @@
     <ImageView
         android:src="@drawable/ic_factory_round"
         android:layout_width="match_parent"
-        android:layout_height="265dp"
+        android:layout_height="340dp"
         android:scaleType="matrix"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,24 +41,43 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/location_desc"
             tools:text="Today, April 03" />
+
+        <TextView
+            android:id="@+id/recomendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.428"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aqi_pre_card"
+            tools:text="@string/pre_unhealthy_recomendation" />
 
         <!-- Icon indicating weather condition -->
         <ImageView
             android:id="@+id/weather_icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginBottom="36dp"
+            android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recomendation"
             app:layout_constraintEnd_toStartOf="@+id/aqi_pre_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -122,20 +141,18 @@
             layout="@layout/aqi_card_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="18dp"
-            app:layout_constraintBottom_toTopOf="@+id/date"
+            android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/location_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/date" />
 
         <TextView
             android:id="@+id/location_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
             android:textColor="@color/secondary_text"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/aqi_pre_card"

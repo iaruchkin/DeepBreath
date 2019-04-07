@@ -61,13 +61,11 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     @Override
     protected void onFirstViewAttach() {
-        loadData(true, PreferencesHelper.getLocation(context));
+        loadData(false, PreferencesHelper.getLocation(context));
     }
 
     public void loadData(Boolean forceload, Location location){
 
-//        if(location != null) {
-//        if(AppPreferences.isLocationLatLonAvailable(context)) {
 //        if(isGps && AppPreferences.isLocationLatLonAvailable(context)){
         if(isGps){
             aqiCurrentLocation = PreferencesHelper.getAqiParameter(context);
@@ -84,21 +82,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             loadForecastFromNet(weatherCurrentLocation);
             loadCondition();
         }
-//        loadDummy();
-    }
-
-    private void loadDummy(){
-        List<ForecastEntity> weatherEntities = new ArrayList<>();
-        ForecastEntity dummy = new ForecastEntity();
-        dummy.setLocationName("Moscow");
-        dummy.setId("1qwe");
-//        dummy.setDate("02/03/2019");
-        dummy.setAvgtemp_c(30.1);
-
-        weatherEntities.add(dummy);
-        weatherEntities.add(dummy);
-
-//        getViewState().showForecastData(weatherEntities);
     }
 
     private void loadWeatherFromDb(String geo){

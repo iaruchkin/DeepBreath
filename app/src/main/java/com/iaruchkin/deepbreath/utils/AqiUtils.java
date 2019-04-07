@@ -109,4 +109,24 @@ public final class AqiUtils {
         Log.e(LOG_TAG, "Unknown Weather: " + aqi);
         return R.string.pollution_moderate;
     }
+
+    public static int getRecomendation(int aqi) {
+
+            if (aqi >= 0 && aqi <= 50) {
+                return R.string.good_recomendation;
+            } else if (aqi > 50 && aqi <= 100) {
+                return R.string.moderate_recomendation;
+            } else if (aqi > 100 && aqi <= 150) {
+                return R.string.pre_unhealthy_recomendation;
+            } else if (aqi > 150 && aqi <= 200) {
+                return R.string.unhealthy_recomendation;
+            } else if (aqi > 200 && aqi <= 300) {
+                return R.string.very_unhealty_recomendation;
+            } else if (aqi > 300) {
+                return R.string.hazardous_recomendation;
+            }
+
+            Log.e(LOG_TAG, "Unknown Weather: " + aqi);
+            return R.string.moderate_recomendation;
+    }
 }

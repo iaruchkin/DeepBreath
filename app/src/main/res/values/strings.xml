@@ -270,6 +270,13 @@
     <string name="very_unhealty_full">Health warnings of emergency conditions. The entire population is more likely to be affected.</string>
     <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
 
+    <string name="good_recomendation">Enjoy your usual outdoor activities. We recommend opening your windows and ventilating your home to bring in fresh, oxygen-rich air.</string>
+    <string name="moderate_recomendation">Enjoy your usual outdoor activities. We recommend opening your windows and ventilating your home to bring in fresh, oxygen-rich air.</string>
+    <string name="pre_unhealthy_recomendation">The general public should greatly reduce outdoor exertion. Sensitive groups should avoid all outdoor activity. Everyone should take care to wear a pollution mask. Ventilation is discouraged. Air purifiers should be turned on.</string>
+    <string name="unhealthy_recomendation">Outdoor exertion, particularly for sensitive groups, should be limited. Everyone should take care to wear a pollution mask. Ventilation is not recommended. Air purifiers should be turned on if indoor air quality is unhealthy.</string>
+    <string name="very_unhealty_recomendation">The general public should greatly reduce outdoor exertion. Sensitive groups should avoid all outdoor activity. Everyone should take care to wear a pollution mask. Ventilation is discouraged. Air purifiers should be turned on.</string>
+    <string name="hazardous_recomendation">The general public should avoid outdoor exertion. Everyone should take care to wear a quality pollution mask. Ventilation is discouraged. Homes should be sealed and air purifiers turned on.</string>
+
     <!--About layout-->
     <string name="email_adress" translatable="false">iaruchkin@gmail.com</string>
     <string name="error_no_email_app">Error! There is no email app!</string>

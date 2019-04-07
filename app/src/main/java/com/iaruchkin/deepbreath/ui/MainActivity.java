@@ -32,6 +32,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
 
     public final static String WEATHER_LIST_TAG = "WEATHER_LIST";
@@ -57,6 +59,13 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         init();
 //        setupLocation();
 //        startForecast();
+
+        Snackbar snack = Snackbar.make(
+                findViewById(android.R.id.content),
+                "Hey, this is a MD2 toast!",
+                Snackbar.LENGTH_SHORT
+        );
+        snack.show();
 
         if (savedInstanceState == null){
             firstLaunch = AppPreferences.needToShowIntro(this);
@@ -142,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         switch (tag) {
             case WEATHER_LIST_TAG:
                 startForecast();
+                setupLocation();
                 break;
             case SETTINGS_TAG:
                 startSettings();
@@ -247,6 +257,9 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
                 } else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+
+
+
                     resetLocation();
                     Log.w("GPS missingPermission :", "Permission denied");
                 }

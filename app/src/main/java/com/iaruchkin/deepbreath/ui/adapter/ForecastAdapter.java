@@ -171,6 +171,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         private final TextView aqiDesc;
         private final CardView aqiCard;
         private final CardView weatherCard;
+        private final TextView recomendation;
+
 //        private final View weatherList;
 
 
@@ -186,7 +188,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             weatherDescTextView.setText(dayText);
 
-            dateTextView.setText(String.format(Locale.getDefault(), "updated"+" %s", (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
+            dateTextView.setText(String.format(Locale.getDefault(), "today"+" %s", (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
 
 //            highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
 //            lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getFeelslike_c()));
@@ -196,6 +198,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiDesc.setText(AqiUtils.getPollutionLevel(aqi));
 //            aqiCard.setBackgroundResource(AqiUtils.getColor(aqi));
             aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqi)));
+
+            recomendation.setText(AqiUtils.getRecomendation(aqi));
 
 //            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
 //            weatherList.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
@@ -235,6 +239,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiCard = view.findViewById(R.id.aqi_pre_card);
             weatherCard = view.findViewById(R.id.today_card);
 //            weatherList = view.findViewById(R.id.weather_list);
+            recomendation = view.findViewById(R.id.recomendation);
 
             view.setOnClickListener(this);
         }
