@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.intro;
+package com.iaruchkin.deepbreath.ui.fragments.intro;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import me.relex.circleindicator.CircleIndicator;
 
+import static com.iaruchkin.deepbreath.ui.MainActivity.GET_LOCATION;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
 public class IntroFragment extends Fragment {
@@ -51,6 +52,7 @@ public class IntroFragment extends Fragment {
             int current = mPager.getCurrentItem()+1;
             if (current < NUM_PAGES) {
                 mPager.setCurrentItem(current);
+//                if(current == 2) getLocation();
             } else {
                 startApp();
             }
@@ -70,6 +72,7 @@ public class IntroFragment extends Fragment {
             if (position == NUM_PAGES - 1) {
                 btnNext.setText("START");
                 btnSkip.setVisibility(View.GONE);
+                getLocation();
             } else {
                 btnNext.setText("NEXT");
                 btnSkip.setVisibility(View.VISIBLE);
@@ -90,6 +93,12 @@ public class IntroFragment extends Fragment {
     private void startApp() {
         if (listener != null) {
             listener.onActionClicked(WEATHER_LIST_TAG);
+        }
+    }
+
+    private void getLocation() {
+        if (listener != null) {
+            listener.onActionClicked(GET_LOCATION);
         }
     }
 
@@ -127,11 +136,11 @@ public class IntroFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return IntroPage.newInstance(R.drawable.ic_factory, R.string.intro_page1_title, R.color.bg_screen1);
+                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_title, R.color.colorPrimary);
                 case 1:
-                    return IntroPage.newInstance(R.drawable.ic_factory_round, R.string.intro_page2_title, R.color.bg_screen2);
+                    return IntroPage.newInstance(R.drawable.ic_weather_icon_thunder, R.string.intro_page2_title, R.string.intro_page2_title, R.color.unhealthy);
                 case 2:
-                    return IntroPage.newInstance(R.drawable.ic_eco_factory, R.string.intro_page3_title, R.color.bg_screen3);
+                    return IntroPage.newInstance(R.drawable.ic_gps_map, R.string.intro_page3_title, R.string.intro_page3_title, R.color.colorPrimaryDark);
             }
             return null;
         }

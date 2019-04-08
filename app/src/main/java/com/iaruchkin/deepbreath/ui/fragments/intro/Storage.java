@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.intro;
+package com.iaruchkin.deepbreath.ui.fragments.intro;
 
 
 import android.content.Context;

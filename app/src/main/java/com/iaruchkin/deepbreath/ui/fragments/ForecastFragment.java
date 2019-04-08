@@ -37,6 +37,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG;
+import static com.iaruchkin.deepbreath.ui.MainActivity.GET_LOCATION;
 import static com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
 
@@ -181,10 +182,10 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayUseLogoEnabled(true);
+//        actionBar.setDisplayUseLogoEnabled(true);
 
-        actionBar.setTitle(" Deep Breath");
-        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
+        actionBar.setTitle(getResources().getString(R.string.app_name));
+//        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
     }
 
     private void setHomeButton(View view) {
@@ -217,6 +218,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     public void onRefresh() {
 //        loadData(true);
         listener.onActionClicked(WEATHER_LIST_TAG);
+        listener.onActionClicked(GET_LOCATION);
+
     }
 
     private void setupUx() {
@@ -277,10 +280,10 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     public void showState(@NonNull State state) {
         switch (state) {
             case HasData:
-//                mError.setVisibility(View.GONE);
+                mError.setVisibility(View.GONE);
 //                mLoadingIndicator.setVisibility(View.GONE);
 
-//                mRecyclerView.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.VISIBLE);
                 showRefresher(false);
                 break;
 
@@ -297,17 +300,17 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
             case NetworkError:
 //                mLoadingIndicator.setVisibility(View.GONE);
                 mRefresh.setVisibility(View.GONE);
-                mError.setVisibility(View.VISIBLE);
+                mError.setVisibility(View.GONE);
                 showRefresher(false);
                 break;
 
-            case ServerError:
-//                mLoadingIndicator.setVisibility(View.GONE);
-//                mRecyclerView.setVisibility(View.GONE);
-                mRefresh.setVisibility(View.GONE);
-                mError.setVisibility(View.VISIBLE);
-                showRefresher(false);
-                break;
+//            case ServerError:
+////                mLoadingIndicator.setVisibility(View.GONE);
+////                mRecyclerView.setVisibility(View.GONE);
+//                mRefresh.setVisibility(View.GONE);
+//                mError.setVisibility(View.VISIBLE);
+//                showRefresher(false);
+//                break;
 
             case Loading:
                 mError.setVisibility(View.GONE);

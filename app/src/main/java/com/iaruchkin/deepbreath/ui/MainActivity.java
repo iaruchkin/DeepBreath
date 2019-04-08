@@ -25,14 +25,14 @@ import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
-import com.iaruchkin.deepbreath.ui.intro.IntroFragment;
+import com.iaruchkin.deepbreath.ui.fragments.intro.IntroFragment;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.snackbar.Snackbar;
+//import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
 
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String SETTINGS_TAG = "SETTINGS";
     public final static String INTRO_TAG = "INTRO";
     public final static String ABOUT_TAG = "ABOUT";
+    public final static String GET_LOCATION = "LOCATION";
+
     public boolean firstLaunch = false;
 
     private FragmentManager mFragmentManager;
@@ -60,18 +62,18 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 //        setupLocation();
 //        startForecast();
 
-        Snackbar snack = Snackbar.make(
-                findViewById(android.R.id.content),
-                "Hey, this is a MD2 toast!",
-                Snackbar.LENGTH_SHORT
-        );
-        snack.show();
+//        Snackbar snack = Snackbar.make(
+//                findViewById(android.R.id.content),
+//                "Hey, this is a MD2 toast!",
+//                Snackbar.LENGTH_SHORT
+//        );
+//        snack.show();
 
         if (savedInstanceState == null){
             firstLaunch = AppPreferences.needToShowIntro(this);
             if (firstLaunch) {
                 startIntro();
-                setupLocation();
+//                setupLocation();
             } else {
                 setupLocation();
                 startForecast();
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         switch (tag) {
             case WEATHER_LIST_TAG:
                 startForecast();
-                setupLocation();
+//                setupLocation();
                 break;
             case SETTINGS_TAG:
                 startSettings();
@@ -161,6 +163,9 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 break;
             case INTRO_TAG:
                 startIntro();
+                break;
+            case GET_LOCATION:
+                setupLocation();
                 break;
         }
     }
