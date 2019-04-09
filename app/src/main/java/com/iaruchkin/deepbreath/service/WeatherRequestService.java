@@ -65,7 +65,6 @@ public class WeatherRequestService extends Worker {
         Intent cancelIntent = new Intent(getApplicationContext(), NetworkUtils.CancelReceiver.class);
         cancelIntent.setAction(ACTION_CANCEL);
 
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, cancelIntent, 0);
         PendingIntent onClickPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
         String message = getApplicationContext().getString(AqiUtils.getPollutionLevel(aqi));
@@ -79,7 +78,6 @@ public class WeatherRequestService extends Worker {
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentIntent(onClickPendingIntent)
                     .setAutoCancel(true);
-//                    .addAction(R.drawable.art_clouds, getApplicationContext().getString(R.string.cancel_work), pendingIntent);
 
         else
             notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)

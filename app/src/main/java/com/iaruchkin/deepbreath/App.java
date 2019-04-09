@@ -8,6 +8,7 @@ import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.service.NetworkUtils;
 import com.iaruchkin.deepbreath.service.WeatherRequestService;
 
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.Constraints;
@@ -15,6 +16,8 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
+
+import static com.iaruchkin.deepbreath.service.WeatherRequestService.WORK_TAG;
 
 public class App extends Application {
 
@@ -32,41 +35,60 @@ public class App extends Application {
             registerReceiver(NetworkUtils.getInstance().getCancelReceiver(),
                     new IntentFilter());
 
-        performsScheduledWork();
+            performsScheduledWork();
 
         }
     }
 
-    private static void performsScheduledWork(){
+    public static void performsScheduledWork(){
+        int hourOfTheDay = 8; // When to run the job
+        int repeatInterval = 1; // In days
+
+        long flexTime = calculateFlex(hourOfTheDay, repeatInterval);
+
         Constraints constraints = new Constraints.Builder()
 //                .setRequiresCharging(true)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
-        WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class,
-                15, TimeUnit.MINUTES)//todo set correct repeat interval and ability to disable notifications
-                .setConstraints(constraints)
-                .addTag(WeatherRequestService.WORK_TAG)
-                .build();
-
         if(AppPreferences.areNotificationsEnabled(INSTANCE.getApplicationContext())) {
-            NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(workRequest.getId());
-            WorkManager.getInstance()
-                    .enqueue(workRequest);
+
+            WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class,
+                    repeatInterval, TimeUnit.DAYS,
+                    flexTime, TimeUnit.MILLISECONDS)
+                    .setConstraints(constraints)
+                    .addTag(WORK_TAG)
+                    .build();
+
+                NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(workRequest.getId());
+                WorkManager.getInstance()
+                        .enqueue(workRequest);
         }
         else {
-            WorkManager.getInstance().cancelWorkById(workRequest.getId());
+            WorkManager.getInstance().cancelAllWorkByTag(WORK_TAG);
+//            cancelWorkById(workRequest.getId());
+        }
+    }
+
+    private static long calculateFlex(int hourOfTheDay, int periodInDays) {
+
+        // Initialize the calendar with today and the preferred time to run the job.
+        Calendar cal1 = Calendar.getInstance();
+        cal1.set(Calendar.HOUR_OF_DAY, hourOfTheDay);
+        cal1.set(Calendar.MINUTE, 0);
+        cal1.set(Calendar.SECOND, 0);
+
+        // Initialize a calendar with now.
+        Calendar cal2 = Calendar.getInstance();
+
+        if (cal2.getTimeInMillis() < cal1.getTimeInMillis()) {
+            // Add the worker periodicity.
+            cal2.setTimeInMillis(cal2.getTimeInMillis() + TimeUnit.DAYS.toMillis(periodInDays));
         }
 
+        long delta = (cal2.getTimeInMillis() - cal1.getTimeInMillis());
 
-//        PeriodicWorkRequest work = new PeriodicWorkRequest.Builder(NewsUpdateWorker.class,
-//                15, TimeUnit.MINUTES, 15, TimeUnit.MINUTES)
-//                .addTag("UPDATE")
-//                .setConstraints(constraints)
-//                .build();
-
-//        NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(work.getId());//todo выяснить зачем это
-//        WorkManager.getInstance()
-//                .enqueueUniquePeriodicWork("UPDATE", ExistingPeriodicWorkPolicy.REPLACE, work);
+        return ((delta > PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS) ? delta
+                : PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS);
     }
 }

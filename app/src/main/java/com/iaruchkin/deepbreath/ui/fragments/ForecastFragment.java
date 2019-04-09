@@ -273,7 +273,10 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                          @NonNull List<AqiEntity> aqiEntity,
                          @NonNull List<ConditionEntity> conditionEntity) {
 
-        if(weatherEntity.size() != 0 && aqiEntity.size() != 0) {
+        if(forecastEntity.size() != 0
+                && weatherEntity.size() != 0
+                && aqiEntity.size() != 0
+                && conditionEntity.size() != 0) {
             mAdapter.setData(forecastEntity, weatherEntity.get(0), aqiEntity.get(0), conditionEntity); //todo throws java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0
         }
         weatherItem = weatherEntity.get(0);
