@@ -53,20 +53,20 @@ public class ConverterAqi {
 
         return listDao;
     }
-/*
-    pm25: "PM<sub>2.5</sub>",
-    pm10: "PM<sub>10</sub>",
-    o3: "Ozone",
-    no2: "Nitrogen Dioxide",
-    so2: "Sulphur Dioxide",
-    co: "Carbon Monoxyde",
-    t: "Temperature",
-    w: "Wind",
-    r: "Rain (precipitation)",
-    h: "Relative Humidity",
-    d: "Dew",
-    p: "Atmostpheric Pressure"
-*/
+
+//    pm25: "PM<sub>2.5</sub>",
+//    pm10: "PM<sub>10</sub>",
+//    o3: "Ozone",
+//    no2: "Nitrogen Dioxide",
+//    so2: "Sulphur Dioxide",
+//    co: "Carbon Monoxyde",
+//    t: "Temperature",
+//    w: "Wind",
+//    r: "Rain (precipitation)",
+//    h: "Relative Humidity",
+//    d: "Dew",
+//    p: "Atmostpheric Pressure"
+
     public static AqiEntity getDataById(Context context, String id){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         return db.aqiDao().getDataById(id);

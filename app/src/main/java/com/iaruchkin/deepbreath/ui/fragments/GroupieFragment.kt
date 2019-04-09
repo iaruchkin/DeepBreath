@@ -27,6 +27,9 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
 
 import kotlinx.android.synthetic.main.fragment_details.*
+import android.content.Intent
+import java.util.*
+
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
@@ -116,6 +119,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
     private fun generateWeather(data: WeatherEntity): MutableList<WeatherItem>{
 
+        weather = data
+
         val wind = data.wind_kph
         val pressureMb = data.pressure_mb
         val precipMm = data.precip_mm
@@ -134,6 +139,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
     }
 
     private fun generateAqi(data: AqiEntity): MutableList<AqiItem>{
+
+        aqi = data
 
         val pm25 = data.pm25
         val pm10 = data.pm10
@@ -169,6 +176,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
     private fun generateForecast(data: ForecastEntity): MutableList<WeatherItem>{
 
+        forecast = data
+
         val wind = data.maxwind_kph
         val precipMm = data.totalprecip_mm
         val moonrise = StringUtils.formatTime(data.moonrise, "HH:mm")
@@ -199,6 +208,19 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
+//    private fun share (){
+//        val i = Intent(Intent.ACTION_SEND)
+//        i.type = "text/plain"
+//        i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+//        lateinit var message : String
+//
+//        if (weather!=null && aqi!=null) {
+//            message = String.format(Locale.getDefault(), "\nair putity level in %s - %s\n\n %s", weather.location, aqi.aqi, getString(R.string.github_link))
+//
+//        i.putExtra(Intent.EXTRA_TEXT, message)}
+//        startActivity(Intent.createChooser(i, "Share"))
+//    }
 
     private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity){
 

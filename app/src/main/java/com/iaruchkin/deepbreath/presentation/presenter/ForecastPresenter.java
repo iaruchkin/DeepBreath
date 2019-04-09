@@ -90,7 +90,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .getDataByParameter(context, geo))//todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateWeatherData(data, geo), this::handleError);
+                .subscribe(data -> updateWeatherData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
@@ -101,7 +101,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .getDataByParameter(context, geo))//todo get data by location!!! bug with multiple location forecast
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateForecastData(data, geo), this::handleError);
+                .subscribe(data -> updateForecastData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
@@ -112,7 +112,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .getDataByParameter(context, geo))              //todo real data
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(data -> updateAqiData(data, geo), this::handleError);
+                .subscribe(data -> updateAqiData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
         Log.e(PRESENTER_WEATHER_TAG,"Load AqiData from db");
 
@@ -348,5 +348,11 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         getViewState().showState(State.NetworkError);
         Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
         Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
+    }
+
+    private void handleDbError(Throwable th) {
+        getViewState().showState(State.DbError);
+        Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
+        Log.e(PRESENTER_WEATHER_TAG, "handleDbError executed on thread: " + Thread.currentThread().getName());
     }
 }

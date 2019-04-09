@@ -28,8 +28,10 @@ public class ConverterWeather {
 
             //location
             weatherEntity.setLocation(weatherDTO.getLocation().getName());
+            weatherEntity.setCountry(weatherDTO.getLocation().getCountry());
+            weatherEntity.setRegion(weatherDTO.getLocation().getRegion());
 
-            //time
+        //time
             weatherEntity.setLast_updated(weatherDTO.getCurrent().getLastUpdated());
             weatherEntity.setLast_updated_epoch(weatherDTO.getCurrent().getLastUpdateEpoch());
             weatherEntity.setIsDay(weatherDTO.getCurrent().getIsDay());

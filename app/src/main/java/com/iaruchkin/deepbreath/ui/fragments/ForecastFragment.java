@@ -1,6 +1,8 @@
 package com.iaruchkin.deepbreath.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +25,11 @@ import com.iaruchkin.deepbreath.room.ConditionEntity;
 import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter;
+import com.iaruchkin.deepbreath.utils.AqiUtils;
+import com.iaruchkin.deepbreath.utils.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +58,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 //    private LocationCallback locationCallback;
 //    private boolean isGPS = false;
 //    private FusedLocationProviderClient mFusedLocationClient;
+
+    private WeatherEntity weatherItem;
+    private AqiEntity aqiItem;
 
     @InjectPresenter
     ForecastPresenter forecastPresenter;
@@ -166,18 +174,40 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                     listener.onActionClicked(ABOUT_TAG);
                 }
                 return true;
+            case R.id.action_share:
+                share();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @SuppressLint("StringFormatMatches")
+    private void share(){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+
+        String  message = getString(R.string.github_link);
+
+        if(aqiItem != null && weatherItem != null) {
+            message = String.format(Locale.getDefault(), getString(R.string.share_message)
+                    , StringUtils.transliterateLatToRus(weatherItem.getLocation(), weatherItem.getCountry())
+                    , getResources().getString(AqiUtils.getPollutionLevel(aqiItem.getAqi()))
+                    , getString(R.string.github_link));
+        }
+
+        i.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(i, getString(R.string.share)));
+    }
+
     @Override
     public void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, ConditionEntity conditionEntity, int viewType) {
-        listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId(), conditionEntity.getId(), viewType);//todo передать нужное значение
+        listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId(), conditionEntity.getId(), viewType);
 
     }
 
-    private void setupToolbar() {//todo привести в порядок, сейчас работает через стили и манифест
+    private void setupToolbar() {
         setHasOptionsMenu(true);
         ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
@@ -246,6 +276,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         if(weatherEntity.size() != 0 && aqiEntity.size() != 0) {
             mAdapter.setData(forecastEntity, weatherEntity.get(0), aqiEntity.get(0), conditionEntity); //todo throws java.lang.IndexOutOfBoundsException: Invalid index 0, size is 0
         }
+        weatherItem = weatherEntity.get(0);
+        aqiItem = aqiEntity.get(0);
     }
 
 //    @Override
@@ -301,6 +333,12 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 //                mLoadingIndicator.setVisibility(View.GONE);
                 mRefresh.setVisibility(View.GONE);
                 mError.setVisibility(View.GONE);
+                showRefresher(false);
+                break;
+
+            case DbError:
+                mRefresh.setVisibility(View.GONE);
+                mError.setVisibility(View.VISIBLE);
                 showRefresher(false);
                 break;
 

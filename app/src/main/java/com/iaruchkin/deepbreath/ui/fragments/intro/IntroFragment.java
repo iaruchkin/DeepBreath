@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
+
+import java.util.prefs.Preferences;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +31,7 @@ public class IntroFragment extends Fragment {
     private static final int NUM_PAGES = 3;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
-    private Button btnSkip, btnNext;
+    private Button btnSkip, btnNext, btnPermission;
     private MessageFragmentListener listener;
 
     @Override
@@ -44,15 +47,28 @@ public class IntroFragment extends Fragment {
 
         btnSkip = view.findViewById(R.id.btn_skip);
         btnNext = view.findViewById(R.id.btn_next);
+        btnPermission = view.findViewById(R.id.btn_permission);
 
-        btnSkip.setOnClickListener(v -> startApp());
+        btnPermission.setOnClickListener(v -> {
+            getLocation();
+            btnNext.setVisibility(View.VISIBLE);
+            btnSkip.setVisibility(View.GONE);
+            btnPermission.setVisibility(View.GONE);
+            btnNext.setText(getString(R.string.start_button));
+        });
+
+        btnSkip.setOnClickListener(v -> {
+                startApp();
+                });
 
         btnNext.setOnClickListener(v -> {
 
             int current = mPager.getCurrentItem()+1;
             if (current < NUM_PAGES) {
                 mPager.setCurrentItem(current);
-//                if(current == 2) getLocation();
+                if (current == NUM_PAGES - 1){
+                    showLastPage();
+                }
             } else {
                 startApp();
             }
@@ -70,12 +86,12 @@ public class IntroFragment extends Fragment {
         public void onPageSelected(int position) {
 
             if (position == NUM_PAGES - 1) {
-                btnNext.setText("START");
-                btnSkip.setVisibility(View.GONE);
-                getLocation();
+                showLastPage();
             } else {
-                btnNext.setText("NEXT");
+                btnNext.setVisibility(View.VISIBLE);
+                btnNext.setText(getString(R.string.next_button));
                 btnSkip.setVisibility(View.VISIBLE);
+                btnSkip.setText(getString(R.string.skip_button));
             }
         }
 
@@ -90,7 +106,16 @@ public class IntroFragment extends Fragment {
         }
     };
 
+    private void showLastPage(){
+        btnNext.setVisibility(View.GONE);
+        btnSkip.setVisibility(View.VISIBLE);
+        btnSkip.setText(getString(R.string.later_button));
+        btnPermission.setVisibility(View.VISIBLE);
+        btnPermission.setText(getString(R.string.permission_button));
+    }
+
     private void startApp() {
+        AppPreferences.introFinished(getContext());
         if (listener != null) {
             listener.onActionClicked(WEATHER_LIST_TAG);
         }
@@ -136,13 +161,14 @@ public class IntroFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_title, R.color.colorPrimary);
+                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_desc, R.color.colorPrimary);
                 case 1:
-                    return IntroPage.newInstance(R.drawable.ic_weather_icon_thunder, R.string.intro_page2_title, R.string.intro_page2_title, R.color.unhealthy);
+                    return IntroPage.newInstance(R.drawable.ic_weather_icon_thunder, R.string.intro_page2_title, R.string.intro_page2_desc, R.color.unhealthy);
                 case 2:
-                    return IntroPage.newInstance(R.drawable.ic_gps_map, R.string.intro_page3_title, R.string.intro_page3_title, R.color.colorPrimaryDark);
+                    return IntroPage.newInstance(R.drawable.ic_gps_map, R.string.intro_page3_title, R.string.intro_page3_desc, R.color.colorPrimaryDark);
+                default:
+                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_desc, R.color.colorPrimary);
             }
-            return null;
         }
 
     }

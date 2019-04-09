@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
     private void startDetails(String idForecast, String idWeather, String idAqi, String idCondition, int viewType) {
-        mGroupieFragment = GroupieFragment.newInstance(idForecast, idWeather, idAqi, idCondition, viewType);//todo set correct string messages
+        mGroupieFragment = GroupieFragment.newInstance(idForecast, idWeather, idAqi, idCondition, viewType);
 //        mGroupieFragment = new GroupieFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -233,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                         saveLocation(location);
                         if (!firstLaunch) startForecast();
                         Log.w("GPS getLocation", location.toString());
-
                     } else {
                         mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
                     }

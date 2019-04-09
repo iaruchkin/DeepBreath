@@ -37,9 +37,11 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
         viewHolder.low_value.text = lowString
 //        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.maxtemp_c)
 //        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.mintemp_c)
-        var format = "%s, %s"
-        if(forecastEntity.locationRegion != "") format = "%s, %s, %s"
-        viewHolder.location_desc.text = String.format(Locale.getDefault(), format, forecastEntity.locationCountry, forecastEntity.locationName, forecastEntity.locationRegion)
+        var format = "%s"
+        if(forecastEntity.locationRegion != "") format = "%s, %s"
+        viewHolder.location_desc.text = String.format(Locale.getDefault(), format
+                , StringUtils.transliterateLatToRus(forecastEntity.locationName, forecastEntity.locationCountry)
+                , StringUtils.transliterateLatToRus(forecastEntity.locationRegion, forecastEntity.locationCountry))
 
         viewHolder.weather_icon.setImageResource(WeatherUtils.getLargeArtResource(condition.icon, forecastEntity.getIsDay()))
 

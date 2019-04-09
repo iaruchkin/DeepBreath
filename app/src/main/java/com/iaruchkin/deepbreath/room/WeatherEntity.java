@@ -28,6 +28,14 @@ public class WeatherEntity {
     private String mLocation;
 
     @NonNull
+    @ColumnInfo(name = "country")
+    private String mCountry;
+
+    @NonNull
+    @ColumnInfo(name = "region")
+    private String mRegion;
+
+    @NonNull
     @ColumnInfo(name ="last_updated_epoch")
     private int last_updated_epoch;
 
@@ -122,6 +130,15 @@ public class WeatherEntity {
         return mLocation;
     }
 
+    @NonNull
+    public String getCountry() {
+        return mCountry;
+    }
+
+    @NonNull
+    public String getRegion() {
+        return mRegion;
+    }
     public int getLast_updated_epoch() {
         return last_updated_epoch;
     }
@@ -211,6 +228,14 @@ public class WeatherEntity {
 
     public void setLocation(@NonNull String mLocation) {
         this.mLocation = mLocation;
+    }
+
+    public void setCountry(@NonNull String mCountry) {
+        this.mCountry = mCountry;
+    }
+
+    public void setRegion(@NonNull String mRegion) {
+        this.mRegion = mRegion;
     }
 
     public void setLast_updated_epoch(int last_updated_epoch) {

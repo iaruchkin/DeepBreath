@@ -1,7 +1,6 @@
 package com.iaruchkin.deepbreath.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -184,7 +183,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             imageView.setImageResource(WeatherUtils.getLargeArtResource(icon, weatherItem.getIsDay()));
 
             aqiTextView.setText(String.valueOf(aqi));
-            locationTextView.setText(forecastItem.getLocationName());
+            locationTextView.setText(StringUtils.transliterateLatToRus(forecastItem.getLocationName(), forecastItem.getLocationCountry()));
 
             weatherDescTextView.setText(dayText);
 

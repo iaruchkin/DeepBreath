@@ -10,6 +10,7 @@ public final class AppPreferences {
 
     public static final String PREF_COORD_LAT = "coord_lat";
     public static final String PREF_COORD_LONG = "coord_long";
+    public static final String FIRST = "first launch";
 
     public static void setLocationDetails(Context context, double lat, double lon) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -227,19 +228,26 @@ public final class AppPreferences {
     }
 
     public static boolean needToShowIntro(Context context) {
-        String FIRST = "first launch";
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
 
         boolean firstLaunch = sp.getBoolean(FIRST, true);
 
-        if(firstLaunch){
-            editor.putBoolean(FIRST, false);
-            editor.apply();
-            return firstLaunch;
-        }
+//        if(firstLaunch){
+//            editor.putBoolean(FIRST, false);
+//            editor.apply();
+//            return firstLaunch;
+//        }
 
         return firstLaunch;
+    }
+
+    public static void introFinished(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putBoolean(FIRST, false);
+        editor.apply();
     }
 }
