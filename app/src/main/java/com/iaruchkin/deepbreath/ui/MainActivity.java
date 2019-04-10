@@ -16,7 +16,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.iaruchkin.deepbreath.R;
-//import com.iaruchkin.deepbreath.ui.fragments.DetailFragment;
 import com.iaruchkin.deepbreath.common.AppConstants;
 import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.common.GpsUtils;
@@ -31,8 +30,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
-
-//import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
 
@@ -59,33 +56,17 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         super.onCreate(savedInstanceState);
 
         init();
-//        setupLocation();
-//        startForecast();
-
-//        Snackbar snack = Snackbar.make(
-//                findViewById(android.R.id.content),
-//                "Hey, this is a MD2 toast!",
-//                Snackbar.LENGTH_SHORT
-//        );
-//        snack.show();
 
         if (savedInstanceState == null){
             firstLaunch = AppPreferences.needToShowIntro(this);
             if (firstLaunch) {
                 startIntro();
-//                setupLocation();
             } else {
                 setupLocation();
                 startForecast();
             }
         }
     }
-
-    private void firstStart(){
-        startForecast();
-        setupLocation();
-    }
-
 
     private void startIntro(){
         mIntroFragment = new IntroFragment();
@@ -105,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     }
 
     private void startForecast() {
-//        mForecastFragment = new ForecastFragment();
         mForecastFragment = ForecastFragment.newInstance(isGPS);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -115,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
     private void startDetails(String idForecast, String idWeather, String idAqi, String idCondition, int viewType) {
         mGroupieFragment = GroupieFragment.newInstance(idForecast, idWeather, idAqi, idCondition, viewType);
-//        mGroupieFragment = new GroupieFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mGroupieFragment)
@@ -153,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         switch (tag) {
             case WEATHER_LIST_TAG:
                 startForecast();
-//                setupLocation();
                 break;
             case SETTINGS_TAG:
                 startSettings();
@@ -168,6 +146,22 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 setupLocation();
                 break;
         }
+    }
+
+    /**here get location and ask permissions
+     *
+     */
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private boolean isGPS = false;
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    private void saveLocation(Location location){
+        AppPreferences.setLocationDetails(this, location.getLatitude(), location.getLongitude());
+    }
+
+    private void resetLocation(){
+        AppPreferences.resetLocationCoordinates(this);
     }
 
     private void setupLocation() {
@@ -261,9 +255,6 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
                 } else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-
-
-
                     resetLocation();
                     Log.w("GPS missingPermission :", "Permission denied");
                 }
@@ -281,19 +272,5 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 setupLocation();
             }
         }
-    }
-
-//Location
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    private boolean isGPS = false;
-    private FusedLocationProviderClient mFusedLocationClient;
-
-    private void saveLocation(Location location){
-        AppPreferences.setLocationDetails(this, location.getLatitude(), location.getLongitude());
-    }
-
-    private void resetLocation(){
-        AppPreferences.resetLocationCoordinates(this);
     }
 }

@@ -9,18 +9,15 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.iaruchkin.deepbreath.common.ApiKeys.WEATHER_API_KEY;
+
 public final class WeatherApiKeyInterceptor implements Interceptor {
 
-//    http://api.apixu.com/v1/forecast.json?key=b0fc1e34365e482ab57160541192402&q=Moscow&days=10
-    private static final String API_KEY = "b0fc1e34365e482ab57160541192402";
     private static final String API_KEY_HEADER_NAME = "key";
     private static final String CITY_HEADER_NAME = "q";
     private static final String CITY = "Moscow";
     private static final String TIME_HEADER_NAME = "days";
     private static final String TIME = "10";
-
-    private static final String GPS = "48.8567,2.3508";
-    private static final String IP = "109.252.99.90";
 
     public static WeatherApiKeyInterceptor create() {
         return new WeatherApiKeyInterceptor();
@@ -36,7 +33,7 @@ public final class WeatherApiKeyInterceptor implements Interceptor {
 
         final HttpUrl url = requestWithoutApiKey.url()
                 .newBuilder()
-                .addQueryParameter(API_KEY_HEADER_NAME, API_KEY)
+                .addQueryParameter(API_KEY_HEADER_NAME, WEATHER_API_KEY)
                 .addQueryParameter(TIME_HEADER_NAME, TIME)
                 .build();
 

@@ -35,7 +35,6 @@ public class ConverterCity {
             cityEntity.setLocationLocaltime(weatherDTO.getLocation().getLocaltime());
             cityEntity.setLocationLocaltime_epoch(weatherDTO.getLocation().getLocaltimeEpoch());
 
-
             listDao.add(cityEntity);
 
         Log.w(TAG, listDao.toString());
@@ -51,13 +50,13 @@ public class ConverterCity {
     public static List<CityEntity> getDataByLocation(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Weather data loaded from DB");
-        return db.cityDao().getByParameter(location); //todo think about request
+        return db.cityDao().getByParameter(location);
     }
 
     public static List<CityEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Weather data loaded from DB");
-        return db.cityDao().getAll(); //todo think about request
+        return db.cityDao().getAll();
     }
 
     public static void saveToDb(Context context, CityEntity cityEntity, String id){

@@ -4,7 +4,6 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 

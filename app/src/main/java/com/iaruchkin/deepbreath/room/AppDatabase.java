@@ -1,9 +1,6 @@
 package com.iaruchkin.deepbreath.room;
 
 import android.content.Context;
-
-import com.iaruchkin.deepbreath.network.aqicnDTO.City;
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;

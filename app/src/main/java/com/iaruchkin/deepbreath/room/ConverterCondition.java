@@ -60,13 +60,13 @@ public class ConverterCondition {
     public static List<ConditionEntity> getDataByLang(Context context, Integer lang) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Condition data loaded from DB");
-        return db.conditionDao().getDataByLang(lang);//todo think about request
+        return db.conditionDao().getDataByLang(lang);
     }
 
     public static List<ConditionEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Condition data loaded from DB");
-        return db.conditionDao().getAll();//todo think about request
+        return db.conditionDao().getAll();
     }
 
     public static void saveAllDataToDb(Context context, List<ConditionEntity> list){

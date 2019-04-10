@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 
 public class ConditionParser {
 
+    private String LOG = "ConditionParser";
+
     private static ConditionParser networkSilngleton;
     private List<WeatherCondition> weatherConditions;
 
@@ -46,17 +48,17 @@ public class ConditionParser {
                 stream.close();
                 tContents = new String(buffer);
             } catch (IOException e) {
-                //todo Handle exceptions here
+                Log.e(LOG, e.getMessage(), e);
             }
 
-        Log.e("Log 1  ",tContents);
+        Log.e(LOG,tContents);
 
         Gson gson = new Gson();
 
         Type collectionType = new TypeToken<Collection<WeatherCondition>>(){}.getType();
         List<WeatherCondition> enums = gson.fromJson(tContents, collectionType);
 
-        Log.e("Log 2  ", enums.get(0).getDay());
+        Log.e(LOG, enums.get(0).getDay());
         return enums;
     }
 

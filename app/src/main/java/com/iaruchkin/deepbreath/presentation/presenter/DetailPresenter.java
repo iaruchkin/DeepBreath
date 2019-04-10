@@ -6,9 +6,6 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
-import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.network.AqiApi;
-import com.iaruchkin.deepbreath.network.WeatherApi;
 import com.iaruchkin.deepbreath.presentation.view.DetailView;
 import com.iaruchkin.deepbreath.room.AqiEntity;
 import com.iaruchkin.deepbreath.room.ConditionEntity;
@@ -34,9 +31,6 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     private ConditionEntity conditionEntity;
     private AqiEntity aqiEntity;
 
-    private WeatherApi weatherApi;
-    private AqiApi aqiApi;
-
     private final String PRESENTER_WEATHER_TAG = "[detail - presenter]";
 
     private String ID_FORECAST;
@@ -44,16 +38,6 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     private String ID_AQI;
     private String ID_CONDITION;
     private int VIEW_TYPE;
-
-//    public void initData(String id){ //todo use in AQIFragment
-//        if (forecastEntity == null || !forecastEntity.getId().equals(id)) {
-//            loadData();
-//        } else {
-//            getViewState().showForecastData(forecastEntity);
-//            getViewState().showAqiData(aqiEntity);
-//            getViewState().showWeatherData(weatherEntity);
-//        }
-//    }
 
     public DetailPresenter(String idForecast, String idWeather, String idAqi, String idCondition, int viewType) {
         ID_FORECAST = idForecast;
@@ -71,10 +55,8 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     private void setView(){
         if (VIEW_TYPE == 0){
             loadCurrent();
-//            getViewState().showState(State.Current);
         } else {
             loadForecast();
-//            getViewState().showState(State.Forecast);
         }
     }
 
@@ -89,9 +71,11 @@ public class DetailPresenter extends BasePresenter<DetailView> {
         loadConditionFromDb(ID_CONDITION);
     }
 
-
+    /**work with database
+     *
+     * @param id
+     */
     private void loadWeatherFromDb(String id){
-//        getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
                 .getDataById(context, id))//todo real data
                 .subscribeOn(Schedulers.io())
@@ -102,7 +86,6 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     }
 
     private void loadAqiFromDb(String id){
-//        getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
                 .getDataById(context, id))              //todo real data
                 .subscribeOn(Schedulers.io())
@@ -113,7 +96,6 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     }
 
     private void loadForecastFromDb(String id){
-//        getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
                 .getDataById(context, id))//todo real data
                 .subscribeOn(Schedulers.io())
@@ -123,41 +105,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
         Log.e(PRESENTER_WEATHER_TAG,"Load Forecast from db");
     }
 
-
-    private void updateWeatherData(@Nullable WeatherEntity data) {
-//        getViewState().showWeatherData(data);
-        weatherEntity = data;
-        updateData();
-//        getViewState().showState(State.HasData);
-        Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.getId() + " / " + data.getLocation());
-        Log.i(PRESENTER_WEATHER_TAG, "updateWeatherData executed on thread: " + Thread.currentThread().getName());
-    }
-
-    private void updateForecastData(@Nullable ForecastEntity data) {
-//        getViewState().showForecastData(data);
-        forecastEntity = data;
-        updateData();
-//        getViewState().showState(State.Forecast);
-//        getViewState().showState(State.HasData);
-        Log.i(PRESENTER_WEATHER_TAG, "loaded ForecastData from DB: " + data.getId() + " / " + data.getLocationName());
-        Log.i(PRESENTER_WEATHER_TAG, "updateForecastData executed on thread: " + Thread.currentThread().getName());
-
-    }
-
-    private void updateAqiData(@Nullable AqiEntity data) {
-//        getViewState().showAqiData(data);
-        aqiEntity = data;
-        updateData();
-//        getViewState().showState(State.HasData);
-        Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.getId() + " / " + data.getAqi());
-        Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
-    }
-
-
-    //condition
-
     private void loadConditionFromDb(String id){
-//        getViewState().showState(State.Loading);
         Disposable loadFromDb = Single.fromCallable(() -> ConverterCondition
                 .getDataById(context, id))
                 .subscribeOn(Schedulers.io())
@@ -167,30 +115,54 @@ public class DetailPresenter extends BasePresenter<DetailView> {
         Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
-    private void updateConditionData(@Nullable ConditionEntity data) {
-            Log.w(PRESENTER_WEATHER_TAG, "init condition");
-        conditionEntity = data;
+    /**setting data to app
+     *
+     * @param data
+     */
+    private void updateWeatherData(@Nullable WeatherEntity data) {
+        weatherEntity = data;
         updateData();
-
-//            getViewState().showConditionData(data);
-//            getViewState().showState(State.HasData);
-            Log.i(PRESENTER_WEATHER_TAG, "loaded condition from DB: " + data.getId() + " / " + data.getDayText());
-            Log.i(PRESENTER_WEATHER_TAG, "update condition executed on thread: " + Thread.currentThread().getName());
+        Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.getId() + " / " + data.getLocation());
+        Log.i(PRESENTER_WEATHER_TAG, "updateWeatherData executed on thread: " + Thread.currentThread().getName());
     }
 
-    private void handleError(Throwable th) {
-//        getViewState().showState(State.NetworkError);
-        Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
-        Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
+    private void updateForecastData(@Nullable ForecastEntity data) {
+        forecastEntity = data;
+        updateData();
+        Log.i(PRESENTER_WEATHER_TAG, "loaded ForecastData from DB: " + data.getId() + " / " + data.getLocationName());
+        Log.i(PRESENTER_WEATHER_TAG, "updateForecastData executed on thread: " + Thread.currentThread().getName());
+    }
+
+    private void updateAqiData(@Nullable AqiEntity data) {
+        aqiEntity = data;
+        updateData();
+        Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.getId() + " / " + data.getAqi());
+        Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().getName());
+    }
+
+    private void updateConditionData(@Nullable ConditionEntity data) {
+        Log.w(PRESENTER_WEATHER_TAG, "init condition");
+        conditionEntity = data;
+        updateData();
+        Log.i(PRESENTER_WEATHER_TAG, "loaded condition from DB: " + data.getId() + " / " + data.getDayText());
+        Log.i(PRESENTER_WEATHER_TAG, "update condition executed on thread: " + Thread.currentThread().getName());
     }
 
     private void updateData(){
         if (weatherEntity != null && aqiEntity != null && conditionEntity != null){
-                    getViewState().showTodayData(weatherEntity, aqiEntity, conditionEntity);
+            getViewState().showTodayData(weatherEntity, aqiEntity, conditionEntity);
         }else if (forecastEntity != null && conditionEntity != null) {
             getViewState().showForecastData(forecastEntity, conditionEntity);
         }
+    }
 
+    /**handling error
+     *
+     * @param th
+     */
+    private void handleError(Throwable th) {
+        Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
+        Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
     }
 
 }

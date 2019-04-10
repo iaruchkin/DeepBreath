@@ -11,8 +11,7 @@ import static com.iaruchkin.deepbreath.common.AppPreferences.getLocationCoordina
 
 public final class PreferencesHelper {
 
-
-    public static Location getLocation(Context context) { //todo сделать нормально
+    public static Location getLocation(Context context) {
         Location location = new Location("DEFAULT_LOCATION");
 
         location.setLatitude(getLocationCoordinates(context)[0]);

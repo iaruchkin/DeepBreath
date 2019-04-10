@@ -51,14 +51,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     private static final int LAYOUT = R.layout.fragment_weather_list;
     private MessageFragmentListener listener;
-
-//    //Location
-//    private Location mLocation;
-//    private LocationRequest locationRequest;
-//    private LocationCallback locationCallback;
-//    private boolean isGPS = false;
-//    private FusedLocationProviderClient mFusedLocationClient;
-
     private WeatherEntity weatherItem;
     private AqiEntity aqiItem;
 
@@ -134,7 +126,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         super.onAttach(context);
         if (context instanceof MessageFragmentListener) {
             listener = (MessageFragmentListener) context;
-//            if(isGPS) setupLocation();
         }
     }
 
@@ -152,7 +143,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         setHomeButton(view);
 
         mRefresh.setOnRefreshListener(this);
-
     }
 
     @Override
@@ -204,7 +194,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     @Override
     public void onClickList(ForecastEntity forecastItem, WeatherEntity weatherEntity, AqiEntity aqiEntity, ConditionEntity conditionEntity, int viewType) {
         listener.onListClicked(forecastItem.getId(), weatherEntity.getId(), aqiEntity.getId(), conditionEntity.getId(), viewType);
-
     }
 
     private void setupToolbar() {
@@ -212,9 +201,10 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-//        actionBar.setDisplayUseLogoEnabled(true);
-
         actionBar.setTitle(getResources().getString(R.string.app_name));
+
+        //if need to show logo at toolbar
+//        actionBar.setDisplayUseLogoEnabled(true);
 //        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
     }
 
@@ -236,6 +226,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //todo fix in future versions
+        //ability to rotate the screen
 //        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 //            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        } else {
@@ -246,25 +238,12 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     @Override
     public void onRefresh() {
-//        loadData(true);
         listener.onActionClicked(WEATHER_LIST_TAG);
         listener.onActionClicked(GET_LOCATION);
-
     }
 
     private void setupUx() {
-//        setupLocation();
         errorAction.setOnClickListener(v -> listener.onActionClicked(WEATHER_LIST_TAG));
-//        loadData(false);
-    }
-
-    public void loadData() {
-//        if(mLocation != null) {
-//            mLocation.setLongitude(AppPreferences.getLocationCoordinates(getContext())[0]);
-//            mLocation.setLatitude(AppPreferences.getLocationCoordinates(getContext())[1]);
-//        }
-//        forecastPresenter.loadData(force, AppPreferences.getLocation(getContext()));
-
     }
 
     @Override
@@ -283,57 +262,22 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         aqiItem = aqiEntity.get(0);
     }
 
-//    @Override
-//    public void showWeatherData(@NonNull List<WeatherEntity> data) {
-////        if (mAdapter != null) {
-////            mAdapter.setWeatherItem(data.get(0));
-////        }
-//    }
-
-//    @Override
-//    public void showForecastData(List<ForecastEntity> data) {
-////        if (mAdapter != null) {
-////            mAdapter.setForecastItems(data);
-////        }
-//    }
-
-//    @Override
-//    public void showAqiData(@NonNull List<AqiEntity> data) {
-////        if (mAdapter != null) {
-////            mAdapter.setAqiItem(data.get(0));
-////        }
-//    }
-
-//    @Override
-//    public void showConditionData(@NonNull List<ConditionEntity> data) {
-////        if (mAdapter != null) {
-////            mAdapter.setConditionItems(data);
-////        }
-//    }
-
     @Override
     public void showState(@NonNull State state) {
         switch (state) {
             case HasData:
                 mError.setVisibility(View.GONE);
-//                mLoadingIndicator.setVisibility(View.GONE);
-
                 mRecyclerView.setVisibility(View.VISIBLE);
                 showRefresher(false);
                 break;
 
             case HasNoData:
-//                mLoadingIndicator.setVisibility(View.GONE);
-//                mRecyclerView.setVisibility(View.GONE);
-
-//                mError.setVisibility(View.VISIBLE);
                 mRefresh.setVisibility(View.GONE);
                 mError.setVisibility(View.VISIBLE);
                 showRefresher(false);
                 break;
 
             case NetworkError:
-//                mLoadingIndicator.setVisibility(View.GONE);
                 mRefresh.setVisibility(View.GONE);
                 mError.setVisibility(View.GONE);
                 showRefresher(false);
@@ -345,20 +289,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                 showRefresher(false);
                 break;
 
-//            case ServerError:
-////                mLoadingIndicator.setVisibility(View.GONE);
-////                mRecyclerView.setVisibility(View.GONE);
-//                mRefresh.setVisibility(View.GONE);
-//                mError.setVisibility(View.VISIBLE);
-//                showRefresher(false);
-//                break;
-
-            case Loading:
+          case Loading:
                 mError.setVisibility(View.GONE);
                 mRefresh.setVisibility(View.VISIBLE);
-
-//                mLoadingIndicator.setVisibility(View.VISIBLE);
-
                 showRefresher(true);
                 break;
 
@@ -378,112 +311,4 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         errorAction = view.findViewById(R.id.action_button);
         mRefresh = view.findViewById(R.id.refresh);
     }
-
-//    private void saveLocation(Location location){
-//        AppPreferences.setLocationDetails(getContext(), location.getLatitude(), location.getLongitude());
-//    }
-//
-//    private void setupLocation() {
-//
-//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-//
-//        locationRequest = LocationRequest.create();
-//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        locationRequest.setInterval(10 * 1000); // 10 seconds
-//        locationRequest.setFastestInterval(5 * 1000); // 5 seconds
-//
-//        new GpsUtils(getContext()).turnGPSOn(new GpsUtils.onGpsListener() {
-//            @Override
-//            public void gpsStatus(boolean isGPSEnable) {
-//                // turn on GPS
-//                isGPS = isGPSEnable;
-//            }
-//        });
-//
-//        locationCallback = new LocationCallback() {
-//
-//            @Override
-//            public void onLocationResult(LocationResult locationResult) {
-//                if (locationResult == null) {
-//                    return;
-//                }
-//                for (Location location : locationResult.getLocations()) {
-//                    if (location != null) {
-//                        saveLocation(location);
-//                        loadData(true);
-//                        Log.w("GPS onLocationResult ", location.toString());
-//
-//                        if (mFusedLocationClient != null) {
-//                            mFusedLocationClient.removeLocationUpdates(locationCallback);
-//                        }
-//                    }
-//                }
-//            }
-//        };
-//
-//        if (!isGPS) {
-//            Toast.makeText(getContext(), "Please turn on GPS", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        getLocation();
-//    }
-//
-//    private void getLocation() {
-//        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-//                    AppConstants.LOCATION_REQUEST);
-//
-//        } else {
-//            mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
-//                if (location != null) {
-//                    saveLocation(location);
-//                    loadData(true);
-//                    Log.w("GPS getLocation ", location.toString());
-//                } else {
-//                    mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-//                }
-//            });
-//        }
-//    }
-
-//    @SuppressLint("MissingPermission")
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case 1000: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    mFusedLocationClient.getLastLocation().addOnSuccessListener((Activity) getContext(), location -> {
-//                        if (location != null) {
-//                            saveLocation(location);
-//                            loadData(true);
-//                            Log.w("GPS missingPermission ", location.toString());
-//                        } else {
-//                            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-//                        }
-//                    });
-//
-//                } else {
-//                    Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
-//                    loadData(true);
-//                }
-//                break;
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            if (requestCode == AppConstants.GPS_REQUEST) {
-//                isGPS = true; // flag maintain before get location
-//            }
-//        }
-//    }
 }

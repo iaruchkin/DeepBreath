@@ -27,9 +27,6 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
 
 import kotlinx.android.synthetic.main.fragment_details.*
-import android.content.Intent
-import java.util.*
-
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
@@ -82,11 +79,6 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             fragmentAqi.setArguments(bundle)
             return fragmentAqi
         }
-    }
-
-    override fun  onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -209,19 +201,6 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         }
     }
 
-//    private fun share (){
-//        val i = Intent(Intent.ACTION_SEND)
-//        i.type = "text/plain"
-//        i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
-//        lateinit var message : String
-//
-//        if (weather!=null && aqi!=null) {
-//            message = String.format(Locale.getDefault(), "\nair putity level in %s - %s\n\n %s", weather.location, aqi.aqi, getString(R.string.github_link))
-//
-//        i.putExtra(Intent.EXTRA_TEXT, message)}
-//        startActivity(Intent.createChooser(i, "Share"))
-//    }
-
     private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity){
 
         val weatherItems = generateWeather(weatherEntity)
@@ -282,10 +261,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         actionBar!!.setDisplayHomeAsUpEnabled(true)
         actionBar.setDisplayShowTitleEnabled(true)
-//        actionBar.setDisplayUseLogoEnabled(true)
-
         actionBar.setTitle(getString(R.string.title_activity_detail))
-//        actionBar.setLogo(resources.getDrawable(R.drawable.ic_action_name))
     }
 
     override fun showTodayData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity) {

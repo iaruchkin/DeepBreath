@@ -12,8 +12,6 @@ import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 
-import java.util.prefs.Preferences;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -97,12 +95,10 @@ public class IntroFragment extends Fragment {
 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
-
         }
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
-
         }
     };
 

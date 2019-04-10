@@ -7,7 +7,6 @@ import com.iaruchkin.deepbreath.network.weatherApixuDTO.Current;
 import com.iaruchkin.deepbreath.network.weatherApixuDTO.Forecast;
 import com.iaruchkin.deepbreath.network.weatherApixuDTO.Location;
 
-
 public class WeatherResponse {
 
     @SerializedName("location")

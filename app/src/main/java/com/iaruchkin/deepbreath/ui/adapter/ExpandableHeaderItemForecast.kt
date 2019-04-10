@@ -4,8 +4,6 @@ import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.ConditionEntity
 import com.iaruchkin.deepbreath.room.ForecastEntity
-import com.iaruchkin.deepbreath.room.WeatherEntity
-import com.iaruchkin.deepbreath.utils.ConditionUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import com.iaruchkin.deepbreath.utils.WeatherUtils
 import com.xwray.groupie.ExpandableGroup
@@ -13,7 +11,6 @@ import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.expandable_header_weather.*
-import java.lang.String.valueOf
 import java.util.*
 
 class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, private val condition: ConditionEntity)
@@ -35,8 +32,7 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
 
         viewHolder.high_value.text = highString
         viewHolder.low_value.text = lowString
-//        viewHolder.high_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.maxtemp_c)
-//        viewHolder.low_value.text = String.format(Locale.getDefault(), "%s°", forecastEntity.mintemp_c)
+
         var format = "%s"
         if(forecastEntity.locationRegion != "") format = "%s, %s"
         viewHolder.location_desc.text = String.format(Locale.getDefault(), format
@@ -64,7 +60,6 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
     override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
         expandableGroup = onToggleListener
     }
-
 
     private fun getRotatedIconResId() =
             if (expandableGroup.isExpanded)

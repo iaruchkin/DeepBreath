@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.common.AppPreferences;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,21 +88,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Activity activity = getActivity();
-
-        if (key.equals(getString(R.string.pref_location_key))) {
-            // we've changed the location
-            // Wipe out any potential PlacePicker latlng values so that we can use this text entry.
-            AppPreferences.resetLocationCoordinates(activity);
-        } else if (key.equals(getString(R.string.pref_units_key))) {
-            // units have changed. update lists of weather entries accordingly
-        }
         Preference preference = findPreference(key);
         if (null != preference) {
             if (!(preference instanceof CheckBoxPreference)) {
                 setPreferenceSummary(preference, sharedPreferences.getString(key, ""));
-            }
-            App.performsScheduledWork();
+            } else App.performsScheduledWork();
         }
     }
 

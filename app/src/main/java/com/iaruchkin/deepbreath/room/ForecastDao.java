@@ -1,6 +1,5 @@
 package com.iaruchkin.deepbreath.room;
 
-
 import java.util.List;
 
 import androidx.room.Dao;

@@ -54,19 +54,6 @@ public class ConverterAqi {
         return listDao;
     }
 
-//    pm25: "PM<sub>2.5</sub>",
-//    pm10: "PM<sub>10</sub>",
-//    o3: "Ozone",
-//    no2: "Nitrogen Dioxide",
-//    so2: "Sulphur Dioxide",
-//    co: "Carbon Monoxyde",
-//    t: "Temperature",
-//    w: "Wind",
-//    r: "Rain (precipitation)",
-//    h: "Relative Humidity",
-//    d: "Dew",
-//    p: "Atmostpheric Pressure"
-
     public static AqiEntity getDataById(Context context, String id){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         return db.aqiDao().getDataById(id);
@@ -75,19 +62,19 @@ public class ConverterAqi {
     public static List<AqiEntity> getDataByParameter(Context context, String parameter) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.aqiDao().getByParameter(parameter);//todo think about request
+        return db.aqiDao().getByParameter(parameter);
     }
 
     public static List<AqiEntity> getDataByIdx(Context context, String idx) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.aqiDao().getAll(idx);//todo think about request
+        return db.aqiDao().getAll(idx);
     }
 
     public static List<AqiEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.aqiDao().getAll();//todo think about request
+        return db.aqiDao().getAll();
     }
 
     public static void saveAllDataToDb(Context context, List<AqiEntity> list, String parameter){

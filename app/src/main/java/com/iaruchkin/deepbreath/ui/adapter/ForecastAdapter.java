@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder>{
 
     private final String DATE_FORMAT = "HH:mm, EEEE";
+    private final String TAG_ADAPTER = "ADAPTER";
 
     private static final int VIEW_TYPE_TODAY = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
@@ -76,51 +77,34 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, final int position) {
         ForecastEntity forecastItem = forecastItemList.get(position);
-        int aqi;
-
         String conditionText;
+        int aqi;
         int iconForecast;
         int iconToday;
-
-//        if(conditionItemList.size()!=0) {
-//            iconForecast = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
-//            iconToday  = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
-//
-//            if (weatherItem.getIsDay() == 1) {
-//                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
-//            } else {
-//                conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getNightText();
-//            }
-//
-//        } else {
-//            conditionText = null;
-//            iconForecast = 0;
-//            iconToday = 0;//todo это причина по которой отображаются сначала только солнышки
-//        }
         int viewType = getItemViewType(position);
 
         switch (viewType) {
             case VIEW_TYPE_TODAY:
 
                 if (aqiItem.getAqi() != null){
-                    Log.i("ADAPTER", aqiItem.toString());
-                    Log.i("ADAPTER", weatherItem.toString());
+                    Log.i(TAG_ADAPTER, aqiItem.toString());
+                    Log.i(TAG_ADAPTER, weatherItem.toString());
                     aqi = aqiItem.getAqi();
-                } //todo выяснить почему приходит null с weatherItem такого нет
+                }
                 else aqi = 0;
 
                 if(conditionItemList.size()!=0) {
                     iconToday  = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
                     if (weatherItem.getIsDay() == 1) {
-                        conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText(); //todo тут баг массив не приходит
+                        conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText();
                     } else {
                         conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getNightText();
                     }
-                    Log.i("ADAPTER", forecastItem.toString());
-                    Log.i("ADAPTER", conditionText);
+                    Log.i(TAG_ADAPTER, forecastItem.toString());
+                    Log.i(TAG_ADAPTER, conditionText);
                 } else {
                     conditionText = null;
-                    iconToday = 0;//todo это причина по которой отображаются сначала только солнышки
+                    iconToday = 0;
                 }
 
                 holder.bindFirst(forecastItem, weatherItem  , aqi, conditionText, iconToday);
@@ -129,8 +113,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             case VIEW_TYPE_FUTURE_DAY:
                 if(conditionItemList.size()!=0) {
                     iconForecast = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
-                    Log.i("ADAPTER", forecastItem.toString());
-                    Log.i("ADAPTER", String.valueOf(iconForecast));
+                    Log.i(TAG_ADAPTER, forecastItem.toString());
+                    Log.i(TAG_ADAPTER, String.valueOf(iconForecast));
                 } else {
                     iconForecast = 0;
                 }
@@ -172,9 +156,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         private final CardView weatherCard;
         private final TextView recomendation;
 
-//        private final View weatherList;
-
-
         public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, int aqi, String dayText, int icon) {
 
             String highString = WeatherUtils.formatTemperature(context, weatherItem.getTemp_c());
@@ -187,22 +168,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             weatherDescTextView.setText(dayText);
 
-            dateTextView.setText(String.format(Locale.getDefault(), "today"+" %s", (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
+            dateTextView.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.today)+" %s",
+                    (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
 
-//            highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getTemp_c()));
-//            lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", weatherItem.getFeelslike_c()));
             highTemperatureTextView.setText(highString);
             lowTemperatureTextView.setText(lowString);
 
             aqiDesc.setText(AqiUtils.getPollutionLevel(aqi));
-//            aqiCard.setBackgroundResource(AqiUtils.getColor(aqi));
             aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqi)));
 
             recomendation.setText(AqiUtils.getRecomendation(aqi));
-
-//            weatherCard.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
-//            weatherList.setBackgroundResource(AqiUtils.getBackgroundColor(aqi));
-
         }
 
         public void bindFuture(ForecastEntity forecastItem, int icon) {
@@ -212,13 +187,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             imageView.setImageResource(WeatherUtils.getSmallArtResource(icon, forecastItem.getIsDay()));
 
-//            weatherDescTextView.setText(forecastItem.getParameter());
-
             dateTextView.setText(StringUtils.formatDate(forecastItem.getDate_epoch(), "EEEE"));
             weatherDescTextView.setText(StringUtils.formatDate(forecastItem.getDate_epoch(), "d MMMM"));
 
-//            highTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMaxtemp_c()));
-//            lowTemperatureTextView.setText(String.format(Locale.getDefault(), "%s\u00b0", forecastItem.getMintemp_c()));
             highTemperatureTextView.setText(highString);
             lowTemperatureTextView.setText(lowString);
         }
@@ -237,7 +208,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiDesc = view.findViewById(R.id.aqi_description);
             aqiCard = view.findViewById(R.id.aqi_pre_card);
             weatherCard = view.findViewById(R.id.today_card);
-//            weatherList = view.findViewById(R.id.weather_list);
             recomendation = view.findViewById(R.id.recomendation);
 
             view.setOnClickListener(this);
@@ -251,34 +221,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
                 if(adapterPosition == 0) code = weatherItem.getConditionCode();
                 else code = forecastItem.getConditionCode();
 
-            ConditionEntity conditionItem = conditionItemList.get(ConditionUtils.getConditionCode(code)); //todo тут внимание
+            ConditionEntity conditionItem = conditionItemList.get(ConditionUtils.getConditionCode(code));
             mClickHandler.onClickList(forecastItem, weatherItem, aqiItem, conditionItem, getItemViewType());
         }
     }
-
-//        public void setForecastItems(List<ForecastEntity> forecastData) {
-//            forecastItemList.clear();
-//            forecastItemList.add(forecastData.get(0));
-//            forecastItemList.addAll(forecastData);
-//            notifyDataSetChanged();
-//        }
-//
-//        public void setWeatherItem(WeatherEntity data){
-//            weatherItem = data;
-//            notifyDataSetChanged();
-//        }
-//
-//        public void setAqiItem(AqiEntity data){
-//            aqiItem = data;
-//            notifyDataSetChanged();
-//        }
-//
-//        public void setConditionItems(List<ConditionEntity> conditionItems) {
-////            if (conditionItemList.size() == 0){
-//                conditionItemList.addAll(conditionItems);
-//                notifyDataSetChanged();
-////            }
-//        }
 
         public void setData(@NonNull List<ForecastEntity> forecastEntity,
                             @NonNull WeatherEntity weatherEntity,

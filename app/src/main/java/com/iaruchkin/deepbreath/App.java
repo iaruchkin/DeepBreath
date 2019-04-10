@@ -36,7 +36,6 @@ public class App extends Application {
                     new IntentFilter());
 
             performsScheduledWork();
-
         }
     }
 
@@ -47,7 +46,6 @@ public class App extends Application {
         long flexTime = calculateFlex(hourOfTheDay, repeatInterval);
 
         Constraints constraints = new Constraints.Builder()
-//                .setRequiresCharging(true)
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
@@ -66,7 +64,6 @@ public class App extends Application {
         }
         else {
             WorkManager.getInstance().cancelAllWorkByTag(WORK_TAG);
-//            cancelWorkById(workRequest.getId());
         }
     }
 

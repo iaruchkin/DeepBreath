@@ -21,7 +21,7 @@ public class ConverterWeather {
         WeatherEntity weatherEntity = new WeatherEntity();
 
             //id
-            weatherEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());//todo подумать о необходимости уникального ID
+            weatherEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());
 
             //geo
             weatherEntity.setParameter(weatherLocation);
@@ -72,19 +72,19 @@ public class ConverterWeather {
     public static List<WeatherEntity> getDataByParameter(Context context, String parameter) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.weatherDao().getByParameter(parameter);//todo think about request
+        return db.weatherDao().getByParameter(parameter);
     }
 
     public static List<WeatherEntity> getDataByLocation(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.weatherDao().getAll(location);//todo think about request
+        return db.weatherDao().getAll(location);
     }
 
     public static List<WeatherEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
-        return db.weatherDao().getAll();//todo think about request
+        return db.weatherDao().getAll();
     }
 
     public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String parameter){

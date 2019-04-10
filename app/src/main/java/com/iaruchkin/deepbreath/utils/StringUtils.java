@@ -29,8 +29,6 @@ public final class StringUtils {
         SimpleDateFormat date12Format = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         SimpleDateFormat date24Format = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
 
-//        android.icu.text.
-
         try {
             return date24Format.format(date12Format.parse(dateStr));
         } catch (ParseException e) {

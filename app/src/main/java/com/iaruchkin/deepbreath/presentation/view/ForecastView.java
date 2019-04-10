@@ -2,7 +2,6 @@ package com.iaruchkin.deepbreath.presentation.view;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
-import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.room.AqiEntity;
@@ -22,11 +21,5 @@ public interface ForecastView extends MvpView {
                          @NonNull List<AqiEntity> aqiEntity,
                          @NonNull List<ConditionEntity> conditionEntity);
 
-//    void showWeatherData(@NonNull List<WeatherEntity> data);
-//    void showForecastData(@NonNull List<ForecastEntity> data);
-//    void showAqiData(@NonNull List<AqiEntity> data);
-//    void showConditionData(@NonNull List<ConditionEntity> data);
-    void showState(@NonNull State state);//todo replace with refresher
-//    void showRefresher(@NonNull boolean show);
-
+    void showState(@NonNull State state);
 }
