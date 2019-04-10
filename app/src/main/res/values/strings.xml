@@ -109,9 +109,6 @@
     <string name="pref_enable_notifications_true">Enabled</string>
     <string name="pref_enable_notifications_false">Not Enabled</string>
 
-    <string name="pref_last_notification">last_notification</string>
-
-
 
     <!-- - - - - - - - - - - - - - -
       - Used by DateUtils  -
@@ -124,27 +121,25 @@
     <string name="tomorrow">tomorrow</string>
 
     <!-- Date format -->
-    <string name="format_full_friendly_date">
-        <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
-    </string>
+    <string name="format_full_friendly_date" translatable="false">"         <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>     "</string>
 
     <!-- - - - - - - - - - - - - - - - -
       - Used by Utils   -
       - - - - - - - - - - - - - - - - -->
 
     <!-- Temperature format -->
-    <string name="format_temperature">
+    <string name="format_temperature" translatable="false">
         <xliff:g id="temp">%1.0f</xliff:g>\u00B0
     </string>
 
     <string name="wind_label">Wind</string>
     <!-- Wind in kph -->
-    <string name="format_wind_kmh">
+    <string name="format_wind_kmh" translatable="false">
         <xliff:g id="speed">%1$1.0f</xliff:g>
     </string>
 
     <!-- Wind in mph -->
-    <string name="format_wind_mph">
+    <string name="format_wind_mph" translatable="false">
         <xliff:g id="speed">%1$1.0f</xliff:g>
         <xliff:g id="direction">%2$s</xliff:g>
     </string>
@@ -155,7 +150,6 @@
 
     <!--Wind direction-->
     <string name="wind_direction_label">Wind direction</string>
-    <string name="wind_dimention">m/s</string>
 
     <string name="n_label">N</string>
     <string name="nne_label">NNE</string>
@@ -164,7 +158,7 @@
     <string name="e_label">E</string>
     <string name="ese_label">ESE</string>
     <string name="se_label">SE</string>
-    <string name="sse_label">SE</string>
+    <string name="sse_label">SSE</string>
     <string name="s_label">S</string>
     <string name="ssw_label">SSW</string>
     <string name="sw_label">SW</string>
@@ -177,13 +171,13 @@
 
     <string name="pressure_label">Pressure</string>
     <!-- Pressure format -->
-    <string name="format_pressure">
+    <string name="format_pressure" translatable="false">
         <xliff:g id="pressure">%1.0f</xliff:g>
     </string>
-    <string name="format_pressure_metric">
+    <string name="format_pressure_metric" translatable="false">
         <xliff:g id="pressure">%1.0f</xliff:g>
     </string>
-    <string name="format_pressure_imper">
+    <string name="format_pressure_imper" translatable="false">
         <xliff:g id="pressure">%1.0f</xliff:g>
     </string>
 
@@ -193,14 +187,14 @@
 
     <string name="humidity_label">Humidity</string>
     <!-- Humidity format -->
-    <string name="format_humidity">
+    <string name="format_humidity" translatable="false">
         <xliff:g id="humidity">%1.0f</xliff:g> %%
     </string>
 
-    <string name="humidity_dimention">%</string>
+    <string name="humidity_dimention" translatable="false">%</string>
 
     <!--precipitation-->
-    <string name="format_precip">
+    <string name="format_precip" translatable="false">
         <xliff:g id="precip">%1.0f</xliff:g>
     </string>
     <string name="format_precip_metric">mm</string>
@@ -209,7 +203,7 @@
     <!-- Used by NotificationUtils -->
 
     <!-- The format of the notification we show when the weather is updated -->
-    <string name="format_notification">
+    <string name="format_notification" translatable="false">
         Forecast:<xliff:g id="condition">%1$s</xliff:g> -
         High:<xliff:g id="high">%2$s</xliff:g>
         Low:<xliff:g id="low">%3$s</xliff:g>
@@ -229,18 +223,17 @@
     <string name="sunrise">Sunrise</string>
 
     <!--AQI detail values-->
-    <string name="pm25">PM2.5</string>
-    <string name="pm10">PM10</string>
-    <string name="co">CO</string>
-    <string name="no2">NO₂</string>
-    <string name="so2">SO₂</string>
-    <string name="w">W</string>
-    <string name="wg">Wg</string>
-    <string name="p">P</string>
-    <string name="h">H</string>
-    <string name="o3">O₃</string>
+    <string name="pm25" translatable="false">PM2.5</string>
+    <string name="pm10" translatable="false">PM10</string>
+    <string name="co" translatable="false">CO</string>
+    <string name="no2" translatable="false">NO₂</string>
+    <string name="so2" translatable="false">SO₂</string>
+    <string name="w" translatable="false">W</string>
+    <string name="wg" translatable="false">Wg</string>
+    <string name="p" translatable="false">P</string>
+    <string name="h" translatable="false">H</string>
+    <string name="o3" translatable="false">O₃</string>
     <string name="aqi_dimention">µg/m³</string>
-    <!--мкг/м³-->
 
     <!--AQI level-->
     <string name="pollution_good">good</string>
@@ -250,7 +243,7 @@
     <string name="pollution_very_unhealthy">very unhealthy</string>
     <string name="pollution_hazardous">hazardous</string>
 
-    <string name="good_full">Air quality is considered satisfactory, and air pollution poses little or no risk</string>
+    <string name="good_full">Air quality is considered satisfactory, and air pollution poses little or no risk.</string>
     <string name="moderate_full">Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people who are unusually sensitive to air pollution.</string>
     <string name="pre_unhealthy_full">Members of sensitive groups may experience health effects. The general public is not likely to be affected.</string>
     <string name="unhealthy_full">Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects</string>
@@ -258,9 +251,9 @@
     <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
 
     <string name="good_recomendation">Enjoy your usual outdoor activities. We recommend opening your windows and ventilating your home to bring in fresh, oxygen-rich air.</string>
-    <string name="moderate_recomendation">Enjoy your usual outdoor activities. We recommend opening your windows and ventilating your home to bring in fresh, oxygen-rich air.</string>
-    <string name="pre_unhealthy_recomendation">The general public should greatly reduce outdoor exertion. Sensitive groups should avoid all outdoor activity. Everyone should take care to wear a pollution mask. Ventilation is discouraged. Air purifiers should be turned on.</string>
-    <string name="unhealthy_recomendation">Outdoor exertion, particularly for sensitive groups, should be limited. Everyone should take care to wear a pollution mask. Ventilation is not recommended. Air purifiers should be turned on if indoor air quality is unhealthy.</string>
+    <string name="moderate_recomendation">Sensitive groups should reduce outdoor activity. We recommend closing your windows to avoid dirty outdoor air.</string>
+    <string name="pre_unhealthy_recomendation">The general public should greatly reduce outdoor exertion. Sensitive groups should avoid all outdoor activity. Everyone should take care to wear a pollution mask. Ventilation is discouraged.</string>
+    <string name="unhealthy_recomendation">Outdoor exertion, particularly for sensitive groups, should be limited. Everyone should take care to wear a pollution mask. Ventilation is not recommended.</string>
     <string name="very_unhealty_recomendation">The general public should greatly reduce outdoor exertion. Sensitive groups should avoid all outdoor activity. Everyone should take care to wear a pollution mask. Ventilation is discouraged. Air purifiers should be turned on.</string>
     <string name="hazardous_recomendation">The general public should avoid outdoor exertion. Everyone should take care to wear a quality pollution mask. Ventilation is discouraged. Homes should be sealed and air purifiers turned on.</string>
 
@@ -273,8 +266,20 @@
     <string name="weather_link" translatable="false">https://www.apixu.com</string>
     <string name="icons_link" translatable="false">https://www.flaticon.com/authors/smashicons</string>
     <string name="logo_link" translatable="false">https://www.flaticon.com/authors/vectors-market</string>
-    <string name="subject_email">deep breath app</string>
+    <string name="subject_email" translatable="false">deep breath app</string>
 
+    <string name="about_developer">Developer</string>
+    <string name="about_ruchkin_igor">Ruchkin Igor (iaruchkin@gmail.com)</string>
+    <string name="about_github" translatable="false">GItHub</string>
+    <string name="about_github_com" translatable="false">github.com/iaruchkin/DeepBreath</string>
+    <string name="about_air_quality_index">Air quality index data</string>
+    <string name="about_aqicn_org">Powered by aqicn.org</string>
+    <string name="about_weather_data">Weather data</string>
+    <string name="about_apixu_com">Powered by apixu.com</string>
+    <string name="about_icons">Icons</string>
+    <string name="about_designed_by">designed by Smashicons from Flaticon</string>
+    <string name="about_logo">Logo</string>
+    <string name="about_logo_designed_by">designed by Vectors Market from Flaticon</string>
     <!--Intro text-->
     <string name="intro_page1_title">Air quality index</string>
     <string name="intro_page1_desc">And substances emitted into the atmosphere by human activity!</string>
@@ -291,6 +296,7 @@
     <string name="permission_button">OK</string>
     <string name="later_button">LATER</string>
     <string name="share">Share</string>
-    <string name="share_message">air putity level in %s - %s   %s</string>
-
+    <string name="share_message">Air putity level in %s - %s   %s</string>
+    <string name="service_message">air purity level - %s</string>
+    <string name="service_header">AQI - %s</string>
 </resources>

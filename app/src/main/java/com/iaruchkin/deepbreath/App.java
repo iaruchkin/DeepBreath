@@ -51,9 +51,9 @@ public class App extends Application {
 
         if(AppPreferences.areNotificationsEnabled(INSTANCE.getApplicationContext())) {
 
-            WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class,
-                    repeatInterval, TimeUnit.DAYS,
-                    flexTime, TimeUnit.MILLISECONDS)
+            WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class
+                    ,repeatInterval, TimeUnit.DAYS
+                    ,flexTime, TimeUnit.MILLISECONDS)
                     .setConstraints(constraints)
                     .addTag(WORK_TAG)
                     .build();

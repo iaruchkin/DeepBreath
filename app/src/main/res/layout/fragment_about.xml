@@ -34,14 +34,14 @@ android:fillViewport="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Developer"
+                    android:text="@string/about_developer"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ruchkin Igor (iaruchkin@gmail.com)"
+                    android:text="@string/about_ruchkin_igor"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text"/>
             </LinearLayout>
@@ -59,14 +59,14 @@ android:fillViewport="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="GItHub"
+                    android:text="@string/about_github"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="github.com/iaruchkin/DeepBreath"
+                    android:text="@string/about_github_com"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text"/>
             </LinearLayout>
@@ -84,14 +84,14 @@ android:fillViewport="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Air quality index data"
+                    android:text="@string/about_air_quality_index"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Powered by aqicn.org"
+                    android:text="@string/about_aqicn_org"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text"/>
             </LinearLayout>
@@ -109,14 +109,14 @@ android:fillViewport="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Weather data"
+                    android:text="@string/about_weather_data"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Powered by apixu.com"
+                    android:text="@string/about_apixu_com"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text"/>
             </LinearLayout>
@@ -134,14 +134,14 @@ android:fillViewport="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Icons"
+                    android:text="@string/about_icons"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="designed by Smashicons from Flaticon"
+                    android:text="@string/about_designed_by"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text"/>
             </LinearLayout>
@@ -159,14 +159,14 @@ android:fillViewport="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Logo"
+                    android:text="@string/about_logo"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="designed by Vectors Market from Flaticon"
+                    android:text="@string/about_logo_designed_by"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/secondary_text"/>
             </LinearLayout>

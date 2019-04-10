@@ -1,5 +1,6 @@
 package com.iaruchkin.deepbreath.service;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -49,7 +50,6 @@ public class WeatherRequestService extends Worker {
             Log.e(TAG, "logError: " + throwable.getMessage());
         } else
             Log.e(TAG, "logError: stopped unexpectedly : \n" + throwable.getMessage());
-//        makeNotification(null, false);
     }
 
     @Override
@@ -59,6 +59,7 @@ public class WeatherRequestService extends Worker {
         super.onStopped();
     }
 
+    @SuppressLint("StringFormatMatches")
     private void makeNotification(Integer aqi, boolean success) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -73,8 +74,8 @@ public class WeatherRequestService extends Worker {
         if (success)
             notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_factory_round)
-                    .setContentTitle(String.format(Locale.getDefault(), "AQI - %s", aqi))
-                    .setContentText(String.format(Locale.getDefault(), "air purity level - %s",  message))
+                    .setContentTitle(String.format(Locale.getDefault(), getApplicationContext().getResources().getString(R.string.service_header), aqi))
+                    .setContentText(String.format(Locale.getDefault(), getApplicationContext().getResources().getString(R.string.service_message),  message))
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentIntent(onClickPendingIntent)
                     .setAutoCancel(true);
