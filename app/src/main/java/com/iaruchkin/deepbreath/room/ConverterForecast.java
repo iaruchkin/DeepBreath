@@ -83,19 +83,19 @@ public class ConverterForecast {
     public static List<ForecastEntity> getDataByParameter(Context context, String parameter) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Weather data loaded from DB");
-        return db.forecastDao().getByParameter(parameter); //todo think about request
+        return db.forecastDao().getByParameter(parameter);
     }
 
     public static List<ForecastEntity> getDataByLocation(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Weather data loaded from DB");
-        return db.forecastDao().getAll(location); //todo think about request
+        return db.forecastDao().getAll(location);
     }
 
     public static List<ForecastEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "Weather data loaded from DB");
-        return db.forecastDao().getAll(); //todo think about request
+        return db.forecastDao().getAll();
     }
 
     public static void saveAllDataToDb(Context context, List<ForecastEntity> list, String location){

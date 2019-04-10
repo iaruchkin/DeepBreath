@@ -77,7 +77,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
      */
     private void loadWeatherFromDb(String id){
         Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
-                .getDataById(context, id))//todo real data
+                .getDataById(context, id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateWeatherData, this::handleError);
@@ -87,7 +87,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
     private void loadAqiFromDb(String id){
         Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
-                .getDataById(context, id))              //todo real data
+                .getDataById(context, id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateAqiData, this::handleError);
@@ -97,7 +97,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
 
     private void loadForecastFromDb(String id){
         Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
-                .getDataById(context, id))//todo real data
+                .getDataById(context, id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateForecastData, this::handleError);

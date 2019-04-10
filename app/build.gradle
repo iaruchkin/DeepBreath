@@ -101,7 +101,6 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:16.0.0"
 
     //toothpick and butterknife
-    //TODO read about DI
 //    implementation "com.github.stephanenicolas.toothpick:toothpick-runtime:$toothpickVersion"
 //    implementation "com.github.stephanenicolas.toothpick:smoothie:$toothpickVersion"
 //    annotationProcessor "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothpickVersion"

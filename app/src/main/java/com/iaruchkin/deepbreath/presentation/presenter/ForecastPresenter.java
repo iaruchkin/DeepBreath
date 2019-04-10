@@ -85,7 +85,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      */
     private void loadWeatherFromDb(String geo){
         Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
-                .getDataByParameter(context, geo))//todo real data
+                .getDataByParameter(context, geo))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateWeatherData(data, geo), this::handleDbError);
@@ -95,7 +95,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private void loadForecastFromDb(String geo){
         Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
-                .getDataByParameter(context, geo))//todo get data by location!!! bug with multiple location forecast
+                .getDataByParameter(context, geo))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateForecastData(data, geo), this::handleDbError);
@@ -105,7 +105,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private void loadAqiFromDb(String geo){
         Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
-                .getDataByParameter(context, geo))              //todo real data
+                .getDataByParameter(context, geo))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateAqiData(data, geo), this::handleDbError);
@@ -131,7 +131,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     private void updateWeatherData(@Nullable List<WeatherEntity> data, String geo) {
         if (data.size()==0){
             Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + geo);
-            loadForecastFromNet(geo); //todo check this
+            loadForecastFromNet(geo);
         }else {
             weatherEntity = data;
             updateData();

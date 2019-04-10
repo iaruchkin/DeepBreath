@@ -180,7 +180,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
         dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind_label))
-        dataList.add(WeatherItem(formatPrecip(context, precipMm), R.string.precipitation))//todo precip formatter
+        dataList.add(WeatherItem(formatPrecip(context, precipMm), R.string.precipitation))
         dataList.add(WeatherItem(sunrise, R.string.sunrise))
         dataList.add(WeatherItem(sunset, R.string.sunset))
         dataList.add(WeatherItem(moonrise, R.string.moonrise))
@@ -224,7 +224,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
 
         ExpandableGroup(StripeItem(), false).apply {
-            groupAdapter.add(this) //todo это костыль, надо поправить
+            groupAdapter.add(this)
         }
 
         ExpandableGroup(ExpandableHeaderItemWeather(weatherEntity, condition), false).apply {
