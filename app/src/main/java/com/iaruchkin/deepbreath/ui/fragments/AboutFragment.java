@@ -56,7 +56,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
     }
 
     @Override
-    public void openURL(String url){
+    public void openURL(@NonNull String url){
         Intent intent = new Intent()
                 .setAction(Intent.ACTION_VIEW)
                 .addCategory(Intent.CATEGORY_BROWSABLE)
@@ -83,7 +83,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
         }
     }
 
-    public void setupUx(){
+    private void setupUx(){
         mDeveloper.setOnClickListener(v -> presenter.sendMessage());
         mGithub.setOnClickListener(v -> presenter.openLink(getString(R.string.github_link)));
         mAqiLink.setOnClickListener(v -> presenter.openLink(getString(R.string.aqi_link)));

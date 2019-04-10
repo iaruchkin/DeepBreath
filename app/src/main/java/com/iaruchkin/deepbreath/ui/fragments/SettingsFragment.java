@@ -1,6 +1,5 @@
 package com.iaruchkin.deepbreath.ui.fragments;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +21,7 @@ import androidx.preference.PreferenceScreen;
 public class SettingsFragment extends PreferenceFragmentCompat implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
     private static final String ARG_KEY = "extra:key";
 

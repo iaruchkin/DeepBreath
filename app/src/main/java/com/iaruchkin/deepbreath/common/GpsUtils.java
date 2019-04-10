@@ -59,40 +59,33 @@ public class GpsUtils {
         } else {
             mSettingsClient
                     .checkLocationSettings(mLocationSettingsRequest)
-                    .addOnSuccessListener((Activity) context, new OnSuccessListener<LocationSettingsResponse>() {
-                        @SuppressLint("MissingPermission")
-                        @Override
-                        public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                    .addOnSuccessListener((Activity) context, locationSettingsResponse -> {
 
-                            //  GPS is already enable, callback GPS status through listener
-                            if (onGpsListener != null) {
-                                onGpsListener.gpsStatus(true);
-                            }
+                        //  GPS is already enable, callback GPS status through listener
+                        if (onGpsListener != null) {
+                            onGpsListener.gpsStatus(true);
                         }
                     })
-                    .addOnFailureListener((Activity) context, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            int statusCode = ((ApiException) e).getStatusCode();
-                            switch (statusCode) {
-                                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                    .addOnFailureListener((Activity) context, e -> {
+                        int statusCode = ((ApiException) e).getStatusCode();
+                        switch (statusCode) {
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
 
-                                    try {
-                                        // Show the dialog by calling startResolutionForResult(), and check the
-                                        // result in onActivityResult().
-                                        ResolvableApiException rae = (ResolvableApiException) e;
-                                        rae.startResolutionForResult((Activity) context, AppConstants.GPS_REQUEST);
-                                    } catch (IntentSender.SendIntentException sie) {
-                                        Log.i(TAG, "PendingIntent unable to execute request.");
-                                    }
-                                    break;
-                                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                    String errorMessage = "Location settings are inadequate, and cannot be " +
-                                            "fixed here. Fix in Settings.";
-                                    Log.e(TAG, errorMessage);
+                                try {
+                                    // Show the dialog by calling startResolutionForResult(), and check the
+                                    // result in onActivityResult().
+                                    ResolvableApiException rae = (ResolvableApiException) e;
+                                    rae.startResolutionForResult((Activity) context, AppConstants.GPS_REQUEST);
+                                } catch (IntentSender.SendIntentException sie) {
+                                    Log.i(TAG, "PendingIntent unable to execute request.");
+                                }
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                String errorMessage = "Location settings are inadequate, and cannot be " +
+                                        "fixed here. Fix in Settings.";
+                                Log.e(TAG, errorMessage);
 
-                                    Toast.makeText((Activity) context, errorMessage, Toast.LENGTH_LONG).show();
-                            }
+                                Toast.makeText((Activity) context, errorMessage, Toast.LENGTH_LONG).show();
                         }
                     });
         }

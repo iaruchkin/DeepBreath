@@ -110,4 +110,5 @@
     <string name="about_ruchkin_igor">Ручкин Игорь(iaruchkin@gmail.com)</string>
     <string name="about_logo_designed_by">дизайн от Vectors Market с сайта Flaticon</string>
     <string name="about_weather_data">Данные о погоде</string>
+    <string name="station_name">Станция:</string>
 </resources>

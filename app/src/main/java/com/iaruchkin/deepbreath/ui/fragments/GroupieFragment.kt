@@ -32,10 +32,10 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
     private val LAYOUT = R.layout.fragment_details
 
-    internal var context = App.INSTANCE.getApplicationContext()
+    internal var context = App.INSTANCE.applicationContext
 
     private val compositeDisposable = CompositeDisposable()
-    val TAG = GroupieFragment::class.java.getSimpleName()
+    val TAG = GroupieFragment::class.java.simpleName
     private var listener: MessageFragmentListener? = null
 
     internal lateinit var weather: WeatherEntity
@@ -60,11 +60,11 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
     companion object {
 
-        internal val FORECAST_ID = "extra:forecast"
-        internal val WEATHER_ID = "extra:weather"
-        internal val AQI_ID = "extra:aqi"
-        internal val CONDITION_ID = "extra:condition"
-        internal val VIEW_TYPE = "extra:viewType"
+        internal const val FORECAST_ID = "extra:forecast"
+        internal const val WEATHER_ID = "extra:weather"
+        internal const val AQI_ID = "extra:aqi"
+        internal const val CONDITION_ID = "extra:condition"
+        internal const val VIEW_TYPE = "extra:viewType"
 
         @JvmStatic
         fun newInstance(idForecast: String, idWeather: String, idAqi: String, idCondition: String, viewType: Int): GroupieFragment {
@@ -76,7 +76,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             bundle.putString(CONDITION_ID, idCondition)
             bundle.putInt(VIEW_TYPE, viewType)
 
-            fragmentAqi.setArguments(bundle)
+            fragmentAqi.arguments = bundle
             return fragmentAqi
         }
     }
@@ -189,16 +189,14 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         return dataList
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_settings -> {
-                if (listener != null) {
-                    listener!!.onActionClicked(SETTINGS_TAG)
-                }
-                return true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_settings -> {
+            if (listener != null) {
+                listener!!.onActionClicked(SETTINGS_TAG)
             }
-            else -> return super.onOptionsItemSelected(item)
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun setupFirst(weatherEntity : WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity){
@@ -257,11 +255,11 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
     private fun setupToolbar() {
         setHasOptionsMenu(true)
         (getContext() as AppCompatActivity).setSupportActionBar(toolbar)
-        val actionBar = (getContext() as AppCompatActivity).getSupportActionBar()
+        val actionBar = (getContext() as AppCompatActivity).supportActionBar
 
         actionBar!!.setDisplayHomeAsUpEnabled(true)
         actionBar.setDisplayShowTitleEnabled(true)
-        actionBar.setTitle(getString(R.string.title_activity_detail))
+        actionBar.title = getString(R.string.title_activity_detail)
     }
 
     override fun showTodayData(weatherEntity: WeatherEntity, aqiEntity: AqiEntity, condition: ConditionEntity) {

@@ -41,7 +41,7 @@
             android:id="@+id/aqi_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="aqi"
+            android:text="@string/aqi_label"
             android:textColor="@color/secondary_text"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/aqi_value"

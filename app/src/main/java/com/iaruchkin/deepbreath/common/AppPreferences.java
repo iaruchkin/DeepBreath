@@ -8,9 +8,9 @@ import com.iaruchkin.deepbreath.R;
 
 public final class AppPreferences {
 
-    public static final String PREF_COORD_LAT = "coord_lat";
-    public static final String PREF_COORD_LONG = "coord_long";
-    public static final String FIRST = "first launch";
+    private static final String PREF_COORD_LAT = "coord_lat";
+    private static final String PREF_COORD_LONG = "coord_long";
+    private static final String FIRST = "first launch";
 
     public static void setLocationDetails(Context context, double lat, double lon) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

@@ -59,7 +59,7 @@ public final class WeatherUtils {
         return String.format(context.getString(pressureFormatResourceId), pressure);
     }
 
-    public static int formatPressureUnit(Context context) {
+    private static int formatPressureUnit(Context context) {
         switch (AppPreferences.pressureUnits(context)) {
             case 0:
                 return R.string.pressure_unit_rus;
@@ -85,7 +85,7 @@ public final class WeatherUtils {
         return String.format(context.getString(windFormatResourceId), wind);
     }
 
-    public static int formatWindUnit(Context context) {
+    private static int formatWindUnit(Context context) {
         switch (AppPreferences.windUnits(context)) {
             case 0:
                 return R.string.wind_unit_rus;
@@ -96,7 +96,7 @@ public final class WeatherUtils {
         }
     }
 
-    public static int formatPrecipUnit(Context context) {
+    private static int formatPrecipUnit(Context context) {
         if (!AppPreferences.isMetric(context)) {
             return R.string.format_precip_imperial;
         }

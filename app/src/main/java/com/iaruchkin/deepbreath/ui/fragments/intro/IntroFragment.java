@@ -55,9 +55,7 @@ public class IntroFragment extends Fragment {
             btnNext.setText(getString(R.string.start_button));
         });
 
-        btnSkip.setOnClickListener(v -> {
-                startApp();
-                });
+        btnSkip.setOnClickListener(v -> startApp());
 
         btnNext.setOnClickListener(v -> {
 
@@ -78,7 +76,7 @@ public class IntroFragment extends Fragment {
     return view;
     }
 
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+    private ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageSelected(int position) {
@@ -86,10 +84,7 @@ public class IntroFragment extends Fragment {
             if (position == NUM_PAGES - 1) {
                 showLastPage();
             } else {
-                btnNext.setVisibility(View.VISIBLE);
-                btnNext.setText(getString(R.string.next_button));
-                btnSkip.setVisibility(View.VISIBLE);
-                btnSkip.setText(getString(R.string.skip_button));
+                showPage();
             }
         }
 
@@ -108,6 +103,14 @@ public class IntroFragment extends Fragment {
         btnSkip.setText(getString(R.string.later_button));
         btnPermission.setVisibility(View.VISIBLE);
         btnPermission.setText(getString(R.string.permission_button));
+    }
+
+    private void showPage(){
+        btnNext.setVisibility(View.VISIBLE);
+        btnNext.setText(getString(R.string.next_button));
+        btnSkip.setVisibility(View.VISIBLE);
+        btnSkip.setText(getString(R.string.skip_button));
+        btnPermission.setVisibility(View.GONE);
     }
 
     private void startApp() {
@@ -157,13 +160,13 @@ public class IntroFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_desc, R.color.colorPrimary);
+                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_desc, R.color.colorPrimaryDark);
                 case 1:
-                    return IntroPage.newInstance(R.drawable.ic_weather_icon_thunder, R.string.intro_page2_title, R.string.intro_page2_desc, R.color.unhealthy);
+                    return IntroPage.newInstance(R.drawable.ic_weather_icon_thunder, R.string.intro_page2_title, R.string.intro_page2_desc, R.color.bg_screen1);
                 case 2:
                     return IntroPage.newInstance(R.drawable.ic_gps_map, R.string.intro_page3_title, R.string.intro_page3_desc, R.color.colorPrimaryDark);
                 default:
-                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_desc, R.color.colorPrimary);
+                    return IntroPage.newInstance(R.drawable.ic_flask, R.string.intro_page1_title, R.string.intro_page1_desc, R.color.colorPrimaryDark);
             }
         }
 

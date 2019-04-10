@@ -60,7 +60,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         loadData(false, PreferencesHelper.getLocation(context));
     }
 
-    public void loadData(Boolean forceload, Location location){
+    private void loadData(Boolean forceload, Location location){
 
         if(isGps){
             aqiCurrentLocation = PreferencesHelper.getAqiParameter(context);

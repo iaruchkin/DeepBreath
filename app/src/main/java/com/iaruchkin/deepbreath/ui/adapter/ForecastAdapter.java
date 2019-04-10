@@ -36,7 +36,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
     private boolean mUseTodayLayout;
 
-    Context context = App.INSTANCE.getApplicationContext();
+    private Context context = App.INSTANCE.getApplicationContext();
     private final List<ForecastEntity> forecastItemList = new ArrayList<>();
     private final List<ConditionEntity> conditionItemList = new ArrayList<>();
 

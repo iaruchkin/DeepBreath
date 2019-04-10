@@ -194,14 +194,25 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="text">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_factory_round.xml" />
-                                      <entry key="outputName" value="ic_launcher_factory" />
+                                      <entry key="imageAsset" value="$PROJECT_DIR$/app/src/main/res/drawable/ic_factory_simple.xml" />
+                                      <entry key="outputName" value="ic_launcher_factory_win" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -251,7 +262,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
+                            <entry key="outputIconType" value="LAUNCHER_LEGACY" />
                           </map>
                         </option>
                       </PersistentState>

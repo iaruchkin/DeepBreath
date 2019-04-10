@@ -173,13 +173,10 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         locationRequest.setInterval(10 * 1000); // 10 seconds
         locationRequest.setFastestInterval(5 * 1000); // 5 seconds
 
-        new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
-            @Override
-            public void gpsStatus(boolean isGPSEnable) {
-                // turn on GPS
-                Log.w("GPS isGPSEnable: ", String.valueOf(isGPSEnable));
-                isGPS = isGPSEnable;
-            }
+        new GpsUtils(this).turnGPSOn(isGPSEnable -> {
+            // turn on GPS
+            Log.w("GPS isGPSEnable: ", String.valueOf(isGPSEnable));
+            isGPS = isGPSEnable;
         });
 
         locationCallback = new LocationCallback() {

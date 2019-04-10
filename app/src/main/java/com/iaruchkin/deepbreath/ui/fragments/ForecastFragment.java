@@ -300,7 +300,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         }
     }
 
-    public void showRefresher(boolean show) {
+    private void showRefresher(boolean show) {
         mRefresh.setRefreshing(show);
     }
 

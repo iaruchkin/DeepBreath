@@ -21,14 +21,14 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        if (forecastEntity.getIsDay() == 1) {
+        if (forecastEntity.isDay == 1) {
                 viewHolder.weather_description.text = condition.dayText
         } else {
                 viewHolder.weather_description.text = condition.nightText
         }
 
-        val highString = WeatherUtils.formatTemperature(context, forecastEntity.getMaxtemp_c())
-        val lowString = WeatherUtils.formatTemperature(context, forecastEntity.getMintemp_c())
+        val highString = WeatherUtils.formatTemperature(context, forecastEntity.maxtemp_c)
+        val lowString = WeatherUtils.formatTemperature(context, forecastEntity.mintemp_c)
 
         viewHolder.high_value.text = highString
         viewHolder.low_value.text = lowString
@@ -39,9 +39,9 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
                 , StringUtils.transliterateLatToRus(forecastEntity.locationName, forecastEntity.locationCountry)
                 , StringUtils.transliterateLatToRus(forecastEntity.locationRegion, forecastEntity.locationCountry))
 
-        viewHolder.weather_icon.setImageResource(WeatherUtils.getLargeArtResource(condition.icon, forecastEntity.getIsDay()))
+        viewHolder.weather_icon.setImageResource(WeatherUtils.getLargeArtResource(condition.icon, forecastEntity.isDay))
 
-        viewHolder.weather_date.setText(StringUtils.formatDate(forecastEntity.date_epoch*1L, "d MMMM, EEEE"))
+        viewHolder.weather_date.text = StringUtils.formatDate(forecastEntity.date_epoch*1L, "d MMMM, EEEE")
 
         viewHolder.feels_like_detail.setText(R.string.night_feels_like)
         

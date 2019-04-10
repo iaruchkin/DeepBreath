@@ -20,10 +20,10 @@
     <color name="activated">#E0E0E0</color>
 
     <!-- Screens background color-->
-    <color name="bg_screen1">#3395FF</color>
-    <color name="bg_screen2">#c873f4</color>
-    <color name="bg_screen3">#f64c73</color>
-    <color name="bg_screen4">#20d2bb</color>
+    <color name="bg_screen1">#448AFF</color>
+    <color name="bg_screen2">#FFAB40</color>
+    <color name="bg_screen3">#4DB6AC</color>
+    <color name="bg_screen4">#69F0AE</color>
 
     <!--aqi number color-->
     <color name="good">#B9F6CA</color>

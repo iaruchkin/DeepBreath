@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="14dp"
-        android:text="Station name:"
+        android:text="@string/station_name"
         android:textColor="@color/secondary_text"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +109,7 @@
         android:tint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        tools:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:contentDescription="@string/expandable_arrow_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

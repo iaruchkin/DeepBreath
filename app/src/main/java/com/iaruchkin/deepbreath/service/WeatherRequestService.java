@@ -105,9 +105,7 @@ public class WeatherRequestService extends Worker {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        aqiEntities -> {
-                            makeNotification(aqiEntities.getData().getAqi(), true);
-                        },
+                        aqiEntities -> makeNotification(aqiEntities.getData().getAqi(), true),
                         this::logError
                 );
 

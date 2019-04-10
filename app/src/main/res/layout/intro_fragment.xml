@@ -6,7 +6,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-tools:background="@color/colorPrimary">
+tools:background="@color/colorPrimaryDark">
 
 
     <ImageView
@@ -15,7 +15,7 @@ tools:background="@color/colorPrimary">
         android:layout_height="match_parent"
         android:layout_marginStart="80dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="80dp"
         android:layout_marginBottom="120dp"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,33 +27,34 @@ tools:background="@color/colorPrimary">
         android:id="@+id/page_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
         android:gravity="center"
-        tools:text="@string/intro_page1_title"
         android:textAppearance="@style/TextAppearance.Details.Title"
         android:textColor="@color/white"
         android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="@+id/screenshot_img"
+        app:layout_constraintBottom_toTopOf="@+id/screenshot_img"
         app:layout_constraintEnd_toEndOf="@+id/screenshot_img"
-        app:layout_constraintStart_toStartOf="@+id/screenshot_img" />
+        app:layout_constraintStart_toStartOf="@+id/screenshot_img"
+        app:layout_constraintTop_toTopOf="@+id/screenshot_img"
+        tools:text="@string/intro_page1_title" />
 
     <TextView
         android:id="@+id/page_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="8dp"
-        tools:text="@string/intro_page1_desc"
+        android:padding="20dp"
         android:textAppearance="@style/TextAppearance.Details.Text"
         android:textColor="@color/white"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/screenshot_img"
         app:layout_constraintEnd_toEndOf="@+id/page_title"
         app:layout_constraintStart_toStartOf="@+id/page_title"
-        app:layout_constraintTop_toBottomOf="@+id/page_title" />
+        app:layout_constraintTop_toBottomOf="@+id/screenshot_img"
+        tools:text="@string/intro_page1_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

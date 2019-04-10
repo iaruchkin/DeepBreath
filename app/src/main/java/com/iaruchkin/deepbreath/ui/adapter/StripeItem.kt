@@ -6,7 +6,7 @@ import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
-class StripeItem(): Item(), ExpandableItem{
+class StripeItem : Item(), ExpandableItem{
 
     private lateinit var expandableGroup: ExpandableGroup
 
