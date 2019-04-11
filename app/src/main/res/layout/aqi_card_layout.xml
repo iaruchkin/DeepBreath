@@ -18,6 +18,19 @@
         android:layout_height="wrap_content"
         android:padding="6dp">
 
+        <TextView
+            android:id="@+id/invalid_data_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/invalid_data_sign"
+            android:textColor="@color/secondary_text"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/aqi_value"
+            app:layout_constraintTop_toTopOf="@+id/aqi_value" />
+
     <TextView
             android:id="@+id/aqi_value"
             android:layout_width="wrap_content"

@@ -32,6 +32,14 @@ public class AqiEntity {
     private String mCityGeo;
 
     @NonNull
+    @ColumnInfo(name ="locationLat")
+    private double locationLat;
+
+    @NonNull
+    @ColumnInfo(name ="locationLon")
+    private double locationLon;
+
+    @NonNull
     @ColumnInfo(name = "cityName")
     private String mCityName;
 
@@ -100,6 +108,14 @@ public class AqiEntity {
     @NonNull
     public String getCityGeo() {
         return mCityGeo;
+    }
+
+    public double getLocationLat() {
+        return locationLat;
+    }
+
+    public double getLocationLon() {
+        return locationLon;
     }
 
     @NonNull
@@ -181,6 +197,14 @@ public class AqiEntity {
 
     public void setCityGeo(@NonNull String cityGeo) {
         mCityGeo = cityGeo;
+    }
+
+    public void setLocationLat(double locationLat) {
+        this.locationLat = locationLat;
+    }
+
+    public void setLocationLon(double locationLon) {
+        this.locationLon = locationLon;
     }
 
     public void setCityName(@NonNull String cityName) {

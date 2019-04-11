@@ -131,7 +131,8 @@
             android:text="@string/feels_like"
             android:textColor="@color/secondary_text"
             android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="@+id/high_value"
+            app:layout_constraintEnd_toEndOf="@+id/high_value"
+            app:layout_constraintStart_toStartOf="@+id/high_value"
             app:layout_constraintTop_toBottomOf="@+id/high_value" />
 
         <include

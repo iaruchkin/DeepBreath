@@ -30,6 +30,7 @@ tools:background="@color/colorPrimaryDark">
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
+        android:padding="20dp"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.Details.Title"
         android:textColor="@color/white"

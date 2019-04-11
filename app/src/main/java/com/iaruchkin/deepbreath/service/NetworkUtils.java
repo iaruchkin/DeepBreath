@@ -25,7 +25,8 @@ public class NetworkUtils {
     private static NetworkUtils networkUtils;
     private NetworkReceiver networkReceiver = new NetworkReceiver();
     private CancelReceiver cancelReceiver = new CancelReceiver();
-    private Subject<Boolean> networkState = BehaviorSubject.createDefault(isNetworkAvailable());
+
+    public static Subject<Boolean> networkState = BehaviorSubject.createDefault(isNetworkAvailable());
 
 
     public static NetworkUtils getInstance() {
@@ -38,7 +39,7 @@ public class NetworkUtils {
         }
     }
 
-    private boolean isNetworkAvailable() {
+    public static boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) App.INSTANCE
                 .getApplicationContext()
                 .getSystemService(CONNECTIVITY_SERVICE);
@@ -62,14 +63,6 @@ public class NetworkUtils {
         return cancelReceiver;
     }
 
-    public class NetworkReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            networkState.onNext(isNetworkAvailable());
-        }
-    }
-
     public class CancelReceiver extends BroadcastReceiver {
 
         public static final String ACTION_CANCEL = "Cancel downloading";
@@ -87,3 +80,4 @@ public class NetworkUtils {
         }
     }
 }
+

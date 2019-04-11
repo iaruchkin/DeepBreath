@@ -223,8 +223,8 @@
     <string name="sunrise">Sunrise</string>
 
     <!--AQI detail values-->
-    <string name="pm25" translatable="false">PM2.5</string>
-    <string name="pm10" translatable="false">PM10</string>
+    <string name="pm25" translatable="false">PM₂₅</string>
+    <string name="pm10" translatable="false">PM₁₀</string>
     <string name="co" translatable="false">CO</string>
     <string name="no2" translatable="false">NO₂</string>
     <string name="so2" translatable="false">SO₂</string>
@@ -249,6 +249,7 @@
     <string name="unhealthy_full">Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects</string>
     <string name="very_unhealty_full">Health warnings of emergency conditions. The entire population is more likely to be affected.</string>
     <string name="hazardous_full">Health alert: everyone may experience more serious health effects</string>
+    <string name="invalid_data">*Looks like you are too far from any stations. The data may be not accurate.</string>
 
     <string name="good_recomendation">Enjoy your usual outdoor activities. We recommend opening your windows and ventilating your home to bring in fresh, oxygen-rich air.</string>
     <string name="moderate_recomendation">Sensitive groups should reduce outdoor activity. We recommend closing your windows to avoid dirty outdoor air.</string>
@@ -267,6 +268,7 @@
     <string name="icons_link" translatable="false">https://www.flaticon.com/authors/smashicons</string>
     <string name="logo_link" translatable="false">https://www.flaticon.com/authors/vectors-market</string>
     <string name="subject_email" translatable="false">deep breath app</string>
+    <string name="google_play_link" translatable="false">http://play.google.com/store/apps/details?id=com.iaruchkin.deepbreath</string>
 
     <string name="about_developer">Developer</string>
     <string name="about_ruchkin_igor">Ruchkin Igor (iaruchkin@gmail.com)</string>
@@ -280,6 +282,7 @@
     <string name="about_designed_by">designed by Smashicons from Flaticon</string>
     <string name="about_logo">Logo</string>
     <string name="about_logo_designed_by">designed by Vectors Market from Flaticon</string>
+
     <!--Intro text-->
     <string name="intro_page1_title">Air quality index</string>
     <string name="intro_page1_desc">And substances emitted into the atmosphere by human activity!</string>
@@ -296,11 +299,14 @@
     <string name="permission_button">OK</string>
     <string name="later_button">LATER</string>
     <string name="share">Share</string>
-    <string name="share_message">Air putity level in %s - %s   %s</string>
+    <string name="share_message">Air putity level in %s - %s
+
+        %s</string>
     <string name="service_message">air purity level - %s</string>
     <string name="service_header">AQI - %s</string>
     <string name="station_name">Station name:</string>
 
     <string name="expandable_arrow_icon" translatable="false">expandable arrow icon</string>
     <string name="aqi_label" translatable="false">aqi</string>
+    <string name="invalid_data_sign" translatable="false">*</string>
 </resources>

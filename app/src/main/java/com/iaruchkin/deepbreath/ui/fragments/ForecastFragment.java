@@ -184,7 +184,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
             message = String.format(Locale.getDefault(), getString(R.string.share_message)
                     , StringUtils.transliterateLatToRus(weatherItem.getLocation(), weatherItem.getCountry())
                     , getResources().getString(AqiUtils.getPollutionLevel(aqiItem.getAqi()))
-                    , getString(R.string.github_link));
+                    , getString(R.string.google_play_link));
         }
 
         i.putExtra(Intent.EXTRA_TEXT, message);

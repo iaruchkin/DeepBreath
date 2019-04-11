@@ -16,6 +16,7 @@ import com.iaruchkin.deepbreath.room.ForecastEntity;
 import com.iaruchkin.deepbreath.room.WeatherEntity;
 import com.iaruchkin.deepbreath.utils.AqiUtils;
 import com.iaruchkin.deepbreath.utils.ConditionUtils;
+import com.iaruchkin.deepbreath.utils.LocationUtils;
 import com.iaruchkin.deepbreath.utils.StringUtils;
 import com.iaruchkin.deepbreath.utils.WeatherUtils;
 
@@ -155,6 +156,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         private final CardView aqiCard;
         private final CardView weatherCard;
         private final TextView recomendation;
+        private final TextView invalidData;
 
         public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, int aqi, String dayText, int icon) {
 
@@ -177,7 +179,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiDesc.setText(AqiUtils.getPollutionLevel(aqi));
             aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqi)));
 
-            recomendation.setText(AqiUtils.getRecomendation(aqi));
+            if(LocationUtils.locationIsValid(aqiItem.getLocationLat(), aqiItem.getLocationLon(), context)){
+                recomendation.setText(AqiUtils.getRecomendation(aqi));
+                invalidData.setVisibility(View.GONE);
+            }else {
+                recomendation.setText(R.string.invalid_data);
+                invalidData.setVisibility(View.VISIBLE);
+            }
+
         }
 
         public void bindFuture(ForecastEntity forecastItem, int icon) {
@@ -209,7 +218,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             aqiCard = view.findViewById(R.id.aqi_pre_card);
             weatherCard = view.findViewById(R.id.today_card);
             recomendation = view.findViewById(R.id.recomendation);
-
+            invalidData = view.findViewById(R.id.invalid_data_sign);
             view.setOnClickListener(this);
         }
 

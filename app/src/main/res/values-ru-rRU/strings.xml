@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Чистый воздух</string>
+    <string name="app_name">Чистый Воздух</string>
     <string name="error_message">Неудачная загрузка</string>
     <string name="action_retry">повторить</string>
     <string name="cancel_work">отмена</string>
@@ -22,7 +22,7 @@
     <string name="pref_press_label_metric">мбар</string>
     <string name="pref_press_label_imperial">дюймы рт.ст.</string>
     <string name="pref_press_label_rus">мм.рт.ст.</string>
-    <string name="pref_enable_notifications_label">Уведомления о состоянии воздуха</string>
+    <string name="pref_enable_notifications_label">Уведомления о качестве воздуха</string>
     <string name="pref_enable_notifications_true">включены</string>
     <string name="pref_enable_notifications_false">выключены</string>
     <string name="today">сегодня</string>
@@ -111,4 +111,5 @@
     <string name="about_logo_designed_by">дизайн от Vectors Market с сайта Flaticon</string>
     <string name="about_weather_data">Данные о погоде</string>
     <string name="station_name">Станция:</string>
+    <string name="invalid_data">*Похоже, вы далеко от станции забора проб. Данные могут быть неточными.</string>
 </resources>

@@ -25,8 +25,10 @@ public class ConverterAqi {
 
             //parameter
             aqiEntity.setParameter(parameter);
-
+            //location
             aqiEntity.setCityGeo(aqiDTO.getCity().getGeo().toString());
+            aqiEntity.setLocationLat(aqiDTO.getCity().getGeo().get(0));
+            aqiEntity.setLocationLon(aqiDTO.getCity().getGeo().get(1));
             aqiEntity.setCityName(aqiDTO.getCity().getName());
             aqiEntity.setCityUrl(aqiDTO.getCity().getUrl());
 

@@ -1,5 +1,8 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
+import android.text.method.ScrollingMovementMethod
+import android.view.MotionEvent
+import android.view.View
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.AqiEntity
 import com.iaruchkin.deepbreath.utils.AqiUtils
@@ -12,17 +15,26 @@ import kotlinx.android.synthetic.main.aqi_card_layout.*
 import kotlinx.android.synthetic.main.expandable_header_aqi.*
 import java.lang.String.valueOf
 
+
 class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
-    : Item(), ExpandableItem{
+    : Item(), ExpandableItem, View.OnTouchListener{
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        v!!.parent.requestDisallowInterceptTouchEvent(true)
+        return false
+    }
 
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
+        //setting full description and making it scrollable inside recyclerview
+        viewHolder.aqi_level_full.setText(AqiUtils.getPollutionLevelFull(aqiEntity.aqi))
+        viewHolder.aqi_level_full.setOnTouchListener(this)
+        viewHolder.aqi_level_full.movementMethod = ScrollingMovementMethod.getInstance()
+
         viewHolder.aqi_location_desc.text = aqiEntity.cityName
         viewHolder.aqi_value.text = valueOf(aqiEntity.aqi)
         viewHolder.aqi_description.setText(AqiUtils.getPollutionLevel(aqiEntity.aqi))
-        viewHolder.aqi_level_full.setText(AqiUtils.getPollutionLevelFull(aqiEntity.aqi))
         viewHolder.aqi_date_exp.setText(StringUtils.formatDateAqi(aqiEntity.dateEpoch * 1L, "HH:mm, EEEE"))
 
         viewHolder.item_expandable_header_icon.setImageResource(getRotatedIconResId())
