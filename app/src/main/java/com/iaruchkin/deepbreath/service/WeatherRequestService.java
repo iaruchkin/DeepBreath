@@ -1,10 +1,12 @@
 package com.iaruchkin.deepbreath.service;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.R;
@@ -63,6 +65,8 @@ public class WeatherRequestService extends Worker {
     private void makeNotification(Integer aqi, boolean success) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
+        createNotificationChannel();
+
         Intent cancelIntent = new Intent(getApplicationContext(), NetworkUtils.CancelReceiver.class);
         cancelIntent.setAction(ACTION_CANCEL);
 
@@ -82,7 +86,7 @@ public class WeatherRequestService extends Worker {
 
         else
             notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                    .setSmallIcon(R.drawable.vec_error)
+                    .setSmallIcon(R.drawable.ic_warning)
                     .setContentTitle("Download failed")
                     .setContentText("Error while downloading data")
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -95,7 +99,7 @@ public class WeatherRequestService extends Worker {
     @NonNull
     @Override
     public ListenableWorker.Result doWork() {
-        Log.e(TAG, "onStartCommand: service starting");
+        Log.i(TAG, "onStartCommand: service starting");
 
         String parameter = PreferencesHelper.getAqiParameter(getApplicationContext());
 
@@ -109,7 +113,7 @@ public class WeatherRequestService extends Worker {
                         this::logError
                 );
 
-        Log.e(TAG, "onStartCommand: service stopped");
+        Log.i(TAG, "onStartCommand: service stopped");
         return Result.SUCCESS;
     }
 
@@ -117,5 +121,20 @@ public class WeatherRequestService extends Worker {
         return AqiApi.getInstance()
                 .airEndpoint()
                 .get(parameter);
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel =
+                    new NotificationChannel(CHANNEL_ID, CHANNEL_ID, importance);
+
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext().
+                    getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 }

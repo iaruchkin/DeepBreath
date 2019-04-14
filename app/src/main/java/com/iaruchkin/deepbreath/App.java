@@ -40,7 +40,7 @@ public class App extends Application {
     }
 
     public static void performsScheduledWork(){
-        int hourOfTheDay = 8; // When to run the job
+        int hourOfTheDay = 7; // When to run the job
         int repeatInterval = 1; // In days
 
         long flexTime = calculateFlex(hourOfTheDay, repeatInterval);
@@ -53,7 +53,8 @@ public class App extends Application {
 
             WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class
                     ,repeatInterval, TimeUnit.DAYS
-                    ,flexTime, TimeUnit.MILLISECONDS)
+                    ,flexTime, TimeUnit.MILLISECONDS
+            )
                     .setConstraints(constraints)
                     .addTag(WORK_TAG)
                     .build();

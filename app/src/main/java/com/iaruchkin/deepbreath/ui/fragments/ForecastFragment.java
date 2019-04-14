@@ -279,7 +279,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
             case NetworkError:
                 mRefresh.setVisibility(View.GONE);
-                mError.setVisibility(View.GONE);
+                mError.setVisibility(View.VISIBLE);
                 showRefresher(false);
                 break;
 
