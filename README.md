@@ -28,7 +28,7 @@ App mostly for monitoring **Air Quality Index** at your current location(choose 
         height="80"
         src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
 </a>
-<a href="https://github.com/iaruchkin/DeepBreath/releases/download/v1.0.1beta/app-release.apk">
+<a href="https://github.com/iaruchkin/DeepBreath/releases/download/v1.0.3beta/app-release.apk">
     <img alt="Get apk"
         height="80"
         src="http://yt3dl.net/images/apk-download-badge.png" />
