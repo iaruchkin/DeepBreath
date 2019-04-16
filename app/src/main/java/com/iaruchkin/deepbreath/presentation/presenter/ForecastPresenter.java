@@ -207,7 +207,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private void loadAqiFromNet(@NonNull String parameter){
         Log.i(PRESENTER_WEATHER_TAG,"Load AQI from net presenter");
-        getViewState().showState(State.Loading);
+        getViewState().showState(State.LoadingAqi);
 
         final Disposable disposable = AqiApi.getInstance()
                 .aqiEndpoint()
@@ -227,7 +227,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private void loadAqiAvFromNet(@NonNull String parameter){
         Log.w(PRESENTER_WEATHER_TAG,"Load AQIav from net presenter");
-        getViewState().showState(State.Loading);
+        getViewState().showState(State.LoadingAqi);
 
         final Disposable disposable = AqiAvApi.getInstance()
                 .aqiAvEndpoint()
@@ -267,7 +267,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             weatherEntities -> {
                                 weatherEntity = weatherEntities;
-                                updateData();
+//                                updateData();
+                                updateWeather();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded weather from NET to DB, size: " + weatherEntities.size());
                             });
             disposeOnDestroy(saveWeatherToDb);
@@ -290,7 +291,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             forecastEntities -> {
                                 forecastEntity = forecastEntities;
-                                updateData();
+//                                updateData();
+                                updateWeather();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded forecast from NET to DB, size: " + forecastEntities.size());
                             });
             disposeOnDestroy(saveForecastToDb);
@@ -314,7 +316,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             aqiEntities -> {
                                 aqiEntity = aqiEntities;
-                                updateData();
+//                                updateData();
+                                updateAqi();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size());
                             });
             disposeOnDestroy(saveDataToDb);
@@ -337,7 +340,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             aqiEntities -> {
                                 aqiEntity = aqiEntities;
-                                updateData();
+//                                updateData();
+                                updateAqi();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size());
                             });
             disposeOnDestroy(saveDataToDb);
@@ -357,8 +361,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                  .subscribe(
                          conditionEntities -> {
                              conditionEntity = conditionEntities;
-                             updateData();
-
+//                             updateData();
+                             updateWeather();
                              Log.i(PRESENTER_WEATHER_TAG, "loaded condition from NET to DB, size: " + conditionEntities.size());
                          });
          disposeOnDestroy(saveDataToDb);
@@ -371,6 +375,20 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     private void updateData() {
         if (forecastEntity != null && weatherEntity != null && aqiEntity != null && conditionEntity != null) {
             getViewState().showData(forecastEntity, weatherEntity, aqiEntity, conditionEntity);
+            getViewState().showState(State.HasData);
+        }
+    }
+
+    private void updateAqi() {
+        if (aqiEntity != null && conditionEntity != null) {
+            getViewState().showAqi(aqiEntity);
+            getViewState().showState(State.HasData);
+        }
+    }
+
+    private void updateWeather() {
+        if (forecastEntity != null && weatherEntity != null && conditionEntity != null) {
+            getViewState().showWeather(forecastEntity, weatherEntity, conditionEntity);
             getViewState().showState(State.HasData);
         }
     }

@@ -4,6 +4,7 @@ public enum State {
     HasData,
     HasNoData,
     Loading,
+    LoadingAqi,
     NetworkError,
     DbError,
     Forecast,

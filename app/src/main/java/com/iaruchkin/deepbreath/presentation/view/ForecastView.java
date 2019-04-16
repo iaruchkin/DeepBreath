@@ -20,6 +20,9 @@ public interface ForecastView extends MvpView {
                          @NonNull List<WeatherEntity> weatherEntity,
                          @NonNull List<AqiEntity> aqiEntity,
                          @NonNull List<ConditionEntity> conditionEntity);
-
+    void showWeather(@NonNull List<ForecastEntity> forecastEntity,
+                  @NonNull List<WeatherEntity> weatherEntity,
+                  @NonNull List<ConditionEntity> conditionEntity);
+    void showAqi(@NonNull List<AqiEntity> aqiEntity);
     void showState(@NonNull State state);
 }

@@ -11,12 +11,23 @@
     app:cardUseCompatPadding="false"
     app:cardElevation="6dp"
     app:cardCornerRadius="@dimen/card_corner_radius"
-    tools:cardBackgroundColor="@color/good">
+    app:cardBackgroundColor="@color/moderate">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="6dp">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/aqi_description"
+            app:layout_constraintEnd_toEndOf="@+id/aqi_value"
+            app:layout_constraintStart_toStartOf="@+id/aqi_value"
+            app:layout_constraintTop_toTopOf="@+id/aqi_head"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/invalid_data_sign"
@@ -31,12 +42,12 @@
             app:layout_constraintEnd_toEndOf="@+id/aqi_value"
             app:layout_constraintTop_toTopOf="@+id/aqi_value" />
 
-    <TextView
+        <TextView
             android:id="@+id/aqi_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:minWidth="70dp"
+            android:minWidth="82dp"
             android:paddingStart="10dp"
             android:paddingTop="10dp"
             android:paddingEnd="10dp"

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
@@ -263,6 +264,28 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     }
 
     @Override
+    public void showWeather(@NonNull List<ForecastEntity> forecastEntity,
+                         @NonNull List<WeatherEntity> weatherEntity,
+                         @NonNull List<ConditionEntity> conditionEntity) {
+
+        if(forecastEntity.size() != 0
+                && weatherEntity.size() != 0
+                && conditionEntity.size() != 0) {
+            mAdapter.setWeather(forecastEntity, weatherEntity.get(0), conditionEntity);
+        }
+        weatherItem = weatherEntity.get(0);
+    }
+
+    @Override
+    public void showAqi(@NonNull List<AqiEntity> aqiEntity) {
+
+        if(aqiEntity.size() != 0) {
+            mAdapter.setAqi(aqiEntity.get(0));
+        }
+        aqiItem = aqiEntity.get(0);
+    }
+
+    @Override
     public void showState(@NonNull State state) {
         switch (state) {
             case HasData:
@@ -294,7 +317,16 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                 mRefresh.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mError.setVisibility(View.GONE);
-                showRefresher(true);
+
+              showRefresher(true);
+                break;
+
+            case LoadingAqi:
+                mRefresh.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mError.setVisibility(View.GONE);
+
+                showRefresher(false);
                 break;
 
             default:

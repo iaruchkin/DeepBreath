@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.room.entities.AqiEntity;
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
@@ -28,7 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder>{
+public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder> {
 
     private final String DATE_FORMAT = "HH:mm, EEEE";
     private final String TAG_ADAPTER = "ADAPTER";
@@ -87,15 +89,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         switch (viewType) {
             case VIEW_TYPE_TODAY:
 
-                if (aqiItem.getAqi() != null){
-                    Log.i(TAG_ADAPTER, aqiItem.toString());
-                    Log.i(TAG_ADAPTER, weatherItem.toString());
-                    aqi = aqiItem.getAqi();
-                }
-                else aqi = 0;
-
-                if(conditionItemList.size()!=0) {
-                    iconToday  = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
+                if (conditionItemList.size() != 0) {
+                    iconToday = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getIcon();
                     if (weatherItem.getIsDay() == 1) {
                         conditionText = conditionItemList.get(ConditionUtils.getConditionCode(weatherItem.getConditionCode())).getDayText();
                     } else {
@@ -108,11 +103,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
                     iconToday = 0;
                 }
 
-                holder.bindFirst(forecastItem, weatherItem  , aqi, conditionText, iconToday);
+                holder.bindFirst(forecastItem, weatherItem, aqiItem, conditionText, iconToday);
                 break;
 
             case VIEW_TYPE_FUTURE_DAY:
-                if(conditionItemList.size()!=0) {
+                if (conditionItemList.size() != 0) {
                     iconForecast = conditionItemList.get(ConditionUtils.getConditionCode(forecastItem.getConditionCode())).getIcon();
                     Log.i(TAG_ADAPTER, forecastItem.toString());
                     Log.i(TAG_ADAPTER, String.valueOf(iconForecast));
@@ -153,40 +148,48 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
         private final TextView aqiTextView;
         private final TextView aqiDesc;
+        private final TextView aqiHead;
         private final CardView aqiCard;
         private final CardView weatherCard;
         private final TextView recomendation;
         private final TextView invalidData;
+        private ProgressBar mProgressBar;
 
-        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, int aqi, String dayText, int icon) {
+        public void bindFirst(ForecastEntity forecastItem, WeatherEntity weatherItem, AqiEntity aqi, String dayText, int icon) {
 
             String highString = WeatherUtils.formatTemperature(context, weatherItem.getTemp_c());
             String lowString = WeatherUtils.formatTemperature(context, weatherItem.getFeelslike_c());
 
             imageView.setImageResource(WeatherUtils.getLargeArtResource(icon, weatherItem.getIsDay()));
 
-            aqiTextView.setText(String.valueOf(aqi));
             locationTextView.setText(StringUtils.transliterateLatToRus(forecastItem.getLocationName(), forecastItem.getLocationCountry()));
 
             weatherDescTextView.setText(dayText);
 
-            dateTextView.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.today)+" %s",
+            dateTextView.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.today) + " %s",
                     (StringUtils.formatDate(weatherItem.getLast_updated_epoch(), "HH:mm"))));
 
             highTemperatureTextView.setText(highString);
             lowTemperatureTextView.setText(lowString);
 
-            aqiDesc.setText(AqiUtils.getPollutionLevel(aqi));
-            aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqi)));
 
-            if(LocationUtils.locationIsValid(aqiItem.getLocationLat(), aqiItem.getLocationLon(), context)){
-                recomendation.setText(AqiUtils.getRecomendation(aqi));
-                invalidData.setVisibility(View.GONE);
-            }else {
-                recomendation.setText(R.string.invalid_data);
-                invalidData.setVisibility(View.VISIBLE);
+            if (aqi.getAqi() == null) {
+                showState(State.LoadingAqi);
+            } else {
+                showState(State.HasData);
+
+                aqiTextView.setText(String.valueOf(aqi.getAqi()));
+                aqiDesc.setText(AqiUtils.getPollutionLevel(aqi.getAqi()));
+                aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqi.getAqi())));
+
+                if (LocationUtils.locationIsValid(aqiItem.getLocationLat(), aqiItem.getLocationLon(), context)) {
+                    recomendation.setText(AqiUtils.getRecomendation(aqi.getAqi()));
+                    invalidData.setVisibility(View.GONE);
+                } else {
+                    recomendation.setText(R.string.invalid_data);
+                    invalidData.setVisibility(View.VISIBLE);
+                }
             }
-
         }
 
         public void bindFuture(ForecastEntity forecastItem, int icon) {
@@ -201,6 +204,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             highTemperatureTextView.setText(highString);
             lowTemperatureTextView.setText(lowString);
+
         }
 
         public WeatherViewHolder(View view) {
@@ -215,10 +219,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             aqiTextView = view.findViewById(R.id.aqi_value);
             aqiDesc = view.findViewById(R.id.aqi_description);
+            aqiHead = view.findViewById(R.id.aqi_head);
             aqiCard = view.findViewById(R.id.aqi_pre_card);
             weatherCard = view.findViewById(R.id.today_card);
             recomendation = view.findViewById(R.id.recomendation);
             invalidData = view.findViewById(R.id.invalid_data_sign);
+            mProgressBar = view.findViewById(R.id.progress_bar);
+
             view.setOnClickListener(this);
         }
 
@@ -227,29 +234,73 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
             int adapterPosition = getAdapterPosition();
             ForecastEntity forecastItem = forecastItemList.get(adapterPosition);
             int code;
-                if(adapterPosition == 0) code = weatherItem.getConditionCode();
-                else code = forecastItem.getConditionCode();
+            if (adapterPosition == 0) code = weatherItem.getConditionCode();
+            else code = forecastItem.getConditionCode();
 
             ConditionEntity conditionItem = conditionItemList.get(ConditionUtils.getConditionCode(code));
-            mClickHandler.onClickList(forecastItem, weatherItem, aqiItem, conditionItem, getItemViewType());
+            if (forecastItem != null
+                    && weatherItem != null
+                    && aqiItem.getAqi() != null
+                    && conditionItem != null) {
+                mClickHandler.onClickList(forecastItem, weatherItem, aqiItem, conditionItem, getItemViewType());
+            }
+        }
+
+        public void showState(@NonNull State state) {
+            switch (state) {
+                case LoadingAqi:
+                    aqiTextView.setVisibility(View.INVISIBLE);
+                    aqiDesc.setVisibility(View.INVISIBLE);
+                    aqiHead.setVisibility(View.INVISIBLE);
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    break;
+                case HasData:
+                    mProgressBar.setVisibility(View.GONE);
+                    aqiTextView.setVisibility(View.VISIBLE);
+                    aqiDesc.setVisibility(View.VISIBLE);
+                    aqiHead.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown state: " + state);
+            }
         }
     }
 
-        public void setData(@NonNull List<ForecastEntity> forecastEntity,
-                            @NonNull WeatherEntity weatherEntity,
-                            @NonNull AqiEntity aqiEntity,
-                            @NonNull List<ConditionEntity> conditionEntity){
-            forecastItemList.clear();
-            forecastItemList.add(forecastEntity.get(0));
-            forecastItemList.addAll(forecastEntity);
+    public void setData(@NonNull List<ForecastEntity> forecastEntity,
+                        @NonNull WeatherEntity weatherEntity,
+                        @NonNull AqiEntity aqiEntity,
+                        @NonNull List<ConditionEntity> conditionEntity) {
+        forecastItemList.clear();
+        forecastItemList.add(forecastEntity.get(0));
+        forecastItemList.addAll(forecastEntity);
 
-            weatherItem = weatherEntity;
+        weatherItem = weatherEntity;
 
-            aqiItem = aqiEntity;
+        aqiItem = aqiEntity;
 
-            conditionItemList.clear();
-            conditionItemList.addAll(conditionEntity);
+        conditionItemList.clear();
+        conditionItemList.addAll(conditionEntity);
 
-            notifyDataSetChanged();
-        }
+        notifyDataSetChanged();
+    }
+
+    public void setWeather(@NonNull List<ForecastEntity> forecastEntity,
+                           @NonNull WeatherEntity weatherEntity,
+                           @NonNull List<ConditionEntity> conditionEntity) {
+        forecastItemList.clear();
+        forecastItemList.add(forecastEntity.get(0));
+        forecastItemList.addAll(forecastEntity);
+
+        weatherItem = weatherEntity;
+
+        conditionItemList.clear();
+        conditionItemList.addAll(conditionEntity);
+
+        notifyDataSetChanged();
+    }
+
+    public void setAqi(@NonNull AqiEntity aqiEntity) {
+        aqiItem = aqiEntity;
+        notifyDataSetChanged();
+    }
 }

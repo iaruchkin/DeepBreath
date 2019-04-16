@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mForecastFragment)
-                .commit();
+                .commitAllowingStateLoss();//todo fix in future
     }
 
     private void startDetails(String idForecast, String idWeather, String idAqi, String idCondition, int viewType) {
