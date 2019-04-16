@@ -266,24 +266,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
         }
     }
 
-    public void setData(@NonNull List<ForecastEntity> forecastEntity,
-                        @NonNull WeatherEntity weatherEntity,
-                        @NonNull AqiEntity aqiEntity,
-                        @NonNull List<ConditionEntity> conditionEntity) {
-        forecastItemList.clear();
-        forecastItemList.add(forecastEntity.get(0));
-        forecastItemList.addAll(forecastEntity);
-
-        weatherItem = weatherEntity;
-
-        aqiItem = aqiEntity;
-
-        conditionItemList.clear();
-        conditionItemList.addAll(conditionEntity);
-
-        notifyDataSetChanged();
-    }
-
     public void setWeather(@NonNull List<ForecastEntity> forecastEntity,
                            @NonNull WeatherEntity weatherEntity,
                            @NonNull List<ConditionEntity> conditionEntity) {

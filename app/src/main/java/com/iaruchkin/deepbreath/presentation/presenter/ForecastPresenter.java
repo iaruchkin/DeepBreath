@@ -137,7 +137,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             loadForecastFromNet(geo);
         }else {
             weatherEntity = data;
-            updateData();
+            updateWeather();
 
             Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data.get(0).getId() + " / " + data.get(0).getLocation());
             Log.i(PRESENTER_WEATHER_TAG, "update WeatherData executed on thread: " + Thread.currentThread().getName());
@@ -150,7 +150,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             loadForecastFromNet(option);
         }else {
             forecastEntity = data;
-            updateData();
+            updateWeather();
 
             Log.i(PRESENTER_WEATHER_TAG, "loaded ForecastData from DB: " + data.get(0).getId() + " / " + data.get(0).getLocationName());
             Log.i(PRESENTER_WEATHER_TAG, "update ForecastData executed on thread: " + Thread.currentThread().getName());
@@ -163,7 +163,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             loadAqiFromNet(parameter);
         }else{
             aqiEntity = data;
-            updateData();
+            updateAqi();
 
             Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.get(0).getId() + " / " + data.get(0).getAqi());
             Log.i(PRESENTER_WEATHER_TAG, "update AqiData executed on thread: " + Thread.currentThread().getName());
@@ -176,7 +176,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
             loadCondition();
         }else {
             conditionEntity = data;
-            updateData();
+            updateWeather();
 
             Log.i(PRESENTER_WEATHER_TAG, "loaded condition from DB: " + data.get(0).getId() + " / " + data.get(0).getDayText());
             Log.i(PRESENTER_WEATHER_TAG, "update condition executed on thread: " + Thread.currentThread().getName());
@@ -267,7 +267,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             weatherEntities -> {
                                 weatherEntity = weatherEntities;
-//                                updateData();
                                 updateWeather();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded weather from NET to DB, size: " + weatherEntities.size());
                             });
@@ -291,7 +290,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             forecastEntities -> {
                                 forecastEntity = forecastEntities;
-//                                updateData();
                                 updateWeather();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded forecast from NET to DB, size: " + forecastEntities.size());
                             });
@@ -316,7 +314,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             aqiEntities -> {
                                 aqiEntity = aqiEntities;
-//                                updateData();
                                 updateAqi();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size());
                             });
@@ -340,7 +337,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                     .subscribe(
                             aqiEntities -> {
                                 aqiEntity = aqiEntities;
-//                                updateData();
                                 updateAqi();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size());
                             });
@@ -361,7 +357,6 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                  .subscribe(
                          conditionEntities -> {
                              conditionEntity = conditionEntities;
-//                             updateData();
                              updateWeather();
                              Log.i(PRESENTER_WEATHER_TAG, "loaded condition from NET to DB, size: " + conditionEntities.size());
                          });
@@ -372,15 +367,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     /**setting data objects
      *
      */
-    private void updateData() {
-        if (forecastEntity != null && weatherEntity != null && aqiEntity != null && conditionEntity != null) {
-            getViewState().showData(forecastEntity, weatherEntity, aqiEntity, conditionEntity);
-            getViewState().showState(State.HasData);
-        }
-    }
-
     private void updateAqi() {
-        if (aqiEntity != null && conditionEntity != null) {
+        if (aqiEntity != null) {
             getViewState().showAqi(aqiEntity);
             getViewState().showState(State.HasData);
         }

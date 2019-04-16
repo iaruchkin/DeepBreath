@@ -248,22 +248,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     }
 
     @Override
-    public void showData(@NonNull List<ForecastEntity> forecastEntity,
-                         @NonNull List<WeatherEntity> weatherEntity,
-                         @NonNull List<AqiEntity> aqiEntity,
-                         @NonNull List<ConditionEntity> conditionEntity) {
-
-        if(forecastEntity.size() != 0
-                && weatherEntity.size() != 0
-                && aqiEntity.size() != 0
-                && conditionEntity.size() != 0) {
-            mAdapter.setData(forecastEntity, weatherEntity.get(0), aqiEntity.get(0), conditionEntity);
-        }
-        weatherItem = weatherEntity.get(0);
-        aqiItem = aqiEntity.get(0);
-    }
-
-    @Override
     public void showWeather(@NonNull List<ForecastEntity> forecastEntity,
                          @NonNull List<WeatherEntity> weatherEntity,
                          @NonNull List<ConditionEntity> conditionEntity) {
