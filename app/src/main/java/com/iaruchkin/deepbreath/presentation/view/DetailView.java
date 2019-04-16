@@ -3,10 +3,10 @@ package com.iaruchkin.deepbreath.presentation.view;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.SingleStateStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
-import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.ConditionEntity;
-import com.iaruchkin.deepbreath.room.ForecastEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
+import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 
 import androidx.annotation.NonNull;
 

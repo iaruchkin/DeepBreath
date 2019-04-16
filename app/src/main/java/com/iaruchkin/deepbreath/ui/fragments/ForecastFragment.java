@@ -20,10 +20,10 @@ import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
-import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.ConditionEntity;
-import com.iaruchkin.deepbreath.room.ForecastEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
+import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter;
 import com.iaruchkin.deepbreath.utils.AqiUtils;
 import com.iaruchkin.deepbreath.utils.StringUtils;
@@ -266,8 +266,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
     public void showState(@NonNull State state) {
         switch (state) {
             case HasData:
-                mError.setVisibility(View.GONE);
+                mRefresh.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.VISIBLE);
+                mError.setVisibility(View.GONE);
                 showRefresher(false);
                 break;
 
@@ -290,8 +291,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                 break;
 
           case Loading:
-                mError.setVisibility(View.GONE);
                 mRefresh.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mError.setVisibility(View.GONE);
                 showRefresher(true);
                 break;
 

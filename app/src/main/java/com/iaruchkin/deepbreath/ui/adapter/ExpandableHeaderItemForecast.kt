@@ -2,8 +2,8 @@ package com.iaruchkin.deepbreath.ui.adapter
 
 import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
-import com.iaruchkin.deepbreath.room.ConditionEntity
-import com.iaruchkin.deepbreath.room.ForecastEntity
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity
 import com.iaruchkin.deepbreath.utils.StringUtils
 import com.iaruchkin.deepbreath.utils.WeatherUtils
 import com.xwray.groupie.ExpandableGroup

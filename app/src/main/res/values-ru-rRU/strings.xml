@@ -89,7 +89,7 @@
     <string name="intro_page2_title">Погода</string>
     <string name="intro_page3_title">Местоположение</string>
     <string name="intro_page2_desc">В данный момент и прогноз на 7 дней вперед!</string>
-    <string name="intro_page1_desc">И различные загрязняющие вещества выбрасываемые в атмосферу!</string>
+    <string name="intro_page1_desc">А также состав загрязняющих веществ, выбрасываемых в атмосферу!</string>
     <string name="intro_page3_desc">Приложению понадобится знать где вы находитесь, пожалуйста дайте разрешение на использование этой информации.</string>
     <string name="good_recomendation">Проводите время на свежем воздухе. Мы рекомендуем открыть окна и проветрить помещение.</string>
     <string name="moderate_recomendation">Вы можете проводить время на улице, однако мы рекомендуем закрыть окна, чтобы не впускать загрязненный воздух.</string>
@@ -112,4 +112,6 @@
     <string name="about_weather_data">Данные о погоде</string>
     <string name="station_name">Станция:</string>
     <string name="invalid_data">*Похоже, вы далеко от станции забора проб. Данные могут быть неточными.</string>
+    <string name="about_av_air_quality_index">Дополнительные данные о загрязнении воздуха</string>
+    <string name="about_airvisual">предоставлены airvisual.com</string>
 </resources>

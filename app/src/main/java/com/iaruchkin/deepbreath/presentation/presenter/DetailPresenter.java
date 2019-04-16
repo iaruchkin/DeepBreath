@@ -7,14 +7,14 @@ import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.presentation.view.DetailView;
-import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.ConditionEntity;
-import com.iaruchkin.deepbreath.room.ConverterAqi;
-import com.iaruchkin.deepbreath.room.ConverterCondition;
-import com.iaruchkin.deepbreath.room.ConverterForecast;
-import com.iaruchkin.deepbreath.room.ConverterWeather;
-import com.iaruchkin.deepbreath.room.ForecastEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
+import com.iaruchkin.deepbreath.room.converters.ConverterAqi;
+import com.iaruchkin.deepbreath.room.converters.ConverterCondition;
+import com.iaruchkin.deepbreath.room.converters.ConverterForecast;
+import com.iaruchkin.deepbreath.room.converters.ConverterWeather;
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
+import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 
 import androidx.annotation.Nullable;
 import io.reactivex.Single;
@@ -82,7 +82,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateWeatherData, this::handleError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
     private void loadAqiFromDb(String id){
@@ -92,7 +92,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateAqiData, this::handleError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load AqiData from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load AqiData from db");
     }
 
     private void loadForecastFromDb(String id){
@@ -102,7 +102,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateForecastData, this::handleError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load Forecast from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load Forecast from db");
     }
 
     private void loadConditionFromDb(String id){
@@ -112,7 +112,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateConditionData, this::handleError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
     /**setting data to app

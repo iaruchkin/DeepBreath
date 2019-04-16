@@ -4,7 +4,7 @@ import android.text.method.ScrollingMovementMethod
 import android.view.MotionEvent
 import android.view.View
 import com.iaruchkin.deepbreath.R
-import com.iaruchkin.deepbreath.room.AqiEntity
+import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.utils.AqiUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import com.xwray.groupie.ExpandableGroup
@@ -27,6 +27,9 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
+        //setting color to imported card
+        viewHolder.aqi_exp_card_imported.setBackgroundResource(AqiUtils.getColor(aqiEntity.aqi))
+
         //setting full description and making it scrollable inside recyclerview
         viewHolder.aqi_level_full.setText(AqiUtils.getPollutionLevelFull(aqiEntity.aqi))
         viewHolder.aqi_level_full.setOnTouchListener(this)
@@ -39,9 +42,6 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
 
         viewHolder.item_expandable_header_icon.setImageResource(getRotatedIconResId())
         viewHolder.item_expandable_header_title.setText(getRotatedTextResId())
-
-        //setting color to imported card
-        viewHolder.aqi_exp_card_imported.setBackgroundResource(AqiUtils.getColor(aqiEntity.aqi))
 
         viewHolder.aqi_expandable_header_root.setOnClickListener {
             expandableGroup.onToggleExpanded()

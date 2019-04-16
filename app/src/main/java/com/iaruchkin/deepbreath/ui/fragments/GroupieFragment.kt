@@ -14,7 +14,10 @@ import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment
 import com.iaruchkin.deepbreath.presentation.presenter.DetailPresenter
 import com.iaruchkin.deepbreath.presentation.view.DetailView
-import com.iaruchkin.deepbreath.room.*
+import com.iaruchkin.deepbreath.room.entities.AqiEntity
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity
+import com.iaruchkin.deepbreath.room.entities.WeatherEntity
 import com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG
 import com.iaruchkin.deepbreath.ui.adapter.*
 import com.iaruchkin.deepbreath.utils.StringUtils
@@ -147,7 +150,9 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
         val dataList: MutableList<AqiItem> = mutableListOf()
 
-        if (pm25!=null) dataList.add(AqiItem(pm25.toString(), R.string.pm25))
+        if (pm25!=null) {dataList.add(AqiItem(pm25.toString(), R.string.pm25))}
+        else {dataList.add(AqiItem(data.aqi.toString(), R.string.pm25))}//todo fix later
+
         if (pm10!=null) dataList.add(AqiItem(pm10.toString(), R.string.pm10))
         if (co!=null) dataList.add(AqiItem(co.toString(), R.string.co))
         if (no2!=null) dataList.add(AqiItem(no2.toString(), R.string.no2))

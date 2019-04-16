@@ -30,6 +30,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
     private View mDeveloper;
     private View mGithub;
     private View mAqiLink;
+    private View mAqiAvLink;
     private View mWeatherLink;
     private View mIconsLink;
     private View mLogoLink;
@@ -87,6 +88,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
         mDeveloper.setOnClickListener(v -> presenter.sendMessage());
         mGithub.setOnClickListener(v -> presenter.openLink(getString(R.string.github_link)));
         mAqiLink.setOnClickListener(v -> presenter.openLink(getString(R.string.aqi_link)));
+        mAqiAvLink.setOnClickListener(v -> presenter.openLink(getString(R.string.aqiav_link)));
         mWeatherLink.setOnClickListener(v -> presenter.openLink(getString(R.string.weather_link)));
         mIconsLink.setOnClickListener(v -> presenter.openLink(getString(R.string.icons_link)));
         mLogoLink.setOnClickListener(v -> presenter.openLink(getString(R.string.logo_link)));
@@ -112,6 +114,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
         mDeveloper = view.findViewById(R.id.developer);
         mGithub = view.findViewById(R.id.github);
         mAqiLink = view.findViewById(R.id.aqi_link);
+        mAqiAvLink = view.findViewById(R.id.aqiav_link);
         mWeatherLink = view.findViewById(R.id.weather_link);
         mIconsLink = view.findViewById(R.id.icons_link);
         mLogoLink = view.findViewById(R.id.logo_link);

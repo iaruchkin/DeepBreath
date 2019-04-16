@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.ConditionEntity;
-import com.iaruchkin.deepbreath.room.ForecastEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
+import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 import com.iaruchkin.deepbreath.utils.AqiUtils;
 import com.iaruchkin.deepbreath.utils.ConditionUtils;
 import com.iaruchkin.deepbreath.utils.LocationUtils;

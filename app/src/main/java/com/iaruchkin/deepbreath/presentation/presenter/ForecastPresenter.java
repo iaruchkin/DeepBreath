@@ -9,22 +9,25 @@ import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
-import com.iaruchkin.deepbreath.network.AqiApi;
-import com.iaruchkin.deepbreath.network.AqiResponse;
-import com.iaruchkin.deepbreath.network.ConditionParser;
-import com.iaruchkin.deepbreath.network.WeatherApi;
-import com.iaruchkin.deepbreath.network.WeatherResponse;
-import com.iaruchkin.deepbreath.network.weatherApixuDTO.OfflineCondition.WeatherCondition;
+import com.iaruchkin.deepbreath.network.dtos.AqiAvResponse;
+import com.iaruchkin.deepbreath.network.parsers.AqiApi;
+import com.iaruchkin.deepbreath.network.dtos.AqiResponse;
+import com.iaruchkin.deepbreath.network.parsers.AqiAvApi;
+import com.iaruchkin.deepbreath.network.parsers.ConditionParser;
+import com.iaruchkin.deepbreath.network.parsers.WeatherApi;
+import com.iaruchkin.deepbreath.network.dtos.WeatherResponse;
+import com.iaruchkin.deepbreath.network.dtos.weatherApixuDTO.OfflineCondition.WeatherCondition;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
-import com.iaruchkin.deepbreath.room.AqiEntity;
-import com.iaruchkin.deepbreath.room.ConditionEntity;
-import com.iaruchkin.deepbreath.room.ConverterAqi;
-import com.iaruchkin.deepbreath.room.ConverterCondition;
-import com.iaruchkin.deepbreath.room.ConverterForecast;
-import com.iaruchkin.deepbreath.room.ConverterWeather;
-import com.iaruchkin.deepbreath.room.ForecastEntity;
-import com.iaruchkin.deepbreath.room.WeatherEntity;
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
+import com.iaruchkin.deepbreath.room.converters.ConverterAqi;
+import com.iaruchkin.deepbreath.room.converters.ConverterCondition;
+import com.iaruchkin.deepbreath.room.converters.ConverterForecast;
+import com.iaruchkin.deepbreath.room.converters.ConverterWeather;
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
+import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 import com.iaruchkin.deepbreath.utils.LangUtils;
+import com.iaruchkin.deepbreath.utils.LocationUtils;
 import com.iaruchkin.deepbreath.utils.PreferencesHelper;
 
 import java.util.List;
@@ -90,7 +93,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateWeatherData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
     private void loadForecastFromDb(String geo){
@@ -100,7 +103,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateForecastData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
     private void loadAqiFromDb(String geo){
@@ -110,7 +113,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateAqiData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load AqiData from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load AqiData from db");
     }
 
     private void loadConditionFromDb(){
@@ -120,7 +123,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateConditionData, this::handleError);
         disposeOnDestroy(loadFromDb);
-        Log.e(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
     }
 
     /**check db responce
@@ -154,11 +157,11 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }
     }
 
-    private void updateAqiData(@Nullable List<AqiEntity> data, String location) {
+    private void updateAqiData(@Nullable List<AqiEntity> data, String parameter) {
         if (data.size() == 0){
-            Log.w(PRESENTER_WEATHER_TAG, "there is no AqiData for location : " + location);
-            loadAqiFromNet(location);
-        }else {
+            Log.w(PRESENTER_WEATHER_TAG, "there is no AqiData for location : " + parameter);
+            loadAqiFromNet(parameter);
+        }else{
             aqiEntity = data;
             updateData();
 
@@ -185,7 +188,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      * @param parameter
      */
     private void loadForecastFromNet(@NonNull String parameter){
-        Log.e(PRESENTER_WEATHER_TAG,"Load Forecast from net presenter");
+        Log.i(PRESENTER_WEATHER_TAG,"Load Forecast from net presenter");
         getViewState().showState(State.Loading);
 
         final Disposable disposable = WeatherApi.getInstance()
@@ -203,15 +206,35 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     private void loadAqiFromNet(@NonNull String parameter){
-        Log.e(PRESENTER_WEATHER_TAG,"Load AQI from net presenter");
+        Log.i(PRESENTER_WEATHER_TAG,"Load AQI from net presenter");
         getViewState().showState(State.Loading);
 
         final Disposable disposable = AqiApi.getInstance()
-                .airEndpoint()
+                .aqiEndpoint()
                 .get(parameter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> updateAqiDB(response, parameter), this::handleError);//response.getData().getCity().getName()
+                .subscribe(response -> {
+                    boolean isValid = LocationUtils.locationIsValid(response.getAqiData().getCity().getGeo().get(0)
+                            , response.getAqiData().getCity().getGeo().get(1), context);
+
+                    if(!isValid) loadAqiAvFromNet(parameter);
+                    else updateAqiDB(response, parameter);
+
+                }, this::handleError);
+        disposeOnDestroy(disposable);
+    }
+
+    private void loadAqiAvFromNet(@NonNull String parameter){
+        Log.w(PRESENTER_WEATHER_TAG,"Load AQIav from net presenter");
+        getViewState().showState(State.Loading);
+
+        final Disposable disposable = AqiAvApi.getInstance()
+                .aqiAvEndpoint()
+                .get(PreferencesHelper.getLocation(context).getLatitude(),PreferencesHelper.getLocation(context).getLongitude())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> updateAqiAvDB(response, parameter), this::handleError);
         disposeOnDestroy(disposable);
     }
 
@@ -276,10 +299,34 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     private void updateAqiDB(AqiResponse response, String parameter) {
-        if (response.getData() == null) {
+        if (response.getAqiData() == null) {
+            getViewState().showState(State.HasNoData);
+            Log.w(PRESENTER_WEATHER_TAG, "no data!");
+        } else {
+            Disposable saveDataToDb = Single.fromCallable(response::getAqiData)
+                    .subscribeOn(Schedulers.io())
+                    .map(aqiDTO -> {
+                        ConverterAqi.saveAllDataToDb(context,
+                                ConverterAqi.dtoToDao(aqiDTO, parameter),parameter);
+                        return ConverterAqi.getDataByParameter(context, parameter);
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            aqiEntities -> {
+                                aqiEntity = aqiEntities;
+                                updateData();
+                                Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size());
+                            });
+            disposeOnDestroy(saveDataToDb);
+            getViewState().showState(State.HasData);
+        }
+    }
+
+    private void updateAqiAvDB(AqiAvResponse response, String parameter) {
+        if (response.getAqiAvData() == null) {
             getViewState().showState(State.HasNoData);
         } else {
-            Disposable saveDataToDb = Single.fromCallable(response::getData)
+            Disposable saveDataToDb = Single.fromCallable(response::getAqiAvData)
                     .subscribeOn(Schedulers.io())
                     .map(aqiDTO -> {
                         ConverterAqi.saveAllDataToDb(context,

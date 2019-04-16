@@ -264,6 +264,7 @@
     <string name="error_no_browser">Error! There is no browser app!</string>
     <string name="github_link" translatable="false">https://github.com/iaruchkin/DeepBreath</string>
     <string name="aqi_link" translatable="false">http://aqicn.org</string>
+    <string name="aqiav_link" translatable="false">https://airvisual.com</string>
     <string name="weather_link" translatable="false">https://www.apixu.com</string>
     <string name="icons_link" translatable="false">https://www.flaticon.com/authors/smashicons</string>
     <string name="logo_link" translatable="false">https://www.flaticon.com/authors/vectors-market</string>
@@ -276,6 +277,8 @@
     <string name="about_github_com" translatable="false">github.com/iaruchkin/DeepBreath</string>
     <string name="about_air_quality_index">Air quality index data</string>
     <string name="about_aqicn_org">Powered by aqicn.org</string>
+    <string name="about_av_air_quality_index">Additional air quality index data</string>
+    <string name="about_airvisual">Powered by airvisual.com</string>
     <string name="about_weather_data">Weather data</string>
     <string name="about_apixu_com">Powered by apixu.com</string>
     <string name="about_icons">Icons</string>

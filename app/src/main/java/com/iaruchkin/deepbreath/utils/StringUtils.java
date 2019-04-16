@@ -37,6 +37,19 @@ public final class StringUtils {
         return dateStr;
     }
 
+    public static Integer toEpoch(String dateStr){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+
+        try {
+            Long time = (sdf.parse(dateStr).getTime() + TimeZone.getDefault().getRawOffset())/1000;
+            return time.intValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 636349599;
+    }
+
     public static String transliterateLatToRus(String message, String country){
 
         /*extremely buggy todo fix in future versions

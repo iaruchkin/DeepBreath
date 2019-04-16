@@ -10,8 +10,8 @@ import android.os.Build;
 import android.util.Log;
 
 import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.network.AqiApi;
-import com.iaruchkin.deepbreath.network.AqiResponse;
+import com.iaruchkin.deepbreath.network.parsers.AqiApi;
+import com.iaruchkin.deepbreath.network.dtos.AqiResponse;
 import com.iaruchkin.deepbreath.ui.MainActivity;
 import com.iaruchkin.deepbreath.utils.AqiUtils;
 import com.iaruchkin.deepbreath.utils.PreferencesHelper;
@@ -34,7 +34,7 @@ import static com.iaruchkin.deepbreath.service.NetworkUtils.CancelReceiver.ACTIO
 
 public class WeatherRequestService extends Worker {
     private static final String TAG = WeatherRequestService.class.getName();
-    public static final String WORK_TAG = "Data download";
+    public static final String WORK_TAG = "AqiData download";
 
     private static final String CHANNEL_ID = "CHANNEL_UPDATE_AQI";
     private static final int UPDATE_NOTIFICATION_ID = 3447;
@@ -109,7 +109,7 @@ public class WeatherRequestService extends Worker {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        aqiEntities -> makeNotification(aqiEntities.getData().getAqi(), true),
+                        aqiEntities -> makeNotification(aqiEntities.getAqiData().getAqi(), true),
                         this::logError
                 );
 
@@ -119,7 +119,7 @@ public class WeatherRequestService extends Worker {
 
     private Single<AqiResponse> updateAqi(String parameter) {
         return AqiApi.getInstance()
-                .airEndpoint()
+                .aqiEndpoint()
                 .get(parameter);
     }
 
