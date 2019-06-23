@@ -46,7 +46,7 @@ public class App extends Application {
 
     public static void performsScheduledWork(){
         int hourOfTheDay = 8; // When to run the job
-        int repeatInterval = 24; // In hours
+        int repeatInterval = 8; // In hours
 
         long flexTime = calculateFlex(hourOfTheDay, repeatInterval);
 
@@ -63,25 +63,18 @@ public class App extends Application {
                     .build();
 
 
-            WorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class
+            PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(WeatherRequestService.class
                     ,repeatInterval, TimeUnit.HOURS
                     ,20, TimeUnit.MINUTES
-//                    ,flexTime, TimeUnit.MILLISECONDS
             )
                     .setConstraints(constraints)
                     .addTag(WORK_TAG)
                     .build();
 
-//            List<WorkRequest> list = new ArrayList<>();
-//            list.add(firstWork);
-//            list.add(workRequest);
-
             NetworkUtils.getInstance().getCancelReceiver().setWorkRequestId(workRequest.getId());
-            WorkManager.getInstance().beginWith(firstWork).enqueue();
-//            WorkManager.getInstance().enqueue(workRequest);
-//            WorkManager.getInstance().enqueue(list);
-            WorkManager.getInstance().enqueueUniquePeriodicWork(WORK_TAG, ExistingPeriodicWorkPolicy.REPLACE, (PeriodicWorkRequest) workRequest);
-//            WorkManager.getInstance().beginUniqueWork(WORK_TAG, ExistingWorkPolicy.REPLACE, firstWork).enqueue();
+            //todo разобраться с работой нотификаций
+//            WorkManager.getInstance().beginWith(firstWork).enqueue();
+            WorkManager.getInstance().enqueueUniquePeriodicWork(WORK_TAG, ExistingPeriodicWorkPolicy.KEEP, workRequest);
         }
         else {
             WorkManager.getInstance().cancelAllWorkByTag(WORK_TAG);
