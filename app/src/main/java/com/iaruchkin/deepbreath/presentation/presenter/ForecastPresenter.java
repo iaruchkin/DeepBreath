@@ -94,6 +94,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .subscribe(data -> updateWeatherData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
         Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        getViewState().showState(State.HasData);
     }
 
     private void loadForecastFromDb(String geo){
@@ -104,6 +105,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .subscribe(data -> updateForecastData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
         Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        getViewState().showState(State.HasData);
     }
 
     private void loadAqiFromDb(String geo){
@@ -114,6 +116,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .subscribe(data -> updateAqiData(data, geo), this::handleDbError);
         disposeOnDestroy(loadFromDb);
         Log.i(PRESENTER_WEATHER_TAG,"Load AqiData from db");
+        getViewState().showState(State.HasData);
     }
 
     private void loadConditionFromDb(){
@@ -124,6 +127,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .subscribe(this::updateConditionData, this::handleError);
         disposeOnDestroy(loadFromDb);
         Log.i(PRESENTER_WEATHER_TAG,"Load WeatherData from db");
+        getViewState().showState(State.HasData);
     }
 
     /**check db responce

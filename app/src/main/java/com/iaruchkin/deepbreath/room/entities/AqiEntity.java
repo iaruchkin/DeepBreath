@@ -87,6 +87,7 @@ public class AqiEntity {
     @ColumnInfo(name = "date")
     private String mDate;
 
+    @NonNull
     @ColumnInfo(name = "date_epoch")
     private Integer mDateEpoch;
 

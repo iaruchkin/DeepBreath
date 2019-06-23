@@ -155,6 +155,22 @@ public final class AppPreferences {
         return shouldDisplayNotifications;
     }
 
+    public static Integer setDistance(Context context) {
+        String setDistanceKey = context.getString(R.string.pref_set_distance_key);
+
+        Integer defaultDistance = context
+                .getResources()
+                .getInteger(R.integer.seek_bar_default);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        /* If a value is stored with the key, we extract it here. If not, use a default. */
+        Integer setDistance = sp
+                .getInt(setDistanceKey, defaultDistance);
+
+        return setDistance;
+    }
+
     public static boolean needToShowIntro(Context context) {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -176,6 +192,21 @@ public final class AppPreferences {
         SharedPreferences.Editor editor = sp.edit();
 
         editor.putBoolean(FIRST, false);
+        editor.apply();
+    }
+
+    public static int lastKnownAqi(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        int aqi = sp.getInt("AQI", 55);
+
+        return aqi;
+    }
+
+    public static void saveAqi(Context context, int aqi) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putInt("AQI", aqi);
         editor.apply();
     }
 }

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="24dp"
         android:text="@string/station_name"
         android:textColor="@color/secondary_text"
         android:textSize="14sp"
@@ -25,7 +25,7 @@
         android:id="@+id/aqi_level_full"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="24dp"
         android:layout_marginBottom="16dp"
         android:textColor="@color/secondary_text"
         android:textSize="16sp"
@@ -108,11 +108,13 @@
         android:layout_height="20dp"
         android:layout_alignTop="@+id/item_expandable_header_title"
         android:layout_alignBottom="@+id/item_expandable_header_title"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/item_expandable_header_title"
+        android:contentDescription="@string/expandable_arrow_icon"
         android:tint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:contentDescription="@string/expandable_arrow_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/aqi_date_exp"
+        tools:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

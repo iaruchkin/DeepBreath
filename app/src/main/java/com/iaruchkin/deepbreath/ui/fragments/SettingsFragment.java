@@ -12,11 +12,14 @@ import com.iaruchkin.deepbreath.R;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.SeekBarPreference;
+import androidx.preference.SwitchPreference;
+
+import java.util.Locale;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -62,7 +65,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         int count = prefScreen.getPreferenceCount();
         for (int i = 0; i < count; i++) {
             Preference p = prefScreen.getPreference(i);
-            if (!(p instanceof CheckBoxPreference)) {
+            if (!(p instanceof SwitchPreference)&&!(p instanceof SeekBarPreference)) {
                 String value = sharedPreferences.getString(p.getKey(), "");
                 setPreferenceSummary(p, value);
             }
@@ -89,9 +92,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
         if (null != preference) {
-            if (!(preference instanceof CheckBoxPreference)) {
+            if (preference instanceof SwitchPreference) {
+                App.performsScheduledWork();
+            }else if (preference instanceof SeekBarPreference) {
+                setPreferenceSummary(preference, String.format(Locale.getDefault(), getContext().getString(R.string.distance_unit_km), sharedPreferences.getInt(key, 0)));
+          }else {
                 setPreferenceSummary(preference, sharedPreferences.getString(key, ""));
-            } else App.performsScheduledWork();
+            }
         }
     }
 

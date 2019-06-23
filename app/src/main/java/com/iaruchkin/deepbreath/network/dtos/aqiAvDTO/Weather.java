@@ -11,31 +11,31 @@ public class Weather {
     private String ts;
     @SerializedName("__v")
     @Expose
-    private Integer v;
+    private Double v;
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
     @SerializedName("hu")
     @Expose
-    private Integer hu;
+    private Double hu;
     @SerializedName("ic")
     @Expose
     private String ic;
     @SerializedName("pr")
     @Expose
-    private Integer pr;
+    private Double pr;
     @SerializedName("tp")
     @Expose
-    private Integer tp;
+    private Double tp;
     @SerializedName("updatedAt")
     @Expose
     private String updatedAt;
     @SerializedName("wd")
     @Expose
-    private Integer wd;
+    private Double wd;
     @SerializedName("ws")
     @Expose
-    private Integer ws;
+    private Double ws;
 
     public String getTs() {
         return ts;
@@ -45,11 +45,11 @@ public class Weather {
         this.ts = ts;
     }
 
-    public Integer getV() {
+    public Double getV() {
         return v;
     }
 
-    public void setV(Integer v) {
+    public void setV(Double v) {
         this.v = v;
     }
 
@@ -61,11 +61,11 @@ public class Weather {
         this.createdAt = createdAt;
     }
 
-    public Integer getHu() {
+    public Double getHu() {
         return hu;
     }
 
-    public void setHu(Integer hu) {
+    public void setHu(Double hu) {
         this.hu = hu;
     }
 
@@ -77,19 +77,19 @@ public class Weather {
         this.ic = ic;
     }
 
-    public Integer getPr() {
+    public Double getPr() {
         return pr;
     }
 
-    public void setPr(Integer pr) {
+    public void setPr(Double pr) {
         this.pr = pr;
     }
 
-    public Integer getTp() {
+    public Double getTp() {
         return tp;
     }
 
-    public void setTp(Integer tp) {
+    public void setTp(Double tp) {
         this.tp = tp;
     }
 
@@ -101,19 +101,19 @@ public class Weather {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getWd() {
+    public Double getWd() {
         return wd;
     }
 
-    public void setWd(Integer wd) {
+    public void setWd(Double wd) {
         this.wd = wd;
     }
 
-    public Integer getWs() {
+    public Double getWs() {
         return ws;
     }
 
-    public void setWs(Integer ws) {
+    public void setWs(Double ws) {
         this.ws = ws;
     }
 

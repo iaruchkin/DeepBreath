@@ -114,4 +114,7 @@
     <string name="invalid_data">*Похоже, вы далеко от станции забора проб. Данные могут быть неточными.</string>
     <string name="about_av_air_quality_index">Дополнительные данные о загрязнении воздуха</string>
     <string name="about_airvisual">предоставлены airvisual.com</string>
+    <string name="pref_set_distance_accuracy_label">Радиус поиска станции</string>
+    <string name="pref_set_distance_accuracy_summary">Выберите радиус поиска станций</string>
+    <string name="distance_unit_km">%d км</string>
 </resources>

@@ -59,13 +59,12 @@
 
     <TextView
         android:id="@+id/weather_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:textColor="@color/secondary_text"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_expandable_header_title"
+        app:layout_constraintEnd_toEndOf="@+id/location_desc"
         app:layout_constraintStart_toStartOf="@+id/location_desc"
         app:layout_constraintTop_toBottomOf="@+id/location_desc"
         tools:text="Saturday, September 24" />
@@ -126,10 +125,13 @@
         android:layout_height="20dp"
         android:layout_alignTop="@+id/item_expandable_header_title"
         android:layout_alignBottom="@+id/item_expandable_header_title"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/item_expandable_header_title"
+        android:contentDescription="@string/expandable_arrow_icon"
         android:tint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        app:layout_constraintTop_toBottomOf="@+id/weather_date"
+        tools:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

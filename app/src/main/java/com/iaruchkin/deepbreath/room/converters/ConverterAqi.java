@@ -80,8 +80,8 @@ public class ConverterAqi {
         //aqi
         aqiEntity.setAqi(aqiDTO.getCurrent().getPollution().getAqicn());
         //date
-        aqiEntity.setDate(aqiDTO.getCurrent().getWeather().getUpdatedAt());
-        aqiEntity.setDateEpoch(StringUtils.toEpoch(aqiDTO.getCurrent().getWeather().getUpdatedAt()));
+        aqiEntity.setDate(aqiDTO.getCurrent().getPollution().getTs());
+        aqiEntity.setDateEpoch(StringUtils.toEpoch(aqiDTO.getCurrent().getPollution().getTs()));
 
         listDao.add(aqiEntity);
         Log.w(TAG, aqiEntity.toString());

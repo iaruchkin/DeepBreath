@@ -3,6 +3,10 @@ package com.iaruchkin.deepbreath.utils;
 import android.content.Context;
 import android.location.Location;
 
+import com.iaruchkin.deepbreath.common.AppPreferences;
+
+import static com.iaruchkin.deepbreath.App.INSTANCE;
+
 public class LocationUtils {
 
 
@@ -14,7 +18,7 @@ public class LocationUtils {
 
         float distance = location.distanceTo(PreferencesHelper.getLocation(context));
 
-        return distance < 200000;
+        return distance < AppPreferences.setDistance(INSTANCE.getApplicationContext())*1000;
 
     }
 }

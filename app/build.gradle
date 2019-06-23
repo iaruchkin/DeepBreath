@@ -12,8 +12,8 @@ android {
         applicationId "com.iaruchkin.deepbreath"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 5
-        versionName "1.0.4b"
+        versionCode 7
+        versionName "1.0.6b"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 

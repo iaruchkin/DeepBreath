@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:asp="http://schemas.android.com/apk/res-auto"
+    xmlns:app="urn:oasis:names:tc:xliff:document:1.2">
 
     <!--<EditTextPreference-->
         <!--android:defaultValue="auto"-->
@@ -34,7 +35,7 @@
         android:title="@string/pref_wind_label"
         android:summary="@string/wind_unit_rus"/>
 
-    <CheckBoxPreference
+    <SwitchPreference
         android:layout_width="wrap_content"
         android:defaultValue="false"
         android:key="@string/pref_enable_notifications_key"
@@ -42,4 +43,14 @@
         android:summaryOn="@string/pref_enable_notifications_true"
         android:title="@string/pref_enable_notifications_label" />
 
-</PreferenceScreen>
+    <SeekBarPreference
+        android:layout_width="wrap_content"
+        android:key="@string/pref_set_distance_key"
+        android:defaultValue="@integer/seek_bar_default"
+        android:max="@integer/seek_bar_max"
+        asp:min="@integer/seek_bar_min"
+        android:title="@string/pref_set_distance_accuracy_label"
+        android:summary="@string/pref_set_distance_accuracy_summary"
+        app:showSeekBarValue="false"/>
+
+</androidx.preference.PreferenceScreen>

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.room.entities.AqiEntity;
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
@@ -174,10 +175,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
 
             if (aqi.getAqi() == null) {
+                aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(AppPreferences.lastKnownAqi(context))));
                 showState(State.LoadingAqi);
             } else {
-                showState(State.HasData);
+                AppPreferences.saveAqi(context, aqi.getAqi());
 
+                showState(State.HasData);
                 aqiTextView.setText(String.valueOf(aqi.getAqi()));
                 aqiDesc.setText(AqiUtils.getPollutionLevel(aqi.getAqi()));
                 aqiCard.setCardBackgroundColor(context.getResources().getColor(AqiUtils.getColor(aqi.getAqi())));

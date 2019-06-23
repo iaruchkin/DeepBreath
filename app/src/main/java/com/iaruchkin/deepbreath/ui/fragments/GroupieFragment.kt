@@ -18,6 +18,7 @@ import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity
+import com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG
 import com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG
 import com.iaruchkin.deepbreath.ui.adapter.*
 import com.iaruchkin.deepbreath.utils.StringUtils
@@ -198,6 +199,12 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         R.id.action_settings -> {
             if (listener != null) {
                 listener!!.onActionClicked(SETTINGS_TAG)
+            }
+            true
+        }
+        R.id.action_about -> {
+            if (listener != null) {
+                listener!!.onActionClicked(ABOUT_TAG)
             }
             true
         }
