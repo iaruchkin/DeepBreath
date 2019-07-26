@@ -1,14 +1,15 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
 import android.view.View
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.weather_detail_card.*
 
-class AqiItem(private val number: String, private val name: Int) : Item(), View.OnClickListener {
+
+class AqiItem(private val number: String, private val name: Int, private val header: Int, private val description: Int, private val activity: FragmentActivity?) : Item(), View.OnClickListener {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.high_value.text = number
@@ -26,9 +27,9 @@ class AqiItem(private val number: String, private val name: Int) : Item(), View.
     }
 
     fun action() {
-        MaterialAlertDialogBuilder(App.INSTANCE.applicationContext)
-                .setTitle("Title")
-                .setMessage("Message")
+        MaterialAlertDialogBuilder(activity)
+                .setTitle(header)
+                .setMessage(description)
                 .setPositiveButton("Ok", null)
                 .show()
     }

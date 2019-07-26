@@ -268,6 +268,32 @@
     <string name="very_unhealty_recomendation">The general public should greatly reduce outdoor exertion. Sensitive groups should avoid all outdoor activity. Everyone should take care to wear a pollution mask. Ventilation is discouraged. Air purifiers should be turned on.</string>
     <string name="hazardous_recomendation">The general public should avoid outdoor exertion. Everyone should take care to wear a quality pollution mask. Ventilation is discouraged. Homes should be sealed and air purifiers turned on.</string>
 
+    <!--AQI detail values description-->
+    <string name="pm25_header">PM₂₅ - Fine Particulate Matter</string>
+    <string name="pm25_description">
+        Characteristics and Description
+            Fine particulate matter is airborne microscopic dust and droplets smaller than 2.5 microns in diameter.
+        The composition of particulate matter depends on its source, the season and atmospheric conditions. Fine particulate matter is comprised
+        primarily of sulfates, nitrates, carbon, organic substances, ground minerals and metals.Particulate matter can travel long distances and
+        is a year-round pollutant common to urban and rural communities. It is a principal component of smog.
+
+        Emission Sources
+            Particulate matter is generally the product of residential wood burning (47.5%), industry (32.6%), and transportation (17.1%). Particulates also
+        form in the air through the chemical reactions of precursor pollutants, including sulfur and nitrogen oxides. Open sources, such as forest
+        fires, material and soil erosion, quarries and sandpits, farming and volcanic eruptions also contribute to particulate matter emissions.
+
+        http://www.iqa.mddefp.gouv.qc.ca/contenu/polluants_en.htm
+    </string>
+    <string name="pm10_description">PM₁₀ - here is description</string>
+    <string name="co_description">CO - here is description</string>
+    <string name="no2_description">NO₂ - here is description</string>
+    <string name="so2_description">SO₂ - here is description</string>
+    <string name="w_description">W - here is description</string>
+    <string name="wg_description">Wg - here is description</string>
+    <string name="p_description">P - here is description</string>
+    <string name="h_description">H - here is description</string>
+    <string name="o3_description">O₃ - here is description</string>
+
     <!--About layout-->
     <string name="email_adress" translatable="false">iaruchkin@gmail.com</string>
     <string name="error_no_email_app">Error! There is no email app!</string>
