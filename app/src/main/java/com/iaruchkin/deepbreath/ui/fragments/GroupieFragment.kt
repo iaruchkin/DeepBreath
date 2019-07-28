@@ -149,10 +149,10 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         val co = data.co
         val no2 = data.no2
         val so2 = data.so2
-        val w = data.w
-        val wg = data.wg
-        val h = data.h
-        val p = data.p
+        val w = null
+        val wg = null
+        val h = null
+        val p = null
         val o3 = data.o3
 
         val dataList: MutableList<AqiItem> = mutableListOf()
@@ -163,15 +163,15 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             dataList.add(AqiItem(data.aqi.toString(), R.string.pm25, R.string.pm25_header, R.string.pm25_description, activity))
         }//todo fix later
 
-        if (pm10 != null) dataList.add(AqiItem(pm10.toString(), R.string.pm10, R.string.pm25_header, R.string.pm10_description, activity))
-        if (co != null) dataList.add(AqiItem(co.toString(), R.string.co, R.string.pm25_header, R.string.co_description, activity))
-        if (no2 != null) dataList.add(AqiItem(no2.toString(), R.string.no2, R.string.pm25_header, R.string.no2_description, activity))
-        if (so2 != null) dataList.add(AqiItem(so2.toString(), R.string.so2, R.string.pm25_header, R.string.so2_description, activity))
-        if (w != null) dataList.add(AqiItem(w.toString(), R.string.w, R.string.pm25_header, R.string.w_description, activity))
-        if (wg != null) dataList.add(AqiItem(wg.toString(), R.string.wg, R.string.pm25_header, R.string.wg_description, activity))
-        if (p != null) dataList.add(AqiItem(p.toString(), R.string.p, R.string.pm25_header, R.string.p_description, activity))
-        if (h != null) dataList.add(AqiItem(h.toString(), R.string.h, R.string.pm25_header, R.string.h_description, activity))
-        if (o3 != null) dataList.add(AqiItem(o3.toString(), R.string.o3, R.string.pm25_header, R.string.o3_description, activity))
+        if (pm10 != null) dataList.add(AqiItem(pm10.toString(), R.string.pm10, R.string.pm10_header, R.string.pm10_description, activity))
+        if (co != null) dataList.add(AqiItem(co.toString(), R.string.co, R.string.co_header, R.string.co_description, activity))
+        if (no2 != null) dataList.add(AqiItem(no2.toString(), R.string.no2, R.string.no2_header, R.string.no2_description, activity))
+        if (so2 != null) dataList.add(AqiItem(so2.toString(), R.string.so2, R.string.so2_header, R.string.so2_description, activity))
+        if (w != null) dataList.add(AqiItem(w.toString(), R.string.w, R.string.w_header, R.string.w_description, activity))
+        if (wg != null) dataList.add(AqiItem(wg.toString(), R.string.wg, R.string.wg_header, R.string.wg_description, activity))
+        if (p != null) dataList.add(AqiItem(p.toString(), R.string.p, R.string.p_header, R.string.p_description, activity))
+        if (h != null) dataList.add(AqiItem(h.toString(), R.string.h, R.string.h_header, R.string.h_description, activity))
+        if (o3 != null) dataList.add(AqiItem(o3.toString(), R.string.o3, R.string.o3_header, R.string.o3_description, activity))
 
         return dataList
     }

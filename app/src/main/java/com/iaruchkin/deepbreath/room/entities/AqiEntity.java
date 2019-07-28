@@ -1,12 +1,12 @@
 package com.iaruchkin.deepbreath.room.entities;
 
-import com.iaruchkin.deepbreath.room.utils.DateConverter;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import com.iaruchkin.deepbreath.room.utils.DateConverter;
 
 @Entity(tableName = "aqi")
 @TypeConverters(DateConverter.class)
@@ -56,17 +56,11 @@ public class AqiEntity {
     @ColumnInfo(name = "Co")
     private Double mCo;
 
-    @ColumnInfo(name = "h")
-    private Double mH;
-
     @ColumnInfo(name = "No2")
     private Double mNo2;
 
     @ColumnInfo(name = "O3")
     private Double mO3;
-
-    @ColumnInfo(name = "p")
-    private Double mP;
 
     @ColumnInfo(name = "pm10")
     private Integer mPm10;
@@ -76,6 +70,12 @@ public class AqiEntity {
 
     @ColumnInfo(name = "So2")
     private Double mSo2;
+
+    @ColumnInfo(name = "h")
+    private Double mH;
+
+    @ColumnInfo(name = "p")
+    private Double mP;
 
     @ColumnInfo(name = "w")
     private Double mW;
@@ -143,20 +143,12 @@ public class AqiEntity {
         return mCo;
     }
 
-    public Double getH() {
-        return mH;
-    }
-
     public Double getNo2() {
         return mNo2;
     }
 
     public Double getO3() {
         return mO3;
-    }
-
-    public Double getP() {
-        return mP;
     }
 
     public Integer getPm10() {
@@ -169,6 +161,14 @@ public class AqiEntity {
 
     public Double getSo2() {
         return mSo2;
+    }
+
+    public Double getH() {
+        return mH;
+    }
+
+    public Double getP() {
+        return mP;
     }
 
     public Double getW() {
@@ -233,20 +233,12 @@ public class AqiEntity {
         mCo = co;
     }
 
-    public void setH(@NonNull Double h) {
-        mH = h;
-    }
-
     public void setNo2(@NonNull Double no2) {
         mNo2 = no2;
     }
 
     public void setO3(@NonNull Double o3) {
         mO3 = o3;
-    }
-
-    public void setP(@NonNull Double p) {
-        mP = p;
     }
 
     public void setPm10(@NonNull Integer pm10) {
@@ -259,6 +251,14 @@ public class AqiEntity {
 
     public void setSo2(@NonNull Double so2) {
         mSo2 = so2;
+    }
+
+    public void setH(@NonNull Double h) {
+        mH = h;
+    }
+
+    public void setP(@NonNull Double p) {
+        mP = p;
     }
 
     public void setW(@NonNull Double w) {
