@@ -9,7 +9,6 @@ import com.iaruchkin.deepbreath.network.dtos.aqicnDTO.AqiData;
 import com.iaruchkin.deepbreath.room.AppDatabase;
 import com.iaruchkin.deepbreath.room.daos.AqiDao;
 import com.iaruchkin.deepbreath.room.entities.AqiEntity;
-import com.iaruchkin.deepbreath.room.utils.DateConverter;
 import com.iaruchkin.deepbreath.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -29,8 +28,12 @@ public class ConverterAqi {
 
             aqiEntity.setId(aqiDTO.getIdx().toString() + aqiDTO.getTime().getS());
             aqiEntity.setIdx(aqiDTO.getIdx().toString());
+        aqiEntity.setAutoid(aqiDTO.getTime().getV());
 
-            //parameter
+        Log.e("time", String.valueOf(aqiDTO.getTime().getV()));
+
+
+        //parameter
             aqiEntity.setParameter(parameter);
             //location
             aqiEntity.setLocationLat(aqiDTO.getCity().getGeo().get(0));
@@ -98,6 +101,12 @@ public class ConverterAqi {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
         return db.aqiDao().getByParameter(parameter);
+    }
+
+    public static List<AqiEntity> getLastData(Context context) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        Log.i(TAG, "AQI data loaded from DB");
+        return db.aqiDao().getLast();
     }
 
     public static List<AqiEntity> getDataByIdx(Context context, String idx) {

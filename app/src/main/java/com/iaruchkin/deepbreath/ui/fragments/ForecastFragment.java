@@ -12,10 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.material.snackbar.Snackbar;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
@@ -32,14 +41,6 @@ import com.iaruchkin.deepbreath.utils.StringUtils;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG;
@@ -207,6 +208,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         //if need to show logo at toolbar
 //        actionBar.setDisplayUseLogoEnabled(true);
 //        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
+
+
     }
 
     private void setHomeButton(View view) {
@@ -256,8 +259,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                 && weatherEntity.size() != 0
                 && conditionEntity.size() != 0) {
             mAdapter.setWeather(forecastEntity, weatherEntity.get(0), conditionEntity);
+            weatherItem = weatherEntity.get(0);
         }
-        weatherItem = weatherEntity.get(0);
     }
 
     @Override
@@ -287,8 +290,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
             case NetworkError:
                 mRefresh.setVisibility(View.GONE);
-                mError.setVisibility(View.VISIBLE);
+                mError.setVisibility(View.GONE);
                 showRefresher(false);
+                showErrorSnack();
                 break;
 
             case DbError:
@@ -320,6 +324,14 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     private void showRefresher(boolean show) {
         mRefresh.setRefreshing(show);
+    }
+
+    private void showErrorSnack() {
+
+        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.error_snack_msg), Snackbar.LENGTH_INDEFINITE);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.error_snack));
+        snackbar.show();
     }
 
     private void findViews(View view) {

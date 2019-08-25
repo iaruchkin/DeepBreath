@@ -1,11 +1,12 @@
 package com.iaruchkin.deepbreath.network.parsers;
 
+import androidx.annotation.NonNull;
+
 import com.iaruchkin.deepbreath.network.endpoints.WeatherEndpoint;
 import com.iaruchkin.deepbreath.network.interceptors.WeatherApiKeyInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -47,7 +48,7 @@ public class WeatherApi {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         return new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .addInterceptor(WeatherApiKeyInterceptor.create())
                 .build();

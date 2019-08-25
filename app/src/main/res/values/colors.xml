@@ -38,4 +38,6 @@
     <color name="very_unhealthy_transparent">#8DFF80AB</color>
     <color name="hazardous">#8C9EFF</color>
     <color name="hazardous_transparent">#8D8C9EFF</color>
+
+    <color name="error_snack">#C9FF1744</color>
 </resources>

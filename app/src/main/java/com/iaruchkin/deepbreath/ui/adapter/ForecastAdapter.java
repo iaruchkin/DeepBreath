@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.AppPreferences;
@@ -26,10 +30,6 @@ import com.iaruchkin.deepbreath.utils.WeatherUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder> {
 
@@ -163,7 +163,12 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Weathe
 
             imageView.setImageResource(WeatherUtils.getLargeArtResource(icon, weatherItem.getIsDay()));
 
-            locationTextView.setText(StringUtils.transliterateLatToRus(forecastItem.getLocationName(), forecastItem.getLocationCountry()));
+            String location = forecastItem.getLocationName();
+            if (location.isEmpty()) {
+                location = aqi.getCityName().split(",")[0];
+            }
+
+            locationTextView.setText(location);
 
             weatherDescTextView.setText(dayText);
 

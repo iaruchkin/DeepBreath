@@ -21,6 +21,17 @@ public class AqiEntity {
     @ColumnInfo(name = "id")
     private String id;
 
+    @ColumnInfo(name = "autoid")
+    private long autoid;
+
+    public long getAutoid() {
+        return autoid;
+    }
+
+    public void setAutoid(long autoid) {
+        this.autoid = autoid;
+    }
+
     @ColumnInfo(name = "idx")
     private String mIdx;
 

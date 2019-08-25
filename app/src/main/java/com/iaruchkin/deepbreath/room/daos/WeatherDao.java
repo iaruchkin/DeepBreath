@@ -1,15 +1,15 @@
 package com.iaruchkin.deepbreath.room.daos;
 
-import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
-
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
+
+import java.util.List;
 
 @Dao
 public interface WeatherDao {
@@ -25,6 +25,9 @@ public interface WeatherDao {
 
     @Query("SELECT * FROM weather WHERE id = :id")
     WeatherEntity getDataById(String id);
+
+    @Query("SELECT * FROM weather ORDER BY autoid DESC LIMIT 1")
+    List<WeatherEntity> getLast();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(WeatherEntity... weatherEntities);

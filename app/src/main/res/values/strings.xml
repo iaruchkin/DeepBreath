@@ -570,4 +570,5 @@
     <string name="expandable_arrow_icon" translatable="false">expandable arrow icon</string>
     <string name="aqi_label" translatable="false">aqi</string>
     <string name="invalid_data_sign" translatable="false">*</string>
+    <string name="error_snack_msg">Network error! Check your connection or try again later.</string>
 </resources>

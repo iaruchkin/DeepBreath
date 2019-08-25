@@ -4,26 +4,28 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.arellomobile.mvp.InjectViewState;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.dtos.AqiAvResponse;
-import com.iaruchkin.deepbreath.network.parsers.AqiApi;
 import com.iaruchkin.deepbreath.network.dtos.AqiResponse;
+import com.iaruchkin.deepbreath.network.dtos.WeatherResponse;
+import com.iaruchkin.deepbreath.network.dtos.weatherApixuDTO.OfflineCondition.WeatherCondition;
+import com.iaruchkin.deepbreath.network.parsers.AqiApi;
 import com.iaruchkin.deepbreath.network.parsers.AqiAvApi;
 import com.iaruchkin.deepbreath.network.parsers.ConditionParser;
 import com.iaruchkin.deepbreath.network.parsers.WeatherApi;
-import com.iaruchkin.deepbreath.network.dtos.WeatherResponse;
-import com.iaruchkin.deepbreath.network.dtos.weatherApixuDTO.OfflineCondition.WeatherCondition;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
-import com.iaruchkin.deepbreath.room.entities.AqiEntity;
-import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.converters.ConverterAqi;
 import com.iaruchkin.deepbreath.room.converters.ConverterCondition;
 import com.iaruchkin.deepbreath.room.converters.ConverterForecast;
 import com.iaruchkin.deepbreath.room.converters.ConverterWeather;
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 import com.iaruchkin.deepbreath.utils.LangUtils;
@@ -32,8 +34,6 @@ import com.iaruchkin.deepbreath.utils.PreferencesHelper;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -273,7 +273,9 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                                 weatherEntity = weatherEntities;
                                 updateWeather();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded weather from NET to DB, size: " + weatherEntities.size());
-                            });
+                            },
+                            this::handleDbError
+                    );
             disposeOnDestroy(saveWeatherToDb);
             getViewState().showState(State.HasData);
         }
@@ -296,7 +298,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                                 forecastEntity = forecastEntities;
                                 updateWeather();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded forecast from NET to DB, size: " + forecastEntities.size());
-                            });
+                            },
+                            this::handleDbError);
             disposeOnDestroy(saveForecastToDb);
             getViewState().showState(State.HasData);
         }
@@ -320,7 +323,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                                 aqiEntity = aqiEntities;
                                 updateAqi();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size());
-                            });
+                            },
+                            this::handleDbError);
             disposeOnDestroy(saveDataToDb);
             getViewState().showState(State.HasData);
         }
@@ -343,7 +347,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                                 aqiEntity = aqiEntities;
                                 updateAqi();
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size());
-                            });
+                            },
+                            this::handleDbError);
             disposeOnDestroy(saveDataToDb);
             getViewState().showState(State.HasData);
         }
@@ -391,13 +396,63 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      */
     private void handleError(Throwable th) {
         getViewState().showState(State.NetworkError);
+        loadWeatherFromDb();
+        loadForecastFromDb();
+        loadAQIFromDb();
+
         Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
-        Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().getName());
+    }
+
+    private void loadWeatherFromDb() {
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
+                .getLastData(context))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        data -> {
+                            weatherEntity = data;
+                            updateWeather();
+                        },
+                        this::handleDbError);
+        disposeOnDestroy(loadFromDb);
+        Log.e(PRESENTER_WEATHER_TAG, "Load WeatherData from db");
+        getViewState().showState(State.HasData);
+    }
+
+    private void loadForecastFromDb() {
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
+                .getLastData(context))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        data -> {
+                            forecastEntity = data;
+                            updateWeather();
+                        },
+                        this::handleDbError);
+        disposeOnDestroy(loadFromDb);
+        Log.e(PRESENTER_WEATHER_TAG, "Load ForecastData from db");
+        getViewState().showState(State.HasData);
+    }
+
+    private void loadAQIFromDb() {
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterAqi
+                .getLastData(context))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        data -> {
+                            aqiEntity = data;
+                            updateAqi();
+                        },
+                        this::handleDbError);
+        disposeOnDestroy(loadFromDb);
+        Log.e(PRESENTER_WEATHER_TAG, "Load AQIData from db");
+        getViewState().showState(State.HasData);
     }
 
     private void handleDbError(Throwable th) {
         getViewState().showState(State.DbError);
         Log.e(PRESENTER_WEATHER_TAG, th.getMessage(), th);
-        Log.e(PRESENTER_WEATHER_TAG, "handleDbError executed on thread: " + Thread.currentThread().getName());
     }
 }
