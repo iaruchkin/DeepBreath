@@ -10,6 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -20,16 +25,12 @@ import com.iaruchkin.deepbreath.common.AppConstants;
 import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.common.GpsUtils;
 import com.iaruchkin.deepbreath.ui.fragments.AboutFragment;
+import com.iaruchkin.deepbreath.ui.fragments.FindFragment;
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment;
 import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment;
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener;
 import com.iaruchkin.deepbreath.ui.fragments.SettingsFragment;
 import com.iaruchkin.deepbreath.ui.fragments.intro.IntroFragment;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements MessageFragmentListener {
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     public final static String SETTINGS_TAG = "SETTINGS";
     public final static String INTRO_TAG = "INTRO";
     public final static String ABOUT_TAG = "ABOUT";
+    public final static String FIND_TAG = "FIND";
     public final static String GET_LOCATION = "LOCATION";
 
     public boolean firstLaunch = false;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
     private FragmentManager mFragmentManager;
     private ForecastFragment mForecastFragment;
     private AboutFragment mAboutFragment;
+    private FindFragment mFindFragment;
     private GroupieFragment mGroupieFragment;
     private SettingsFragment mSettingsFragment;
     private IntroFragment mIntroFragment;
@@ -81,6 +84,15 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_list, mAboutFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void startFind() {
+        mFindFragment = new FindFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_list, mFindFragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -138,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
                 break;
             case ABOUT_TAG:
                 startAbout();
+                break;
+            case FIND_TAG:
+                startFind();
                 break;
             case INTRO_TAG:
                 startIntro();

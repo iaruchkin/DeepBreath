@@ -44,6 +44,7 @@ import java.util.Locale;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG;
+import static com.iaruchkin.deepbreath.ui.MainActivity.FIND_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.GET_LOCATION;
 import static com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
@@ -169,8 +170,17 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
             case R.id.action_share:
                 share();
                 return true;
+            case R.id.action_find:
+                findCity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void findCity() {
+        if (listener != null) {
+            listener.onActionClicked(FIND_TAG);
         }
     }
 
@@ -204,12 +214,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(getResources().getString(R.string.app_name));
-
-        //if need to show logo at toolbar
-//        actionBar.setDisplayUseLogoEnabled(true);
-//        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
-
-
     }
 
     private void setHomeButton(View view) {
