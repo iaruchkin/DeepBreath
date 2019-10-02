@@ -14,11 +14,13 @@
         android:title="@string/action_about"
         app:showAsAction="never" />
 
+    <!--    TODO 1.3-->
     <item
         android:id="@+id/action_find"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_share"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:visible="false" />
 
     <item
         android:id="@+id/action_share"

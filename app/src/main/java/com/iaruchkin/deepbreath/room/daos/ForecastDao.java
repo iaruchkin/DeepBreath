@@ -26,7 +26,8 @@ public interface ForecastDao {
     @Query("SELECT * FROM forecast WHERE id = :id")
     ForecastEntity getDataById(String id);
 
-    @Query("SELECT * FROM forecast ORDER BY autoid DESC LIMIT 9")
+    //    @Query("SELECT * FROM forecast ORDER BY autoid DESC LIMIT 9")
+    @Query("SELECT * FROM forecast ORDER BY autoid LIMIT 9")
     List<ForecastEntity> getLast();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

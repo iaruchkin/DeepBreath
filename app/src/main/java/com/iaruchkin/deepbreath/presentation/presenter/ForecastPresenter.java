@@ -13,17 +13,17 @@ import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.dtos.AqiAvResponse;
 import com.iaruchkin.deepbreath.network.dtos.AqiResponse;
-import com.iaruchkin.deepbreath.network.dtos.WeatherResponse;
+import com.iaruchkin.deepbreath.network.dtos.OpenWeatherResponse;
 import com.iaruchkin.deepbreath.network.dtos.weatherApixuDTO.OfflineCondition.WeatherCondition;
 import com.iaruchkin.deepbreath.network.parsers.AqiApi;
 import com.iaruchkin.deepbreath.network.parsers.AqiAvApi;
 import com.iaruchkin.deepbreath.network.parsers.ConditionParser;
-import com.iaruchkin.deepbreath.network.parsers.WeatherApi;
+import com.iaruchkin.deepbreath.network.parsers.OpenWeatherApi;
 import com.iaruchkin.deepbreath.presentation.view.ForecastView;
 import com.iaruchkin.deepbreath.room.converters.ConverterAqi;
 import com.iaruchkin.deepbreath.room.converters.ConverterCondition;
-import com.iaruchkin.deepbreath.room.converters.ConverterForecast;
-import com.iaruchkin.deepbreath.room.converters.ConverterWeather;
+import com.iaruchkin.deepbreath.room.converters.ConverterOpenForecast;
+import com.iaruchkin.deepbreath.room.converters.ConverterOpenWeather;
 import com.iaruchkin.deepbreath.room.entities.AqiEntity;
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
@@ -50,7 +50,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
     private final String PRESENTER_WEATHER_TAG = "[list - presenter]";
 
-    private String weatherCurrentLocation = "auto:ip";
+    private String weatherCurrentLocation = "&lat=35&lon=139"; //todo fix
     private String aqiCurrentLocation = "here";
     private Boolean isGps = false;
 
@@ -67,7 +67,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 
         if(isGps){
             aqiCurrentLocation = PreferencesHelper.getAqiParameter(context);
-            weatherCurrentLocation = PreferencesHelper.getWeatherParameter(context);
+//            weatherCurrentLocation = PreferencesHelper.getWeatherParameter(context);
+            weatherCurrentLocation = String.valueOf(PreferencesHelper.getLocation(context).getLatitude());
         }
 
         if(!forceload) {
@@ -87,7 +88,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      * @param geo
      */
     private void loadWeatherFromDb(String geo){
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenWeather.INSTANCE
                 .getDataByParameter(context, geo))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -98,7 +99,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     private void loadForecastFromDb(String geo){
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenForecast.INSTANCE
                 .getDataByParameter(context, geo))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -195,9 +196,9 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         Log.i(PRESENTER_WEATHER_TAG,"Load Forecast from net presenter");
         getViewState().showState(State.Loading);
 
-        final Disposable disposable = WeatherApi.getInstance()
-                .weatherEndpoint()
-                .get(parameter)
+        final Disposable disposable = OpenWeatherApi.getInstance()
+                .openWeatherEndpoint()
+                .get(parameter, "10")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -256,16 +257,17 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      * @param response
      * @param parameter
      */
-    private void updateWeatherDB(WeatherResponse response, String parameter) {
-        if (response.getCurrent() == null) {
+    private void updateWeatherDB(OpenWeatherResponse response, String parameter) {
+//        if (response.getCurrent() == null) {
+        if (response == null) {
                 getViewState().showState(State.HasNoData);
         } else {
             Disposable saveWeatherToDb = Single.fromCallable(() -> response)
                     .subscribeOn(Schedulers.io())
                     .map(weatherDTO -> {
-                        ConverterWeather.saveAllDataToDb(context,
-                                ConverterWeather.dtoToDao(weatherDTO, parameter),parameter);
-                        return ConverterWeather.getDataByParameter(context, parameter);
+                        ConverterOpenWeather.INSTANCE.saveAllDataToDb(context,
+                                ConverterOpenWeather.INSTANCE.dtoToDao(weatherDTO, parameter), parameter);
+                        return ConverterOpenWeather.INSTANCE.getDataByParameter(context, parameter);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -281,16 +283,17 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }
     }
 
-    private void updateForecastDB(WeatherResponse response, String parameter) {
-        if (response.getForecast().getForecastday().size()==0) {
+    private void updateForecastDB(OpenWeatherResponse response, String parameter) {
+//        if (response.getForecast().getForecastday().size()==0) { //todo check
+        if (response.getList().size() == 0) {
             getViewState().showState(State.HasNoData);
         } else {
             Disposable saveForecastToDb = Single.fromCallable(() -> response)
                     .subscribeOn(Schedulers.io())
                     .map(weatherDTO -> {
-                        ConverterForecast.saveAllDataToDb(context,
-                                ConverterForecast.dtoToDao(weatherDTO, parameter),parameter);
-                        return ConverterForecast.getDataByParameter(context, parameter);
+                        ConverterOpenForecast.INSTANCE.saveAllDataToDb(context,
+                                ConverterOpenForecast.INSTANCE.dtoToDao(weatherDTO, parameter), parameter);
+                        return ConverterOpenForecast.INSTANCE.getDataByParameter(context, parameter);
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -404,7 +407,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     private void loadWeatherFromDb() {
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenWeather.INSTANCE
                 .getLastData(context))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -420,7 +423,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     private void loadForecastFromDb() {
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenForecast.INSTANCE
                 .getLastData(context))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

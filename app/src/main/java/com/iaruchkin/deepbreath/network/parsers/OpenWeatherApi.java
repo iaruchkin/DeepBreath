@@ -2,11 +2,9 @@ package com.iaruchkin.deepbreath.network.parsers;
 
 import androidx.annotation.NonNull;
 
-import com.iaruchkin.deepbreath.network.endpoints.WeatherEndpoint;
-import com.iaruchkin.deepbreath.network.interceptors.WeatherApiKeyInterceptor;
+import com.iaruchkin.deepbreath.network.endpoints.OpenWeatherEndpoint;
+import com.iaruchkin.deepbreath.network.interceptors.OpenWeatherApiKeyInterceptor;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -15,26 +13,25 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherApi {
+public class OpenWeatherApi {
+//https://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139&appid=15475ada2c37f61419ccae9c6709c157
 
-    private static WeatherApi networkSilngleton;
-    private static final String URL = "https://api.apixu.com/";
-    private WeatherEndpoint weatherEndpoint;
-    Proxy proxyTest = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("96.9.69.133", 42956));
+    private static OpenWeatherApi networkSilngleton;
+    private static final String URL = "https://api.openweathermap.org/data/";
+    private OpenWeatherEndpoint openWeatherEndpoint;
 
-
-    public static synchronized WeatherApi getInstance(){
-        if (networkSilngleton == null){
-            networkSilngleton = new WeatherApi();
+    public static synchronized OpenWeatherApi getInstance() {
+        if (networkSilngleton == null) {
+            networkSilngleton = new OpenWeatherApi();
         }
         return networkSilngleton;
     }
 
-    private WeatherApi(){
+    private OpenWeatherApi() {
         final OkHttpClient client = builtClient();
         final Retrofit retrofit = builtRertofit(client);
 
-        weatherEndpoint = retrofit.create(WeatherEndpoint.class);
+        openWeatherEndpoint = retrofit.create(OpenWeatherEndpoint.class);
     }
 
     private Retrofit builtRertofit(OkHttpClient client) {
@@ -46,7 +43,7 @@ public class WeatherApi {
                 .build();
     }
 
-    private OkHttpClient builtClient(){
+    private OkHttpClient builtClient() {
 
         final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -54,13 +51,12 @@ public class WeatherApi {
         return new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
-                .addInterceptor(WeatherApiKeyInterceptor.create())
-                .proxy(proxyTest)
+                .addInterceptor(OpenWeatherApiKeyInterceptor.create())
                 .build();
     }
 
     @NonNull
-    public WeatherEndpoint weatherEndpoint() {
-        return weatherEndpoint;
+    public OpenWeatherEndpoint openWeatherEndpoint() {
+        return openWeatherEndpoint;
     }
 }

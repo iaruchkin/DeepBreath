@@ -272,8 +272,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
         if(aqiEntity.size() != 0) {
             mAdapter.setAqi(aqiEntity.get(0));
+            aqiItem = aqiEntity.get(0);
         }
-        aqiItem = aqiEntity.get(0);
     }
 
     @Override

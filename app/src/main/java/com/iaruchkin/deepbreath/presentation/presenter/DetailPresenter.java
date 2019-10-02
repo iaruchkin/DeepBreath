@@ -3,20 +3,21 @@ package com.iaruchkin.deepbreath.presentation.presenter;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.presentation.view.DetailView;
-import com.iaruchkin.deepbreath.room.entities.AqiEntity;
-import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.converters.ConverterAqi;
 import com.iaruchkin.deepbreath.room.converters.ConverterCondition;
-import com.iaruchkin.deepbreath.room.converters.ConverterForecast;
-import com.iaruchkin.deepbreath.room.converters.ConverterWeather;
+import com.iaruchkin.deepbreath.room.converters.ConverterOpenForecast;
+import com.iaruchkin.deepbreath.room.converters.ConverterOpenWeather;
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 
-import androidx.annotation.Nullable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -76,7 +77,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
      * @param id
      */
     private void loadWeatherFromDb(String id){
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterWeather
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenWeather.INSTANCE
                 .getDataById(context, id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -96,7 +97,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
     }
 
     private void loadForecastFromDb(String id){
-        Disposable loadFromDb = Single.fromCallable(() -> ConverterForecast
+        Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenForecast.INSTANCE
                 .getDataById(context, id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

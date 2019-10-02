@@ -30,9 +30,9 @@ public final class PreferencesHelper {
 
     public static String getWeatherParameter(Context context){
         if(AppPreferences.isLocationLatLonAvailable(context)) {
-            return String.format(Locale.ENGLISH, "%s,%s", PreferencesHelper.getLocation(context).getLatitude()
+            return String.format(Locale.ENGLISH, "%s&lon=%s", PreferencesHelper.getLocation(context).getLatitude()//todo fix
                     , PreferencesHelper.getLocation(context).getLongitude());
         }
-        return "auto:ip";
+        return "&lat=35&lon=139"; //todo fix
     }
 }
