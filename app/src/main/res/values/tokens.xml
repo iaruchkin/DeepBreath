@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apiWaqiInfoToken" translatable="false"></string>
+    <string name="apiApixuToken" translatable="false"></string>
+    <string name="aqiavToken" translatable="false"></string>
+</resources>

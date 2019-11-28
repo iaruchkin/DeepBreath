@@ -1,6 +1,10 @@
 package com.iaruchkin.deepbreath.network.interceptors;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.iaruchkin.deepbreath.App;
+import com.iaruchkin.deepbreath.R;
 
 import java.io.IOException;
 
@@ -9,11 +13,10 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.iaruchkin.deepbreath.common.ApiKeys.AQI_API_KEY;
-
 public final class AqiApiKeyInterceptor implements Interceptor {
 
     private static final String API_KEY_HEADER_NAME = "token";
+    private final Context CONTEXT = App.INSTANCE.getApplicationContext();
 
     public static AqiApiKeyInterceptor create() {
         return new AqiApiKeyInterceptor();
@@ -28,7 +31,7 @@ public final class AqiApiKeyInterceptor implements Interceptor {
 
         final HttpUrl url = requestWithoutApiKey.url()
                 .newBuilder()
-                .addQueryParameter(API_KEY_HEADER_NAME, AQI_API_KEY)
+                .addQueryParameter(API_KEY_HEADER_NAME, CONTEXT.getString(R.string.apiWaqiInfoToken))
                 .build();
 
         final Request requestWithAttachedApiKey = requestWithoutApiKey.newBuilder()

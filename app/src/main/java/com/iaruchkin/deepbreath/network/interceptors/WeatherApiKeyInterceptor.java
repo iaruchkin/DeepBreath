@@ -1,6 +1,10 @@
 package com.iaruchkin.deepbreath.network.interceptors;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.iaruchkin.deepbreath.App;
+import com.iaruchkin.deepbreath.R;
 
 import java.io.IOException;
 
@@ -9,7 +13,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.iaruchkin.deepbreath.common.ApiKeys.WEATHER_API_KEY;
 
 public final class WeatherApiKeyInterceptor implements Interceptor {
 
@@ -17,7 +20,9 @@ public final class WeatherApiKeyInterceptor implements Interceptor {
     private static final String TIME_HEADER_NAME = "days";
     private static final String TIME = "10";
 
-    public static WeatherApiKeyInterceptor create() {
+	private final Context CONTEXT = App.INSTANCE.getApplicationContext();
+
+	public static WeatherApiKeyInterceptor create() {
         return new WeatherApiKeyInterceptor();
     }
 
@@ -31,7 +36,7 @@ public final class WeatherApiKeyInterceptor implements Interceptor {
 
         final HttpUrl url = requestWithoutApiKey.url()
                 .newBuilder()
-                .addQueryParameter(API_KEY_HEADER_NAME, WEATHER_API_KEY)
+                .addQueryParameter(API_KEY_HEADER_NAME, CONTEXT.getString(R.string.apiApixuToken))
                 .addQueryParameter(TIME_HEADER_NAME, TIME)
                 .build();
 

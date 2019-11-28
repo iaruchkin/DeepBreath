@@ -1,6 +1,10 @@
 package com.iaruchkin.deepbreath.network.interceptors;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.iaruchkin.deepbreath.App;
+import com.iaruchkin.deepbreath.R;
 
 import java.io.IOException;
 
@@ -9,12 +13,12 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.iaruchkin.deepbreath.common.ApiKeys.AQIAV_API_KEY;
-import static com.iaruchkin.deepbreath.common.ApiKeys.WEATHER_API_KEY;
 
 public final class AqiAvApiKeyInterceptor implements Interceptor {
 
     private static final String API_KEY_HEADER_NAME = "key";
+    private final Context CONTEXT = App.INSTANCE.getApplicationContext();
+
 
     public static AqiAvApiKeyInterceptor create() {
         return new AqiAvApiKeyInterceptor();
@@ -29,7 +33,7 @@ public final class AqiAvApiKeyInterceptor implements Interceptor {
 
         final HttpUrl url = requestWithoutApiKey.url()
                 .newBuilder()
-                .addQueryParameter(API_KEY_HEADER_NAME, AQIAV_API_KEY)
+                .addQueryParameter(API_KEY_HEADER_NAME, CONTEXT.getString(R.string.aqiavToken))
                 .build();
 
         final Request requestWithAttachedApiKey = requestWithoutApiKey.newBuilder()
