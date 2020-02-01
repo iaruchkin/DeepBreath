@@ -104,15 +104,12 @@ public class ForecastEntity {
 
 //location
 
-    @NonNull
     @ColumnInfo(name ="locationName")
     private String locationName;
 
-    @NonNull
     @ColumnInfo(name ="locationRegion")
     private String locationRegion;
 
-    @NonNull
     @ColumnInfo(name ="locationCountry")
     private String locationCountry;
 
@@ -153,6 +150,9 @@ public class ForecastEntity {
     @NonNull
     @ColumnInfo(name ="moonset")
     private String moonset;
+
+    @ColumnInfo(name = "wind_degree")
+    private int wind_degree;
 
     @NonNull
     public String getId() {
@@ -431,5 +431,13 @@ public class ForecastEntity {
 //                ", moonrise='" + moonrise + '\'' +
 //                ", moonset='" + moonset + '\'' +
                 '}';
+    }
+
+    public int getWind_degree() {
+        return wind_degree;
+    }
+
+    public void setWind_degree(int wind_degree) {
+        this.wind_degree = wind_degree;
     }
 }

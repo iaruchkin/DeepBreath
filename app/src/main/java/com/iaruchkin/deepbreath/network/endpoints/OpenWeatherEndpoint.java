@@ -10,8 +10,7 @@ import retrofit2.http.Query;
 
 public interface OpenWeatherEndpoint {
     @GET("2.5/forecast")
-//    Single<OpenWeatherResponse> get(@Query("lat") @NonNull String location);//todo fix
-    Single<OpenWeatherResponse> get(@Query("lat") @NonNull String lat, @Query("lon") @NonNull String lon);//todo fix
+    Single<OpenWeatherResponse> get(@Query("lat") @NonNull String lat, @Query("lon") @NonNull String lon);
 }
 
 

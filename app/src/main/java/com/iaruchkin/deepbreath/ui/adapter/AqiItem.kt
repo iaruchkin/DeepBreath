@@ -3,6 +3,7 @@ package com.iaruchkin.deepbreath.ui.adapter
 import android.app.AlertDialog
 import android.view.View
 import androidx.fragment.app.FragmentActivity
+//import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.iaruchkin.deepbreath.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -27,7 +28,7 @@ class AqiItem(private val number: String, private val name: Int, private val hea
     }
 
     fun action() {
-        AlertDialog.Builder(activity?.applicationContext)
+        AlertDialog.Builder(activity)
                 .setTitle(header)
                 .setMessage(description)
                 .setPositiveButton("Ok", null)

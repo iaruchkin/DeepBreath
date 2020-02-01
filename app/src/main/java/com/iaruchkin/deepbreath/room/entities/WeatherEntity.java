@@ -36,15 +36,12 @@ public class WeatherEntity {
     @ColumnInfo(name = "parameter")
     private String parameter;
 
-    @NonNull
     @ColumnInfo(name = "location")
     private String mLocation;
 
-    @NonNull
     @ColumnInfo(name = "country")
     private String mCountry;
 
-    @NonNull
     @ColumnInfo(name = "region")
     private String mRegion;
 

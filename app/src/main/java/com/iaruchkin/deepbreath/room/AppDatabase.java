@@ -17,7 +17,7 @@ import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 
-@Database(entities = {ForecastEntity.class, AqiEntity.class, WeatherEntity.class, ConditionEntity.class, CityEntity.class}, version = 10)
+@Database(entities = {ForecastEntity.class, AqiEntity.class, WeatherEntity.class, ConditionEntity.class, CityEntity.class}, version = 12)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mSingleton;
 

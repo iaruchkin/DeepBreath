@@ -6,6 +6,7 @@ import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.network.dtos.OpenWeatherResponse
 import com.iaruchkin.deepbreath.room.AppDatabase
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity
+import com.iaruchkin.deepbreath.utils.StringUtils
 import java.util.*
 
 object ConverterOpenForecast {
@@ -17,6 +18,24 @@ object ConverterOpenForecast {
     fun dtoToDao(weatherDTO: OpenWeatherResponse, weatherLocation: String): List<ForecastEntity> {
         val listDTO = weatherDTO.list
         val listDao = ArrayList<ForecastEntity>()
+//        val list = ArrayList<ForecastEntity>()
+//
+//        val list2 = mutableListOf<X>()
+//        for (i in listDTO.indices step 8){
+//            var max = 0.0
+//            var min = 0.0
+//            for(j in 0..7){
+//                val a = listDTO[j].main.tempMax
+//                if (max>a) max = a
+//                val b = listDTO[j].main.tempMin
+//                if (min>b) min = b
+//            }
+//            list2.add(listDTO[i])
+//        }
+
+        var i = 7
+        var max = 0.0
+        var min = 1000.0
 
         for (dto in listDTO) {
             val forecastEntity = ForecastEntity()
@@ -42,7 +61,7 @@ object ConverterOpenForecast {
             //date
             forecastEntity.date = Date(dto.dt.toLong())
             forecastEntity.date_epoch = dto.dt
-            forecastEntity.isDay = 1 //todo fix
+            forecastEntity.isDay = if (dto.weather[0].icon.contains("d")) 1 else 0
 
             //weather metric
             forecastEntity.maxtemp_c = dto.main.tempMax.inCelsius()
@@ -50,14 +69,15 @@ object ConverterOpenForecast {
             forecastEntity.mintemp_c = dto.main.tempMin.inCelsius()
             forecastEntity.maxwind_mph = dto.wind.speed.inMph()
 //            forecastEntity.totalprecip_mm = dto.getDay().getTotalprecipMm()
+            forecastEntity.wind_degree = dto.wind.deg.toInt()
 
             //condition
             forecastEntity.conditionText = dto.weather[0].main
             forecastEntity.conditionCode = dto.weather[0].id
 
             //astro
-            forecastEntity.sunrise = Date(weatherDTO.city.sunrise.toLong()).toString()
-            forecastEntity.sunset = Date(weatherDTO.city.sunset.toLong()).toString()
+            forecastEntity.sunrise = StringUtils.formatDate(weatherDTO.city.sunrise.toLong(), "HH:mm")
+            forecastEntity.sunset = StringUtils.formatDate(weatherDTO.city.sunset.toLong(), "HH:mm")
             forecastEntity.moonrise = "" //todo fix
             forecastEntity.moonset = ""
 
@@ -68,7 +88,23 @@ object ConverterOpenForecast {
             forecastEntity.maxwind_kph = dto.wind.speed.inKph()
 //            forecastEntity.totalprecip_in = dto.getDay().getTotalprecipIn()
 
-            listDao.add(forecastEntity)
+
+            if (i <= 7) {
+                val a = dto.main.tempMax
+                if (a > max) max = a
+                val b = dto.main.tempMin
+                if (b < min) min = b
+            }
+
+            if (i == 7) {
+                forecastEntity.maxtemp_c = max.inCelsius()
+                forecastEntity.mintemp_c = min.inCelsius()
+                listDao.add(forecastEntity)
+                i = 0
+                max = 0.0
+                min = 1000.0
+            }
+            i++
         }
         Log.w(TAG, listDao.toString())
 

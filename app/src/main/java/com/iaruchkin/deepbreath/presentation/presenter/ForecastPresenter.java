@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.iaruchkin.deepbreath.App;
+import com.iaruchkin.deepbreath.common.AppPreferences;
 import com.iaruchkin.deepbreath.common.BasePresenter;
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.network.dtos.AqiAvResponse;
@@ -63,22 +64,26 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         loadData(false, PreferencesHelper.getLocation(context));
     }
 
+    public void loadData(Boolean forceload) {
+        loadData(forceload, PreferencesHelper.getLocation(context));
+    }
+
     private void loadData(Boolean forceload, Location location){
 
         if(isGps){
             aqiCurrentLocation = PreferencesHelper.getAqiParameter(context);
 //            weatherCurrentLocation = PreferencesHelper.getWeatherParameter(context);
-            weatherCurrentLocation = String.valueOf(PreferencesHelper.getLocation(context).getLatitude());
+//            weatherCurrentLocation = String.valueOf(PreferencesHelper.getLocation(context).getLatitude());
         }
 
         if(!forceload) {
             loadAqiFromDb(aqiCurrentLocation);
-            loadForecastFromDb(weatherCurrentLocation);
-            loadWeatherFromDb(weatherCurrentLocation);
+            loadForecastFromDb(location); //todo выяснить почему префы не работают
+            loadWeatherFromDb(location);
             loadConditionFromDb();
         }else {
             loadAqiFromNet(aqiCurrentLocation);
-            loadForecastFromNet(weatherCurrentLocation);
+            loadForecastFromNet(location);
             loadCondition();
         }
     }
@@ -87,9 +92,9 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      *
      * @param geo
      */
-    private void loadWeatherFromDb(String geo){
+    private void loadWeatherFromDb(Location geo) {
         Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenWeather.INSTANCE
-                .getDataByParameter(context, geo))
+                .getDataByParameter(context, geo.toString()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateWeatherData(data, geo), this::handleDbError);
@@ -98,9 +103,9 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         getViewState().showState(State.HasData);
     }
 
-    private void loadForecastFromDb(String geo){
+    private void loadForecastFromDb(Location geo) {
         Disposable loadFromDb = Single.fromCallable(() -> ConverterOpenForecast.INSTANCE
-                .getDataByParameter(context, geo))
+                .getDataByParameter(context, geo.toString()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> updateForecastData(data, geo), this::handleDbError);
@@ -136,8 +141,8 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      * @param data
      * @param geo
      */
-    private void updateWeatherData(@Nullable List<WeatherEntity> data, String geo) {
-        if (data.size()==0){
+    private void updateWeatherData(@Nullable List<WeatherEntity> data, Location geo) {
+        if (data.size() == 0) {
             Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + geo);
             loadForecastFromNet(geo);
         }else {
@@ -149,10 +154,10 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         }
     }
 
-    private void updateForecastData(@Nullable List<ForecastEntity> data, String option) {
+    private void updateForecastData(@Nullable List<ForecastEntity> data, Location geo) {
         if (data.size()==0){
-            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + option);
-            loadForecastFromNet(option);
+            Log.w(PRESENTER_WEATHER_TAG, "there is no WeatherData for weatherCurrentLocation : " + geo);
+            loadForecastFromNet(geo);
         }else {
             forecastEntity = data;
             updateWeather();
@@ -163,15 +168,29 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
     }
 
     private void updateAqiData(@Nullable List<AqiEntity> data, String parameter) {
-        if (data.size() == 0){
+        if (data.size() == 0) {
             Log.w(PRESENTER_WEATHER_TAG, "there is no AqiData for location : " + parameter);
             loadAqiFromNet(parameter);
         }else{
             aqiEntity = data;
             updateAqi();
-
             Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data.get(0).getId() + " / " + data.get(0).getAqi());
             Log.i(PRESENTER_WEATHER_TAG, "update AqiData executed on thread: " + Thread.currentThread().getName());
+
+            if (!isGps) {
+                double lat = data.get(0).getLocationLat();
+                double lon = data.get(0).getLocationLon();
+
+                AppPreferences.setLocationDetails(context, lon, lat);
+
+//                        loadForecastFromDb(PreferencesHelper.getLocation(context));
+//                Location location = new Location("db");
+//                location.setLatitude(lon);
+//                location.setLongitude(lat);
+//                loadForecastFromDb(location);
+//                loadWeatherFromDb(location);
+            }
+//            loadForecastFromDb();
         }
     }
 
@@ -192,18 +211,18 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
      *
      * @param parameter
      */
-    private void loadForecastFromNet(@NonNull String parameter){
+    private void loadForecastFromNet(@NonNull Location parameter) {
         Log.i(PRESENTER_WEATHER_TAG,"Load Forecast from net presenter");
         getViewState().showState(State.Loading);
 
         final Disposable disposable = OpenWeatherApi.getInstance()
                 .openWeatherEndpoint()
-                .get(parameter, "10")
+                .get(String.valueOf(parameter.getLatitude()), String.valueOf(parameter.getLongitude()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    updateForecastDB(response, parameter);
-                    updateWeatherDB(response, parameter);
+                            updateForecastDB(response, parameter.toString());
+                            updateWeatherDB(response, parameter.toString());
                     },
                         this::handleError);
 
@@ -220,12 +239,22 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    boolean isValid = LocationUtils.locationIsValid(response.getAqiData().getCity().getGeo().get(0)
-                            , response.getAqiData().getCity().getGeo().get(1), context);
+                    double lat = response.getAqiData().getCity().getGeo().get(0);
+                    double lon = response.getAqiData().getCity().getGeo().get(1);
+
+                    boolean isValid = LocationUtils.locationIsValid(lat, lon, context);
 
                     if(!isValid) loadAqiAvFromNet(parameter);
                     else updateAqiDB(response, parameter);
 
+                    if (!isGps) {
+                        AppPreferences.setLocationDetails(context, lat, lon);
+//                        loadForecastFromDb(PreferencesHelper.getLocation(context));
+//                        Location location = new Location("net");
+//                        location.setLatitude(lat);
+//                        location.setLongitude(lon);
+//                        loadForecastFromNet(location);
+                    }
                 }, this::handleError);
         disposeOnDestroy(disposable);
     }

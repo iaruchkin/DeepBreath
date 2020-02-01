@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
             if (!isGPS) {
                 Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
-                resetLocation();
+//                resetLocation();
                 Log.w("GPS isGPS :", "not enabled");
                 return;
             }
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements MessageFragmentLi
 
                 } else {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-                    resetLocation();
+//                    resetLocation();
                     Log.w("GPS missingPermission :", "Permission denied");
                 }
                 break;

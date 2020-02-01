@@ -19,13 +19,12 @@
         android:id="@+id/action_find"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_share"
-        app:showAsAction="always"
-        android:visible="false" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
         android:title="@string/action_share"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom" />
 
 </menu>

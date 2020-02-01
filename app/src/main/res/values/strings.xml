@@ -8,8 +8,12 @@
     <!-- - - - - - - - - - - - - -
    - Used throughout App -
    - - - - - - - - - - - - - -->
-
+    <!-- Used to open About Screen from MainActivity and DetailActivity -->
     <string name="action_about">About</string>
+
+    <!-- Used to find and choose the city -->
+    <string name="action_find">Find</string>
+
     <!-- Used to share the weather forecast on a given day from the DetailActivity -->
     <string name="action_share">Share</string>
 
@@ -21,6 +25,7 @@
 
     <!-- Title of the DetailActivity -->
     <string name="title_activity_detail">Details</string>
+
     <!-- Title of the SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
 
@@ -523,7 +528,7 @@
     <string name="github_link" translatable="false">https://github.com/iaruchkin/DeepBreath</string>
     <string name="aqi_link" translatable="false">http://aqicn.org</string>
     <string name="aqiav_link" translatable="false">https://airvisual.com</string>
-    <string name="weather_link" translatable="false">https://www.apixu.com</string>
+    <string name="weather_link" translatable="false">https://www.openweathermap.com</string>
     <string name="icons_link" translatable="false">https://www.flaticon.com/authors/smashicons</string>
     <string name="logo_link" translatable="false">https://www.flaticon.com/authors/vectors-market</string>
     <string name="subject_email" translatable="false">deep breath app</string>
@@ -531,14 +536,14 @@
 
     <string name="about_developer">Developer</string>
     <string name="about_ruchkin_igor">Ruchkin Igor (iaruchkin@gmail.com)</string>
-    <string name="about_github" translatable="false">GItHub</string>
+    <string name="about_github" translatable="false">Github</string>
     <string name="about_github_com" translatable="false">github.com/iaruchkin/DeepBreath</string>
     <string name="about_air_quality_index">Air quality index data</string>
     <string name="about_aqicn_org">Powered by aqicn.org</string>
     <string name="about_av_air_quality_index">Additional air quality index data</string>
     <string name="about_airvisual">Powered by airvisual.com</string>
     <string name="about_weather_data">Weather data</string>
-    <string name="about_apixu_com">Powered by apixu.com</string>
+    <string name="about_apixu_com">Powered by openweathermap.com</string>
     <string name="about_icons">Icons</string>
     <string name="about_designed_by">designed by Smashicons from Flaticon</string>
     <string name="about_logo">Logo</string>
@@ -549,7 +554,7 @@
     <string name="intro_page1_desc">And substances emitted into the atmosphere by human activity!</string>
 
     <string name="intro_page2_title">Weather</string>
-    <string name="intro_page2_desc">Current information and forecast up to 7 days!</string>
+    <string name="intro_page2_desc">Current information and forecast up to 5 days!</string>
 
     <string name="intro_page3_title">Location</string>
     <string name="intro_page3_desc">The app will need to know your location for better work, please give us permission.</string>

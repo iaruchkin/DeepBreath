@@ -35,8 +35,8 @@ object ConverterOpenWeather {
 
         //time
         weatherEntity.last_updated = dto.dtTxt
-        weatherEntity.last_updated_epoch = dto.dt
-        weatherEntity.isDay = 1 //todo fix
+        weatherEntity.last_updated_epoch = dto.dt - weatherDTO.city.timezone
+        weatherEntity.isDay = if (dto.weather[0].icon.contains("d")) 1 else 0
 
         //weather metric
         weatherEntity.temp_c = dto.main.temp.inCelsius()
@@ -59,6 +59,9 @@ object ConverterOpenWeather {
         //condition
         weatherEntity.conditionText = dto.weather[0].description
         weatherEntity.conditionCode = dto.weather[0].id
+
+//        weatherEntity.sunrise = StringUtils.formatDate(weatherDTO.city.sunrise.toLong(), "HH:mm")
+//        weatherEntity.sunset = StringUtils.formatDate(weatherDTO.city.sunset.toLong(), "HH:mm")
 
         listDao.add(weatherEntity)
         Log.w(TAG, weatherEntity.toString())

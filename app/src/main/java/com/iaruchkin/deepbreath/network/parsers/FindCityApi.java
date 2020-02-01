@@ -2,8 +2,8 @@ package com.iaruchkin.deepbreath.network.parsers;
 
 import androidx.annotation.NonNull;
 
-import com.iaruchkin.deepbreath.network.endpoints.OpenWeatherEndpoint;
-import com.iaruchkin.deepbreath.network.interceptors.OpenWeatherApiKeyInterceptor;
+import com.iaruchkin.deepbreath.network.endpoints.FindCityEndpoint;
+import com.iaruchkin.deepbreath.network.interceptors.AqiApiKeyInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,24 +13,24 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OpenWeatherApi {
+public class FindCityApi {
 
-    private static OpenWeatherApi networkSilngleton;
-    private static final String URL = "https://api.openweathermap.org/data/";
-    private OpenWeatherEndpoint openWeatherEndpoint;
+    private static FindCityApi aqiApi;
+    private static final String URL = "https://api.waqi.info/";
+    private FindCityEndpoint findCityEndpoint;
 
-    public static synchronized OpenWeatherApi getInstance() {
-        if (networkSilngleton == null) {
-            networkSilngleton = new OpenWeatherApi();
+    public static synchronized FindCityApi getInstance() {
+        if (aqiApi == null) {
+            aqiApi = new FindCityApi();
         }
-        return networkSilngleton;
+        return aqiApi;
     }
 
-    private OpenWeatherApi() {
+    private FindCityApi() {
         final OkHttpClient client = builtClient();
         final Retrofit retrofit = builtRertofit(client);
 
-        openWeatherEndpoint = retrofit.create(OpenWeatherEndpoint.class);
+        findCityEndpoint = retrofit.create(FindCityEndpoint.class);
     }
 
     private Retrofit builtRertofit(OkHttpClient client) {
@@ -48,14 +48,14 @@ public class OpenWeatherApi {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         return new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
-                .addInterceptor(OpenWeatherApiKeyInterceptor.create())
+                .addInterceptor(AqiApiKeyInterceptor.create())
                 .build();
     }
 
     @NonNull
-    public OpenWeatherEndpoint openWeatherEndpoint() {
-        return openWeatherEndpoint;
+    public FindCityEndpoint findCityEndpoint() {
+        return findCityEndpoint;
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-
 import androidx.recyclerview.widget.GridLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -21,15 +20,14 @@ import com.iaruchkin.deepbreath.room.entities.WeatherEntity
 import com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG
 import com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG
 import com.iaruchkin.deepbreath.ui.adapter.*
+import com.iaruchkin.deepbreath.utils.LocationUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import com.iaruchkin.deepbreath.utils.WeatherUtils
-import com.iaruchkin.deepbreath.utils.WeatherUtils.formatPrecip
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
-
 import kotlinx.android.synthetic.main.fragment_details.*
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
@@ -59,7 +57,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         val idAqi = if (arguments != null) arguments!!.getString(AQI_ID, "") else null
         val idCondition = if (arguments != null) arguments!!.getString(CONDITION_ID, "") else null
         val viewType = if (arguments != null) arguments!!.getInt(VIEW_TYPE, 1) else 0
-        return DetailPresenter(idForecast, idWeather, idAqi, idCondition, viewType)
+        return DetailPresenter(idForecast!!, idWeather!!, idAqi!!, idCondition!!, viewType)
     }
 
     companion object {
@@ -134,7 +132,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind_label))
         dataList.add(WeatherItem(getString(WeatherUtils.getWindDirection(windDir)), R.string.wind_direction_label))
         dataList.add(WeatherItem(WeatherUtils.formatPressure(context, pressureMb), R.string.pressure_label))
-        dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))
+//        dataList.add(WeatherItem(precipMm.toString(), R.string.precipitation))
         dataList.add(WeatherItem(humidity.toString(), R.string.humidity_label))
 
         return dataList
@@ -186,6 +184,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         forecast = data
 
         val wind = data.maxwind_kph
+        val windDir = data.wind_degree
         val precipMm = data.totalprecip_mm
         val moonrise = StringUtils.formatTime(data.moonrise, "HH:mm")
         val moonset = StringUtils.formatTime(data.moonset, "HH:mm")
@@ -195,11 +194,13 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         val dataList: MutableList<WeatherItem> = mutableListOf()
 
         dataList.add(WeatherItem(WeatherUtils.formatWind(context, wind), R.string.wind_label))
-        dataList.add(WeatherItem(formatPrecip(context, precipMm), R.string.precipitation))
-        dataList.add(WeatherItem(sunrise, R.string.sunrise))
-        dataList.add(WeatherItem(sunset, R.string.sunset))
-        dataList.add(WeatherItem(moonrise, R.string.moonrise))
-        dataList.add(WeatherItem(moonset, R.string.moonset))
+        dataList.add(WeatherItem(getString(WeatherUtils.getWindDirection(windDir.toString())), R.string.wind_direction_label))//todo fix wint utils
+
+//        dataList.add(WeatherItem(formatPrecip(context, precipMm), R.string.precipitation))
+//        dataList.add(WeatherItem(sunrise, R.string.sunrise))
+//        dataList.add(WeatherItem(sunset, R.string.sunset))
+//        dataList.add(WeatherItem(moonrise, R.string.moonrise))
+//        dataList.add(WeatherItem(moonset, R.string.moonset))
 
         return dataList
     }
@@ -236,7 +237,9 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             adapter = groupAdapter
         }
 
-        ExpandableGroup(ExpandableHeaderItemAqi(aqiEntity), false).apply {
+        val city = if (LocationUtils.locationIsValid(aqiEntity.locationLat, aqiEntity.locationLon, context)) aqiEntity.cityName else weatherEntity.location //todo придумать решение получше
+
+        ExpandableGroup(ExpandableHeaderItemAqi(aqiEntity, city), false).apply {
             add(Section(aqiItems))
             groupAdapter.add(this)
         }

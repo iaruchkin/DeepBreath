@@ -35,7 +35,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
     private val conditionItemList = ArrayList<ConditionEntity>()
 
     private var weatherItem: WeatherEntity = WeatherEntity()
-    private var aqiItem: AqiEntity = AqiEntity()
+    private var aqiItem: AqiEntity? = AqiEntity()
 
     interface ForecastAdapterOnClickHandler {
         fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int)
@@ -189,7 +189,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
             weatherDescTextView?.text = dayText
 
             dateTextView?.text = String.format(Locale.getDefault(), context.resources.getString(R.string.today) + " %s",
-                    StringUtils.formatDate(weatherItem.last_updated_epoch.toLong(), "HH:mm"))
+                    StringUtils.formatDate((weatherItem.last_updated_epoch).toLong(), "HH:mm"))
 
             highTemperatureTextView?.text = highString
             lowTemperatureTextView?.text = lowString
@@ -206,7 +206,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
                 aqiDesc?.setText(AqiUtils.getPollutionLevel(aqi.aqi))
                 aqiCard?.setCardBackgroundColor(context.resources.getColor(AqiUtils.getColor(aqi.aqi)))
 
-                if (LocationUtils.locationIsValid(aqiItem.locationLat, aqiItem.locationLon, context)) {
+                if (LocationUtils.locationIsValid(aqi.locationLat, aqi.locationLon, context)) {
                     recomendation?.setText(AqiUtils.getRecomendation(aqi.aqi))
                     invalidData?.visibility = View.GONE
                 } else {
@@ -241,7 +241,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
                 forecastItem.conditionCode
 
             val conditionItem = conditionItemList[ConditionUtils.getConditionCode(code)]
-            mClickHandler.onClickList(forecastItem, weatherItem, aqiItem, conditionItem, itemViewType)
+            if (aqiItem?.aqi != null) mClickHandler.onClickList(forecastItem, weatherItem, aqiItem!!, conditionItem, itemViewType)
         }
 
         fun showState(state: State) {

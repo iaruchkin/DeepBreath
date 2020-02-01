@@ -246,6 +246,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     @Override
     public void onRefresh() {
+//        forecastPresenter.loadData(true); //todo ???
         listener.onActionClicked(WEATHER_LIST_TAG);
         listener.onActionClicked(GET_LOCATION);
     }
