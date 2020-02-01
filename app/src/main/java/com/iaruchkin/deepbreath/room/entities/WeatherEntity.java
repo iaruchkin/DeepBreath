@@ -1,12 +1,12 @@
 package com.iaruchkin.deepbreath.room.entities;
 
-import com.iaruchkin.deepbreath.room.utils.DateConverter;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import com.iaruchkin.deepbreath.room.utils.DateConverter;
 
 @Entity(tableName = "weather")
 @TypeConverters(DateConverter.class)
@@ -21,19 +21,27 @@ public class WeatherEntity {
     @ColumnInfo(name = "id")
     private String id;
 
+    @ColumnInfo(name = "autoid")
+    private long autoid;
+
+    public long getAutoid() {
+        return autoid;
+    }
+
+    public void setAutoid(long autoid) {
+        this.autoid = autoid;
+    }
+
     @NonNull
     @ColumnInfo(name = "parameter")
     private String parameter;
 
-    @NonNull
     @ColumnInfo(name = "location")
     private String mLocation;
 
-    @NonNull
     @ColumnInfo(name = "country")
     private String mCountry;
 
-    @NonNull
     @ColumnInfo(name = "region")
     private String mRegion;
 

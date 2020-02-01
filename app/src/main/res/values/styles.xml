@@ -7,7 +7,7 @@
     <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="preferenceTheme">@style/PrefsTheme</item>
         <!--<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->

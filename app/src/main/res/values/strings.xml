@@ -8,8 +8,12 @@
     <!-- - - - - - - - - - - - - -
    - Used throughout App -
    - - - - - - - - - - - - - -->
-
+    <!-- Used to open About Screen from MainActivity and DetailActivity -->
     <string name="action_about">About</string>
+
+    <!-- Used to find and choose the city -->
+    <string name="action_find">Find</string>
+
     <!-- Used to share the weather forecast on a given day from the DetailActivity -->
     <string name="action_share">Share</string>
 
@@ -21,6 +25,7 @@
 
     <!-- Title of the DetailActivity -->
     <string name="title_activity_detail">Details</string>
+
     <!-- Title of the SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
 
@@ -268,6 +273,254 @@
     <string name="very_unhealty_recomendation">The general public should greatly reduce outdoor exertion. Sensitive groups should avoid all outdoor activity. Everyone should take care to wear a pollution mask. Ventilation is discouraged. Air purifiers should be turned on.</string>
     <string name="hazardous_recomendation">The general public should avoid outdoor exertion. Everyone should take care to wear a quality pollution mask. Ventilation is discouraged. Homes should be sealed and air purifiers turned on.</string>
 
+    <!--AQI detail values description-->
+    http://www.iqa.mddefp.gouv.qc.ca/contenu/polluants_en.htm
+    http://www.npi.gov.au/resource/particulate-matter-pm10-and-pm25
+    http://mosecom.ru/vozdux/
+    <string name="pm25_header">PM₂₅ - Fine Particulate Matter</string>
+    <string name="pm25_description">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+        Fine particulate matter is airborne microscopic dust and droplets smaller than 2.5 microns in diameter.
+        The composition of particulate matter depends on its source, the season and atmospheric conditions. Fine particulate matter is comprised
+        primarily of sulfates, nitrates, carbon, organic substances, ground minerals and metals.Particulate matter can travel long distances and
+        is a year-round pollutant common to urban and rural communities. It is a principal component of smog.
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+        Particulate matter is generally the product of residential wood burning (47.5%), industry (32.6%), and transportation (17.1%). Particulates also
+        form in the air through the chemical reactions of precursor pollutants, including sulfur and nitrogen oxides. Open sources, such as forest
+        fires, material and soil erosion, quarries and sandpits, farming and volcanic eruptions also contribute to particulate matter emissions.
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+        Because it is so fine, particulate matter less than 2.5 µm in diameter can penetrate into the deepest recesses of the lungs and remain there.
+        Short exposures can produce coughing, irritation and bronchial inflammation. Children and the elderly are particularly sensitive to fine particulate matter,
+        as are people with asthma, pneumonia, bronchitis, emphysema or chronic respiratory ailments. Particulate matter is also a contributing factor to respiratory infections.
+        \n
+        In sensitive individuals, fine particulates may also cause disease and cardiovascular accidents.
+        \n
+        Epidemiological health studies reveal that emergency room visits, hospital admissions and deaths peak during periods when particulate levels are high.
+        The effects of long-term exposure, which are not as well documented, show a permanent loss of lung function and higher rates of cardiovascular and lung cancer deaths.
+        \n
+        The characteristics of chemicals in particulate matter are an important determining factor in their toxicological effect.
+        The presence of polycyclic aromatic hydrocarbons, dioxins and metals on particulate matter explains their carcinogenic effect.
+        Recent studies have begun to shed light on the mechanisms of how fine particulate matter alone or a possible interaction with other pollutants affects health.
+        \n
+        Vegetation is also altered by the deposit of particulates on leaves, which reduce light absorption and impede photosynthesis.
+        Due to their composition, particulate matter can also directly attack leaf structure (necrosis) and affect soil composition.
+        A weakened plant is more vulnerable to diseases and parasites.
+        \n
+        By absorbing and diffusing light, fine particulate matter creates a type of fog that reduces visibility.
+    </string>
+    <string name="pm10_header">PM₁₀ - Particulate Matter</string>
+    <string name="pm10_description">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+        PM10 is particulate matter 10 micrometers or less in diameter, PM2.5 is particulate matter 2.5 micrometers or less in diameter. PM2.5 is generally described as fine particles. By way of comparison, a human hair is about 100 micrometres, so roughly 40 fine particles could be placed on its width.
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+        PM10 and PM2.5 are produced from a wide range of industrial processes through bulk material handling, combustion and minerals processing. The industries using these processes include brickworks, refineries, cement works, iron and steel making, quarrying, and fossil fuel power plants.
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+        Particles of any substances that are less than 10 or 2.5 micrometres diameter. Particles in this size range make up a large proportion of dust that can be drawn deep into the lungs. Larger particles tend to be trapped in the nose, mouth or throat.
+    </string>
+    <string name="co_header">CO - Carbon Monoxide</string>
+    <string name="co_description">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+        Carbon monoxide (CO) is an odourless, colourless, tasteless gas produced by the incomplete burning of organic matter, such as fossil fuels (petroleum), waste and wood. In the atmosphere, it transforms into carbon dioxide (CO2), a major greenhouse gas. In urban areas, CO readings are highest during peak rush hour traffic periods, near expressways and other major urban arteries.
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+        The principal sources of carbon monoxide are transportation (75.7%), industry (13.5%) and residential wood burning (10.6%).
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+        Carbon monoxide is a toxic pollutant whether at high concentrations during short periods or at lower concentrations over long periods. It is absorbed quickly into the bloodstream, where it reduces oxygen intake to organs and tissues. Smokers and people with cardiovascular disease are particularly sensitive to CO. Symptoms of exposure include dizziness, headache, drowsiness, motor and visual impairment, as well as a loss of dexterity and reflexes.
+</string>
+    <string name="no2_header">NO₂ - Nitrogen Dioxide</string>
+    <string name="no2_description">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+        Nitrogen dioxide (NO2) is an irritant gas that is a by-product of combustion. At high temperatures, airborne nitrogen and oxygen combine to form nitric oxide (NO), which transforms relatively quickly into NO2. Both of these substances, NO2 and NO, are the principal components of the family of nitrogen oxides (NOx). NO2 is responsible for the distinctive brownish colour of smog, reduces visibility and at high concentrations contributes to the formation of ozone. Chemical reactions in the atmosphere transform NO2 into nitrates (liquid or solid form).
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+        The principal sources of nitrogen oxides are transportation (84.6%) and industrial burning (10.3%).
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+        Nitrogen dioxide can irritate the lungs, cause coughing and weaken resistance to respiratory tract infections. In high concentrations, NO2 can cause pulmonary edema. Asthmatics and people with bronchitis are most sensitive to NO2.
+        \n
+        NO2 also contributes to acid rain and suspended particulate matter.
+    </string>
+    <string name="so2_header">SO₂ - Sulfur Dioxide</string>
+    <string name="so2_description">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+        Sulfur dioxide (SO2) is a colourless gas with an acrid odour that is generally the product of industry and combustion of fossil fuel containing sulfur. High levels of this pollutant are found near industrial sources. Chemical reactions in the atmosphere transform SO2 into sulfates (liquid or solid form).
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+        The principal sources of SO2 are industry (88.3%) and transportation (7.6%). Declines in industrial SO2 emissions over the last 25 years can be attributed to improved industrial processes and better filtration systems.
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+        SO2 is an irritant gas that acts in combination with other pollutants, most notably particulate matter. Exposure produces symptoms that include coughing, reduced lung capacity and aggravated lung and cardiovascular disease. Asthmatics are particularly sensitive to SO2. Long-term exposure to SO2 increases the risk of developing a chronic respiratory illness.
+        \n
+        SO2 also contributes to acid rain and the formation of suspended fine particulate matter.
+    </string>
+    <string name="o3_header">O₃ - Ozone</string>
+    <string name="o3_description">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+            Ozone is a gas comprised of three oxygen (O3) atoms. It is unstable and reacts easily to other gases.
+        In its natural state, it is a component in several levels of the atmosphere.
+        At high altitudes, it provides protection by absorbing large amounts of ultraviolet radiation.
+        At ground level, however, high concentrations pose a health and environmental threat.
+        It is also one of the principal components of smog.
+        Ozone levels are generally higher in summer, during hot sunny weather. Concentrations are usually highest in late afternoon.
+        Ozone is a pollutant that can travel large distances. Periods of high ozone levels can persist
+        anywhere from a few hours to a few days, depending on weather conditions.
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+            Although not directly emitted into the air, ozone is produced through a photochemical transformation
+        of precursor pollutants: nitrogen oxides and volatile organic compounds. Human activity accounts for
+        most of these pollutants, including transportation, industry and heating. Since the St. Lawrence River
+        valley is a natural corridor that drains air masses from the centre of the continent, ozone levels in
+        Québec are in part attributable to pollutants emitted in the Great Lakes region of the U.S. and Ontario.
+        Emissions from Québec urban areas, primarily Montréal and surrounding areas, also contribute significantly
+        to ozone levels around the province, in combination with certain weather systems.
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+        Ozone is an oxidizing agent that, at high concentrations, irritates the nose, throat, skin and eyes.
+        Over short periods of exposure, it can cause coughing, headaches or breathing problems due to
+        constriction of the airways and bronchioles. Ozone can weaken a body’s immune defense functions
+        and open the way to infection. Ground-level ozone is linked to higher numbers of hospitalizations
+        and emergency room visits for respiratory disorders. People who play outdoor sports and children may
+        be more prone to the effects of ozone because their activities are more intense and they spend more time outdoors.
+        The elderly or people with respiratory ailments may notice their symptoms worsen. Episodes of high ozone levels usually
+        coincide with heat waves, which makes people sensitive to pollutants more vulnerable. Over long-term exposure, the lungs
+        of an adult can become permanently impaired.
+        \n
+        Ozone can also damage vegetation and affect crop yields.
+    </string>
+
+    <string name="w_header" translatable="false">W - here is description</string>
+    <string name="w_description" translatable="false">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+
+        \n
+    </string>
+    <string name="wg_header" translatable="false">Wg - here is description</string>
+    <string name="wg_description" translatable="false">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+
+        \n
+</string>
+    <string name="p_header" translatable="false">P - here is description</string>
+    <string name="p_description" translatable="false">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+
+        \n
+
+    </string>
+    <string name="h_header" translatable="false">H - here is description</string>
+    <string name="h_description" translatable="false">
+        <b>Characteristics and Description</b>
+        \n
+        \n
+
+        \n
+        \n
+        <b>Emission Sources</b>
+        \n
+        \n
+        <b>Effects on Health and the Environment</b>
+        \n
+        \n
+
+        \n
+
+    </string>
+
     <!--About layout-->
     <string name="email_adress" translatable="false">iaruchkin@gmail.com</string>
     <string name="error_no_email_app">Error! There is no email app!</string>
@@ -275,7 +528,7 @@
     <string name="github_link" translatable="false">https://github.com/iaruchkin/DeepBreath</string>
     <string name="aqi_link" translatable="false">http://aqicn.org</string>
     <string name="aqiav_link" translatable="false">https://airvisual.com</string>
-    <string name="weather_link" translatable="false">https://www.apixu.com</string>
+    <string name="weather_link" translatable="false">https://www.openweathermap.com</string>
     <string name="icons_link" translatable="false">https://www.flaticon.com/authors/smashicons</string>
     <string name="logo_link" translatable="false">https://www.flaticon.com/authors/vectors-market</string>
     <string name="subject_email" translatable="false">deep breath app</string>
@@ -283,14 +536,14 @@
 
     <string name="about_developer">Developer</string>
     <string name="about_ruchkin_igor">Ruchkin Igor (iaruchkin@gmail.com)</string>
-    <string name="about_github" translatable="false">GItHub</string>
+    <string name="about_github" translatable="false">Github</string>
     <string name="about_github_com" translatable="false">github.com/iaruchkin/DeepBreath</string>
     <string name="about_air_quality_index">Air quality index data</string>
     <string name="about_aqicn_org">Powered by aqicn.org</string>
     <string name="about_av_air_quality_index">Additional air quality index data</string>
     <string name="about_airvisual">Powered by airvisual.com</string>
     <string name="about_weather_data">Weather data</string>
-    <string name="about_apixu_com">Powered by apixu.com</string>
+    <string name="about_apixu_com">Powered by openweathermap.com</string>
     <string name="about_icons">Icons</string>
     <string name="about_designed_by">designed by Smashicons from Flaticon</string>
     <string name="about_logo">Logo</string>
@@ -301,7 +554,7 @@
     <string name="intro_page1_desc">And substances emitted into the atmosphere by human activity!</string>
 
     <string name="intro_page2_title">Weather</string>
-    <string name="intro_page2_desc">Current information and forecast up to 7 days!</string>
+    <string name="intro_page2_desc">Current information and forecast up to 5 days!</string>
 
     <string name="intro_page3_title">Location</string>
     <string name="intro_page3_desc">The app will need to know your location for better work, please give us permission.</string>
@@ -322,4 +575,5 @@
     <string name="expandable_arrow_icon" translatable="false">expandable arrow icon</string>
     <string name="aqi_label" translatable="false">aqi</string>
     <string name="invalid_data_sign" translatable="false">*</string>
+    <string name="error_snack_msg">Network error! Check your connection or try again later.</string>
 </resources>

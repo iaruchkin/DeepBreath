@@ -1,15 +1,15 @@
 package com.iaruchkin.deepbreath.room.daos;
 
-import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
-
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
+
+import java.util.List;
 
 @Dao
 public interface ForecastDao {
@@ -25,6 +25,10 @@ public interface ForecastDao {
 
     @Query("SELECT * FROM forecast WHERE id = :id")
     ForecastEntity getDataById(String id);
+
+    //    @Query("SELECT * FROM forecast ORDER BY autoid DESC LIMIT 9")
+    @Query("SELECT * FROM forecast ORDER BY autoid LIMIT 9")
+    List<ForecastEntity> getLast();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(ForecastEntity... forecastEntities);

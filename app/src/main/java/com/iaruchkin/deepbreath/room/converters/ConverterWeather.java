@@ -25,8 +25,10 @@ public class ConverterWeather {
 
             //id
             weatherEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());
+        weatherEntity.setAutoid(weatherDTO.getCurrent().getLastUpdateEpoch());
+        Log.e("time", String.valueOf(weatherDTO.getCurrent().getLastUpdateEpoch()));
 
-            //geo
+        //geo
             weatherEntity.setParameter(weatherLocation);
 
             //location
@@ -76,6 +78,12 @@ public class ConverterWeather {
         AppDatabase db = AppDatabase.getAppDatabase(context);
         Log.i(TAG, "AQI data loaded from DB");
         return db.weatherDao().getByParameter(parameter);
+    }
+
+    public static List<WeatherEntity> getLastData(Context context) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        Log.i(TAG, "AQI data loaded from DB");
+        return db.weatherDao().getLast();
     }
 
     public static List<WeatherEntity> getDataByLocation(Context context, String location) {

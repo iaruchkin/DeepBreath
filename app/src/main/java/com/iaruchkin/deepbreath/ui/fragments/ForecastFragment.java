@@ -12,10 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.material.snackbar.Snackbar;
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
 import com.iaruchkin.deepbreath.common.State;
@@ -32,17 +41,10 @@ import com.iaruchkin.deepbreath.utils.StringUtils;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG;
+import static com.iaruchkin.deepbreath.ui.MainActivity.FIND_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.GET_LOCATION;
 import static com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG;
 import static com.iaruchkin.deepbreath.ui.MainActivity.WEATHER_LIST_TAG;
@@ -168,8 +170,17 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
             case R.id.action_share:
                 share();
                 return true;
+            case R.id.action_find:
+                findCity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void findCity() {
+        if (listener != null) {
+            listener.onActionClicked(FIND_TAG);
         }
     }
 
@@ -203,10 +214,6 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
         ActionBar actionBar = ((AppCompatActivity)getContext()).getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(getResources().getString(R.string.app_name));
-
-        //if need to show logo at toolbar
-//        actionBar.setDisplayUseLogoEnabled(true);
-//        actionBar.setLogo(getResources().getDrawable(R.drawable.ic_action_name));
     }
 
     private void setHomeButton(View view) {
@@ -239,6 +246,7 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     @Override
     public void onRefresh() {
+//        forecastPresenter.loadData(true); //todo ???
         listener.onActionClicked(WEATHER_LIST_TAG);
         listener.onActionClicked(GET_LOCATION);
     }
@@ -256,8 +264,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
                 && weatherEntity.size() != 0
                 && conditionEntity.size() != 0) {
             mAdapter.setWeather(forecastEntity, weatherEntity.get(0), conditionEntity);
+            weatherItem = weatherEntity.get(0);
         }
-        weatherItem = weatherEntity.get(0);
     }
 
     @Override
@@ -265,8 +273,8 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
         if(aqiEntity.size() != 0) {
             mAdapter.setAqi(aqiEntity.get(0));
+            aqiItem = aqiEntity.get(0);
         }
-        aqiItem = aqiEntity.get(0);
     }
 
     @Override
@@ -287,8 +295,9 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
             case NetworkError:
                 mRefresh.setVisibility(View.GONE);
-                mError.setVisibility(View.VISIBLE);
+                mError.setVisibility(View.GONE);
                 showRefresher(false);
+                showErrorSnack();
                 break;
 
             case DbError:
@@ -320,6 +329,14 @@ public class ForecastFragment extends MvpAppCompatFragment implements ForecastAd
 
     private void showRefresher(boolean show) {
         mRefresh.setRefreshing(show);
+    }
+
+    private void showErrorSnack() {
+
+        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.error_snack_msg), Snackbar.LENGTH_INDEFINITE);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.error_snack));
+        snackbar.show();
     }
 
     private void findViews(View view) {

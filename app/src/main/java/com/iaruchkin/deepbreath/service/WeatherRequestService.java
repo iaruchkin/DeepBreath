@@ -9,10 +9,16 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.work.ListenableWorker;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
 import com.iaruchkin.deepbreath.R;
 import com.iaruchkin.deepbreath.network.dtos.AqiAvResponse;
-import com.iaruchkin.deepbreath.network.parsers.AqiApi;
 import com.iaruchkin.deepbreath.network.dtos.AqiResponse;
+import com.iaruchkin.deepbreath.network.parsers.AqiApi;
 import com.iaruchkin.deepbreath.network.parsers.AqiAvApi;
 import com.iaruchkin.deepbreath.ui.MainActivity;
 import com.iaruchkin.deepbreath.utils.AqiUtils;
@@ -23,17 +29,10 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.work.ListenableWorker;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.iaruchkin.deepbreath.service.NetworkUtils.CancelReceiver.ACTION_CANCEL;
 
 public class WeatherRequestService extends Worker {
     private static final String TAG = WeatherRequestService.class.getName();
@@ -134,11 +133,11 @@ public class WeatherRequestService extends Worker {
 //
 //                }, this::logError);
         Log.i(TAG, "onStartCommand: service stopped");
-        return Result.SUCCESS;
+        return Result.success();
     }
 
     public ListenableWorker.Result handleError() {
-        return Result.RETRY;
+        return Result.retry();
     }
 
 

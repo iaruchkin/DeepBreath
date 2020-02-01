@@ -2,6 +2,10 @@ package com.iaruchkin.deepbreath.room;
 
 import android.content.Context;
 
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+
 import com.iaruchkin.deepbreath.room.daos.AqiDao;
 import com.iaruchkin.deepbreath.room.daos.CityDao;
 import com.iaruchkin.deepbreath.room.daos.ConditionDao;
@@ -13,11 +17,7 @@ import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity;
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-
-@Database(entities = {ForecastEntity.class, AqiEntity.class, WeatherEntity.class, ConditionEntity.class, CityEntity.class}, version = 4)
+@Database(entities = {ForecastEntity.class, AqiEntity.class, WeatherEntity.class, ConditionEntity.class, CityEntity.class}, version = 12)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase mSingleton;
 

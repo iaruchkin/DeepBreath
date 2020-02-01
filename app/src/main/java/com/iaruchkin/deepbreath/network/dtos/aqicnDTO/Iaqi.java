@@ -56,14 +56,6 @@ public class Iaqi {
         this.no2 = no2;
     }
 
-    public P getP() {
-        return p;
-    }
-
-    public void setP(P p) {
-        this.p = p;
-    }
-
     public Pm10 getPm10() {
         return pm10;
     }
@@ -102,6 +94,14 @@ public class Iaqi {
 
     public void setT(T t) {
         this.t = t;
+    }
+
+    public P getP() {
+        return p;
+    }
+
+    public void setP(P p) {
+        this.p = p;
     }
 
     public W getW() {

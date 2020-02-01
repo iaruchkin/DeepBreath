@@ -33,6 +33,8 @@ local.properties
 .idea/gradle.xml
 .idea/codeStyles/Project.xml
 *.iml
+.idea/codeStyles/Project.xml
+app/src/main/java/com/iaruchkin/deepbreath/common/ApiKeys.java
 
 # OS-specific files
 .DS_Store

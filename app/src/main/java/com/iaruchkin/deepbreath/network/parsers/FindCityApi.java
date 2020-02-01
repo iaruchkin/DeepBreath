@@ -2,11 +2,9 @@ package com.iaruchkin.deepbreath.network.parsers;
 
 import androidx.annotation.NonNull;
 
-import com.iaruchkin.deepbreath.network.endpoints.WeatherEndpoint;
-import com.iaruchkin.deepbreath.network.interceptors.WeatherApiKeyInterceptor;
+import com.iaruchkin.deepbreath.network.endpoints.FindCityEndpoint;
+import com.iaruchkin.deepbreath.network.interceptors.AqiApiKeyInterceptor;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -15,26 +13,24 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherApi {
+public class FindCityApi {
 
-    private static WeatherApi networkSilngleton;
-    private static final String URL = "https://api.apixu.com/";
-    private WeatherEndpoint weatherEndpoint;
-    Proxy proxyTest = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("96.9.69.133", 42956));
+    private static FindCityApi aqiApi;
+    private static final String URL = "https://api.waqi.info/";
+    private FindCityEndpoint findCityEndpoint;
 
-
-    public static synchronized WeatherApi getInstance(){
-        if (networkSilngleton == null){
-            networkSilngleton = new WeatherApi();
+    public static synchronized FindCityApi getInstance() {
+        if (aqiApi == null) {
+            aqiApi = new FindCityApi();
         }
-        return networkSilngleton;
+        return aqiApi;
     }
 
-    private WeatherApi(){
+    private FindCityApi() {
         final OkHttpClient client = builtClient();
         final Retrofit retrofit = builtRertofit(client);
 
-        weatherEndpoint = retrofit.create(WeatherEndpoint.class);
+        findCityEndpoint = retrofit.create(FindCityEndpoint.class);
     }
 
     private Retrofit builtRertofit(OkHttpClient client) {
@@ -46,21 +42,20 @@ public class WeatherApi {
                 .build();
     }
 
-    private OkHttpClient builtClient(){
+    private OkHttpClient builtClient() {
 
         final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         return new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
-                .addInterceptor(WeatherApiKeyInterceptor.create())
-                .proxy(proxyTest)
+                .addInterceptor(AqiApiKeyInterceptor.create())
                 .build();
     }
 
     @NonNull
-    public WeatherEndpoint weatherEndpoint() {
-        return weatherEndpoint;
+    public FindCityEndpoint findCityEndpoint() {
+        return findCityEndpoint;
     }
 }

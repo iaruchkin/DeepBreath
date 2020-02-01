@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.expandable_header_aqi.*
 import java.lang.String.valueOf
 
 
-class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
+class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity, val city: String)
     : Item(), ExpandableItem, View.OnTouchListener{
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         v!!.parent.requestDisallowInterceptTouchEvent(true)
@@ -35,7 +35,7 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity)
         viewHolder.aqi_level_full.setOnTouchListener(this)
         viewHolder.aqi_level_full.movementMethod = ScrollingMovementMethod.getInstance()
 
-        viewHolder.aqi_location_desc.text = aqiEntity.cityName
+        viewHolder.aqi_location_desc.text = city
         viewHolder.aqi_value.text = valueOf(aqiEntity.aqi)
         viewHolder.aqi_description.setText(AqiUtils.getPollutionLevel(aqiEntity.aqi))
         viewHolder.aqi_date_exp.setText(StringUtils.formatDateAqi(aqiEntity.dateEpoch * 1L, "HH:mm, EEEE"))

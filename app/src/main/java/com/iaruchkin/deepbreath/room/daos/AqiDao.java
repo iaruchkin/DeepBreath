@@ -1,15 +1,15 @@
 package com.iaruchkin.deepbreath.room.daos;
 
-import com.iaruchkin.deepbreath.room.entities.AqiEntity;
-
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.iaruchkin.deepbreath.room.entities.AqiEntity;
+
+import java.util.List;
 
 @Dao
 public interface AqiDao {
@@ -25,6 +25,9 @@ public interface AqiDao {
 
     @Query("SELECT * FROM aqi WHERE id = :id")
     AqiEntity getDataById(String id);
+
+    @Query("SELECT * FROM aqi ORDER BY autoid DESC LIMIT 1")
+    List<AqiEntity> getLast();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(AqiEntity... aqiEntities);
