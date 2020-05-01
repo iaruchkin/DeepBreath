@@ -16,10 +16,11 @@
 
     <!--    TODO 1.3-->
     <item
+        android:visible="false"
         android:id="@+id/action_find"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/action_share"
-        app:showAsAction="never" />
+        android:title="@string/action_find"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_share"
