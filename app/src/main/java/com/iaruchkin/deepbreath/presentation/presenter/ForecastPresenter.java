@@ -64,11 +64,11 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
         loadData(false, PreferencesHelper.getLocation(context));
     }
 
-    public void loadData(Boolean forceload) {
-        loadData(forceload, PreferencesHelper.getLocation(context));
+    public void update(){
+        loadData(true, PreferencesHelper.getLocation(context));
     }
 
-    private void loadData(Boolean forceload, Location location){
+    private void loadData(Boolean forceLoad, Location location){
 
         if(isGps){
             aqiCurrentLocation = PreferencesHelper.getAqiParameter(context);
@@ -76,7 +76,7 @@ public class ForecastPresenter extends BasePresenter<ForecastView> {
 //            weatherCurrentLocation = String.valueOf(PreferencesHelper.getLocation(context).getLatitude());
         }
 
-        if(!forceload) {
+        if(!forceLoad) {
             loadAqiFromDb(aqiCurrentLocation);
             loadForecastFromDb(location); //todo выяснить почему префы не работают
             loadWeatherFromDb(location);
