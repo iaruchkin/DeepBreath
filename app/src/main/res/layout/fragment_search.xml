@@ -13,7 +13,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="18dp"
         app:boxBackgroundColor="@color/colorPrimaryLight"
         app:boxCornerRadiusTopStart="12dp"
         app:boxCornerRadiusTopEnd="12dp">
@@ -22,7 +22,7 @@
             android:id="@+id/findCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:paddingTop="26dp"
             android:hint="Type address"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -30,7 +30,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginStart="10dp"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:text="Избранное"/>
 
@@ -38,6 +38,11 @@
         android:id="@+id/favorites_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingTop="10dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="20dp"
         tools:listitem="@layout/item_favorites_forecast"/>
 
 </LinearLayout>

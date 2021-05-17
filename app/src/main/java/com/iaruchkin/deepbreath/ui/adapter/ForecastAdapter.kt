@@ -237,8 +237,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         override fun onClick(v: View) {
             val adapterPosition = adapterPosition
             val forecastItem = forecastItemList[adapterPosition]
-            val code: Int
-            code = if (adapterPosition == 0)
+            val code = if (adapterPosition == 0)
                 weatherItem.conditionCode
             else
                 forecastItem.conditionCode

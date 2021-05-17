@@ -67,13 +67,16 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
         }
     }
 
-    fun addToFavorites(aqi: Int, city: String) {
+    fun addToFavorites() {
+        val aqiItem = aqiEntity?.get(0)
+        val location = forecastEntity?.get(0)?.locationName ?: (aqiItem?.cityName ?: "")
+
         addDataToFavorites(FavoritesEntity(
                 "geo" + mSearchLocation!!.latitude + mSearchLocation!!.longitude,
-                city,
+                location,
                 mSearchLocation!!.latitude,
                 mSearchLocation!!.longitude,
-                aqi
+                aqiItem?.aqi ?: 10
         ))
     }
 
@@ -146,7 +149,7 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ data: List<ConditionEntity>? -> updateConditionData(data) }) { th: Throwable -> handleError(th) }
+                .subscribe({ data: List<ConditionEntity> -> updateConditionData(data) }) { th: Throwable -> handleError(th) }
         disposeOnDestroy(loadFromDb)
         Log.i(PRESENTER_WEATHER_TAG, "Load WeatherData from db")
         viewState!!.showState(State.HasData)
@@ -198,8 +201,8 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
         }
     }
 
-    private fun updateConditionData(data: List<ConditionEntity>?) {
-        if (data!!.size == 0) {
+    private fun updateConditionData(data: List<ConditionEntity>) {
+        if (data.isEmpty()) {
             Log.w(PRESENTER_WEATHER_TAG, "init condition")
             loadCondition()
         } else {
@@ -210,7 +213,7 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
         }
     }
 
-    /**work with internet
+    /**network
      *
      * @param parameter
      */
@@ -384,7 +387,7 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
 
     private fun addDataToFavorites(entity: FavoritesEntity) {
         val saveDataToDb = Single.fromCallable { entity }
-                .subscribeOn(Schedulers.io()) //                    .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(
                         { aqiEntities: FavoritesEntity ->
                             val db = AppDatabase.getAppDatabase(context)

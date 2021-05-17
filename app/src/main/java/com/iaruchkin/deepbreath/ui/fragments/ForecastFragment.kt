@@ -35,9 +35,6 @@ import moxy.presenter.ProvidePresenter
 import java.util.*
 
 class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, ForecastView, OnRefreshListener {
-    private var listener: MessageFragmentListener? = null
-    private var weatherItem: WeatherEntity? = null
-    private var aqiItem: AqiEntity? = null
 
 //    private val presenter by moxyPresenter { todo try delegates
 //        ForecastPresenter(false, false, null)
@@ -46,12 +43,15 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     @JvmField
     @InjectPresenter
     var forecastPresenter: ForecastPresenter? = null
+    private var mListener: MessageFragmentListener? = null
     private var mAdapter: ForecastAdapter? = null
     private var mRecyclerView: RecyclerView? = null
     private var mError: View? = null
     private var mIsSearch: Boolean = false
     private var errorAction: Button? = null
     private var mRefresh: SwipeRefreshLayout? = null
+    private var nWeatherItem: WeatherEntity? = null
+    private var mAqiItem: AqiEntity? = null
     private var toolbar: Toolbar? = null
     private val compositeDisposable = CompositeDisposable()
 
@@ -101,7 +101,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is MessageFragmentListener) {
-            listener = context
+            mListener = context
         }
     }
 
@@ -127,14 +127,14 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                if (listener != null) {
-                    listener!!.onActionClicked(SETTINGS_TAG)
+                if (mListener != null) {
+                    mListener!!.onActionClicked(SETTINGS_TAG)
                 }
                 true
             }
             R.id.action_about -> {
-                if (listener != null) {
-                    listener!!.onActionClicked(ABOUT_TAG)
+                if (mListener != null) {
+                    mListener!!.onActionClicked(ABOUT_TAG)
                 }
                 true
             }
@@ -155,13 +155,13 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     }
 
     private fun findCity() {
-        if (listener != null) {
-            listener!!.onActionClicked(FIND_TAG)
+        if (mListener != null) {
+            mListener!!.onActionClicked(FIND_TAG)
         }
     }
 
     private fun addToFavorites() {
-        forecastPresenter?.addToFavorites(aqiItem!!.aqi, "${aqiItem!!.stateName} ${aqiItem!!.cityName}")
+        forecastPresenter?.addToFavorites()
     }
 
     @SuppressLint("StringFormatMatches")
@@ -170,15 +170,15 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         i.type = "text/plain"
         i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
         var message = getString(R.string.github_link)
-        if (aqiItem != null && weatherItem != null) {
-            message = String.format(Locale.getDefault(), getString(R.string.share_message), StringUtils.transliterateLatToRus(weatherItem!!.location, weatherItem!!.country), resources.getString(AqiUtils.getPollutionLevel(aqiItem!!.aqi)), getString(R.string.google_play_link))
+        if (mAqiItem != null && nWeatherItem != null) {
+            message = String.format(Locale.getDefault(), getString(R.string.share_message), StringUtils.transliterateLatToRus(nWeatherItem!!.location, nWeatherItem!!.country), resources.getString(AqiUtils.getPollutionLevel(mAqiItem!!.aqi)), getString(R.string.google_play_link))
         }
         i.putExtra(Intent.EXTRA_TEXT, message)
         startActivity(Intent.createChooser(i, getString(R.string.share)))
     }
 
     override fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int) {
-        listener!!.onListClicked(forecastItem.id, weatherEntity.id, aqiEntity.id, conditionEntity.id, viewType)
+        mListener!!.onListClicked(forecastItem.id, weatherEntity.id, aqiEntity.id, conditionEntity.id, viewType)
     }
 
     private fun setupToolbar() {
@@ -218,11 +218,11 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
 
     override fun onRefresh() {
         forecastPresenter?.update()
-        listener!!.onActionClicked(GET_LOCATION)
+        mListener!!.onActionClicked(GET_LOCATION)
     }
 
     private fun setupUx() {
-        errorAction!!.setOnClickListener { v: View? -> listener!!.onActionClicked(WEATHER_LIST_TAG) }
+        errorAction!!.setOnClickListener { v: View? -> mListener!!.onActionClicked(WEATHER_LIST_TAG) }
     }
 
     override fun showWeather(forecastEntity: List<ForecastEntity>,
@@ -230,14 +230,14 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
                              conditionEntity: List<ConditionEntity>) {
         if (forecastEntity.isNotEmpty() && weatherEntity.isNotEmpty() && conditionEntity.isNotEmpty()) {
             mAdapter!!.setWeather(forecastEntity, weatherEntity[0], conditionEntity)
-            weatherItem = weatherEntity[0]
+            nWeatherItem = weatherEntity[0]
         }
     }
 
     override fun showAqi(aqiEntity: List<AqiEntity>) {
         if (aqiEntity.isNotEmpty()) {
             mAdapter!!.setAqi(aqiEntity[0], mIsSearch)
-            aqiItem = aqiEntity[0]
+            mAqiItem = aqiEntity[0]
         }
     }
 

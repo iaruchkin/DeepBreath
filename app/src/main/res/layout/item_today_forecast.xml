@@ -160,17 +160,6 @@
 
         </androidx.cardview.widget.CardView>
 
-<!--        <include-->
-<!--            android:id="@+id/aqi_pre_card"-->
-<!--            layout="@layout/aqi_card_layout"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/date" />-->
-
         <TextView
             android:id="@+id/location_desc"
             android:layout_width="wrap_content"

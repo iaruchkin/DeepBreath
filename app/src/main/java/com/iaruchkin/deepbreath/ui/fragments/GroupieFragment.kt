@@ -237,7 +237,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             adapter = groupAdapter
         }
 
-        val city = if (LocationUtils.locationIsValid(aqiEntity.locationLat, aqiEntity.locationLon, context)) aqiEntity.cityName else weatherEntity.location //todo придумать решение получше
+        val city = if (LocationUtils.locationIsValid(aqiEntity.locationLat, aqiEntity.locationLon, context)) aqiEntity.cityName else weatherEntity.location
 
         ExpandableGroup(ExpandableHeaderItemAqi(aqiEntity, city), false).apply {
             add(Section(aqiItems))

@@ -78,10 +78,12 @@ class FindFragment : MvpAppCompatFragment(), FindView {
             ) {
             }
         })
+
+        presenter?.update()
     }
 
     private fun setupSuggestions(list: List<Station>) {
-        mFindCity?.setAdapter(AutocompleteAdapter(context!!, list))
+        mFindCity?.setAdapter(AutocompleteAdapter(requireContext(), list))
         mFindCity?.threshold = 1 //todo настроить
         mFindCity?.setOnItemClickListener{
             adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
