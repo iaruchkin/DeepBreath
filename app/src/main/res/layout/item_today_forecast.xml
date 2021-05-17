@@ -67,7 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.428"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aqi_pre_card"
+            app:layout_constraintTop_toBottomOf="@+id/aqi_card"
             tools:text="@string/pre_unhealthy_recomendation" />
 
         <!-- Icon indicating weather condition -->
@@ -78,7 +78,7 @@
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             app:layout_constraintBottom_toTopOf="@+id/recomendation"
-            app:layout_constraintEnd_toStartOf="@+id/aqi_pre_card"
+            app:layout_constraintEnd_toStartOf="@+id/aqi_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_snow_cloud_night" />
@@ -106,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/weather_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/aqi_pre_card"
+            app:layout_constraintStart_toEndOf="@+id/aqi_card"
             app:layout_constraintTop_toTopOf="@+id/weather_icon"
             tools:text="19\u00b0" />
 
@@ -135,16 +135,41 @@
             app:layout_constraintStart_toStartOf="@+id/high_value"
             app:layout_constraintTop_toBottomOf="@+id/high_value" />
 
-        <include
-            android:id="@+id/aqi_pre_card"
-            layout="@layout/aqi_card_layout"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/aqi_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:focusable="false"
+            android:clickable="false"
+            app:cardUseCompatPadding="false"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            tools:cardBackgroundColor="@color/moderate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date" />
+            app:layout_constraintTop_toBottomOf="@+id/date" >
+
+            <include
+                layout="@layout/aqi_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.cardview.widget.CardView>
+
+<!--        <include-->
+<!--            android:id="@+id/aqi_pre_card"-->
+<!--            layout="@layout/aqi_card_layout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/date" />-->
 
         <TextView
             android:id="@+id/location_desc"
@@ -154,8 +179,8 @@
             android:layout_marginTop="20dp"
             android:textColor="@color/secondary_text"
             android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/aqi_pre_card"
-            app:layout_constraintStart_toStartOf="@+id/aqi_pre_card"
+            app:layout_constraintEnd_toEndOf="@+id/aqi_card"
+            app:layout_constraintStart_toStartOf="@+id/aqi_card"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Moscow" />
 

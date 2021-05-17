@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
+    android:layout_margin="20dp"
     android:id="@+id/aqi_expandable_header_root">
 
     <TextView
@@ -85,8 +85,7 @@
         app:cardElevation="6dp">
 
         <include
-            android:id="@+id/aqi_exp_card_imported"
-            layout="@layout/aqi_card_layout" />
+            layout="@layout/aqi_layout" />
 
     </androidx.cardview.widget.CardView>
 

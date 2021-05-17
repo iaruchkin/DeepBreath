@@ -1,8 +1,7 @@
 package com.iaruchkin.deepbreath.presentation.view;
 
-import com.arellomobile.mvp.MvpView;
-import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
-import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import androidx.annotation.NonNull;
+
 import com.iaruchkin.deepbreath.common.State;
 import com.iaruchkin.deepbreath.room.entities.AqiEntity;
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity;
@@ -11,7 +10,9 @@ import com.iaruchkin.deepbreath.room.entities.WeatherEntity;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
+import moxy.MvpView;
+import moxy.viewstate.strategy.AddToEndSingleStrategy;
+import moxy.viewstate.strategy.StateStrategyType;
 
 @StateStrategyType(value = AddToEndSingleStrategy.class)
 public interface ForecastView extends MvpView {

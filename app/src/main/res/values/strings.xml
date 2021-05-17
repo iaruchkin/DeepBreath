@@ -12,7 +12,7 @@
     <string name="action_about">About</string>
 
     <!-- Used to find and choose the city -->
-    <string name="action_find">Find</string>
+    <string name="action_find">Search</string>
 
     <!-- Used to share the weather forecast on a given day from the DetailActivity -->
     <string name="action_share">Share</string>

@@ -32,7 +32,6 @@ public class ConverterAqi {
 
         Log.e("time", String.valueOf(aqiDTO.getTime().getV()));
 
-
         //parameter
             aqiEntity.setParameter(parameter);
             //location

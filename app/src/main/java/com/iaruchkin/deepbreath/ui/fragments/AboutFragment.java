@@ -3,19 +3,11 @@ package com.iaruchkin.deepbreath.ui.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
-import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.common.MvpAppCompatFragment;
-import com.iaruchkin.deepbreath.presentation.presenter.AboutPresenter;
-import com.iaruchkin.deepbreath.presentation.view.AboutView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +15,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import static com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG;
+import com.iaruchkin.deepbreath.R;
+import com.iaruchkin.deepbreath.presentation.presenter.AboutPresenter;
+import com.iaruchkin.deepbreath.presentation.view.AboutView;
+
+import moxy.MvpAppCompatFragment;
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
+
+import static com.iaruchkin.deepbreath.ui.MainActivityKt.ABOUT_TAG;
 
 public class AboutFragment extends MvpAppCompatFragment implements AboutView {
 

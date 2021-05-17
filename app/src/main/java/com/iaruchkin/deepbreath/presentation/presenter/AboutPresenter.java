@@ -1,10 +1,11 @@
 package com.iaruchkin.deepbreath.presentation.presenter;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
+import androidx.annotation.NonNull;
+
 import com.iaruchkin.deepbreath.presentation.view.AboutView;
 
-import androidx.annotation.NonNull;
+import moxy.InjectViewState;
+import moxy.MvpPresenter;
 
 @InjectViewState
 public class AboutPresenter extends MvpPresenter<AboutView> {

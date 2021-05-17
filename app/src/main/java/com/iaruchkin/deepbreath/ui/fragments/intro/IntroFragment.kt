@@ -15,7 +15,8 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.AppPreferences
-import com.iaruchkin.deepbreath.ui.MainActivity
+import com.iaruchkin.deepbreath.ui.GET_LOCATION
+import com.iaruchkin.deepbreath.ui.WEATHER_LIST_TAG
 import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener
 import me.relex.circleindicator.CircleIndicator
 
@@ -95,14 +96,14 @@ class IntroFragment : Fragment() {
     private fun startApp() {
         AppPreferences.introFinished(context)
         if (listener != null) {
-            listener!!.onActionClicked(MainActivity.WEATHER_LIST_TAG)
+            listener!!.onActionClicked(WEATHER_LIST_TAG)
         }
     }
 
     private val location: Unit
         private get() {
             if (listener != null) {
-                listener!!.onActionClicked(MainActivity.GET_LOCATION)
+                listener!!.onActionClicked(GET_LOCATION)
             }
         }
 

@@ -1,7 +1,6 @@
 package com.iaruchkin.deepbreath.presentation.presenter
 
 import android.util.Log
-import com.arellomobile.mvp.InjectViewState
 import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.common.BasePresenter
 import com.iaruchkin.deepbreath.presentation.view.DetailView
@@ -16,6 +15,7 @@ import com.iaruchkin.deepbreath.room.entities.WeatherEntity
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import moxy.InjectViewState
 
 @InjectViewState
 class DetailPresenter(private val ID_FORECAST: String, private val ID_WEATHER: String, private val ID_AQI: String, private val ID_CONDITION: String, private val VIEW_TYPE: Int) : BasePresenter<DetailView?>() {

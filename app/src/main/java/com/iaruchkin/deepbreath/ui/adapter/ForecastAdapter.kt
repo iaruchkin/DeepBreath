@@ -36,6 +36,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
 
     private var weatherItem: WeatherEntity = WeatherEntity()
     private var aqiItem: AqiEntity? = AqiEntity()
+    private var mIsSearch: Boolean = false
 
     interface ForecastAdapterOnClickHandler {
         fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int)
@@ -132,9 +133,11 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         notifyDataSetChanged()
     }
 
-    fun setAqi(aqiEntity: AqiEntity) {
+    fun setAqi(aqiEntity: AqiEntity, isSearch: Boolean) {
         aqiItem = aqiEntity
         notifyDataSetChanged()
+
+        mIsSearch = isSearch
     }
 
     inner class WeatherViewHolder : RecyclerView.ViewHolder, View.OnClickListener {
@@ -163,7 +166,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
             aqiTextView = view.findViewById(R.id.aqi_value)
             aqiDesc = view.findViewById(R.id.aqi_description)
             aqiHead = view.findViewById(R.id.aqi_head)
-            aqiCard = view.findViewById(R.id.aqi_pre_card)
+            aqiCard = view.findViewById(R.id.aqi_card)
             weatherCard = view.findViewById(R.id.today_card)
             recomendation = view.findViewById(R.id.recomendation)
             invalidData = view.findViewById(R.id.invalid_data_sign)
@@ -206,7 +209,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
                 aqiDesc?.setText(AqiUtils.getPollutionLevel(aqi.aqi))
                 aqiCard?.setCardBackgroundColor(context.resources.getColor(AqiUtils.getColor(aqi.aqi)))
 
-                if (LocationUtils.locationIsValid(aqi.locationLat, aqi.locationLon, context)) {
+                if (LocationUtils.locationIsValid(aqi.locationLat, aqi.locationLon, context) || mIsSearch) {
                     recomendation?.setText(AqiUtils.getRecomendation(aqi.aqi))
                     invalidData?.visibility = View.GONE
                 } else {

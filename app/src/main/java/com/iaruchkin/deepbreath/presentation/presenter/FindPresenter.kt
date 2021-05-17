@@ -1,7 +1,6 @@
 package com.iaruchkin.deepbreath.presentation.presenter
 
 import android.util.Log
-import com.arellomobile.mvp.InjectViewState
 import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.common.AppPreferences
 import com.iaruchkin.deepbreath.common.BasePresenter
@@ -11,17 +10,21 @@ import com.iaruchkin.deepbreath.network.dtos.aqicnDTO.AqiData
 import com.iaruchkin.deepbreath.network.dtos.findCityDTO.Data
 import com.iaruchkin.deepbreath.network.parsers.FindCityApi
 import com.iaruchkin.deepbreath.presentation.view.FindView
+import com.iaruchkin.deepbreath.room.AppDatabase
 import com.iaruchkin.deepbreath.room.converters.ConverterAqi
 import com.iaruchkin.deepbreath.room.entities.AqiEntity
+import com.iaruchkin.deepbreath.room.entities.FavoritesEntity
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import moxy.InjectViewState
 
 @InjectViewState
 class FindPresenter : BasePresenter<FindView?>() {
     private val context = App.INSTANCE.applicationContext
     private var aqiEntity: List<AqiEntity?>? = null
     private var mCityList: List<Data?>? = null
+    private var mFavoritesList: List<FavoritesEntity?>? = null
     private val PRESENTER_WEATHER_TAG = "[list - presenter]"
     private val aqiCurrentLocation = "here"
     private val isGps = false
@@ -33,13 +36,22 @@ class FindPresenter : BasePresenter<FindView?>() {
     private fun loadData() {
 //        loadAqiFromDb(aqiCurrentLocation)
 
-        loadAqiFromNet("msk")
+//        loadCityFromNet("msk")
+        loadFavoritesFromDb()
+    }
+
+    fun loadCityList(text: String) {
+//        loadAqiFromDb(aqiCurrentLocation)
+
+        loadCityFromNet(text)
     }
 
     /**work with database
      *
      * @param geo
      */
+
+    //TODO clean-up
     private fun loadAqiFromDb(geo: String) {
         val loadFromDb = Single.fromCallable {
             ConverterAqi
@@ -59,10 +71,10 @@ class FindPresenter : BasePresenter<FindView?>() {
     private fun updateAqiData(data: List<AqiEntity?>?, parameter: String) {
         if (data!!.size == 0) {
             Log.w(PRESENTER_WEATHER_TAG, "there is no AqiData for location : $parameter")
-            loadAqiFromNet(parameter)
+            loadCityFromNet(parameter)
         } else {
             aqiEntity = data
-            updateAqi()
+            updateCityList()
             Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data[0]!!.id + " / " + data[0]!!.aqi)
             Log.i(PRESENTER_WEATHER_TAG, "update AqiData executed on thread: " + Thread.currentThread().name)
             if (!isGps) {
@@ -77,7 +89,7 @@ class FindPresenter : BasePresenter<FindView?>() {
      *
      * @param parameter
      */
-    private fun loadAqiFromNet(parameter: String) {
+    private fun loadCityFromNet(parameter: String) {
         Log.i(PRESENTER_WEATHER_TAG, "Load AQI from net presenter")
         //        getViewState().showState(State.LoadingAqi);
         val disposable = FindCityApi.getInstance()
@@ -87,8 +99,8 @@ class FindPresenter : BasePresenter<FindView?>() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: CityList ->
                     //                    updateAqiDB(response, "")
-                    response.cityList
-                    updateAqi()
+                    mCityList = response.cityList
+                    updateCityList()
                 })
                 { th: Throwable -> handleError(th) }
 
@@ -115,7 +127,7 @@ class FindPresenter : BasePresenter<FindView?>() {
                     .subscribe(
                             { aqiEntities: List<AqiEntity?> ->
                                 aqiEntity = aqiEntities
-                                updateAqi()
+                                updateCityList()
                                 Log.i(PRESENTER_WEATHER_TAG, "loaded aqi from NET to DB, size: " + aqiEntities.size)
                             }) { th: Throwable -> handleDbError(th) }
             disposeOnDestroy(saveDataToDb)
@@ -126,11 +138,14 @@ class FindPresenter : BasePresenter<FindView?>() {
     /**setting data objects
      *
      */
-    private fun updateAqi() {
+    private fun updateCityList() {
         if (mCityList != null) {
             viewState!!.showCityList(mCityList!!)
             //            getViewState().showState(State.HasData);
         }
+    }
+    private fun updateFavorites() {
+            viewState!!.showFavorites(mFavoritesList!!)
     }
 
     /**handling errors
@@ -152,7 +167,23 @@ class FindPresenter : BasePresenter<FindView?>() {
                 .subscribe(
                         { data: List<AqiEntity?>? ->
                             aqiEntity = data
-                            updateAqi()
+                            updateCityList()
+                        }) { th: Throwable -> handleDbError(th) }
+        disposeOnDestroy(loadFromDb)
+        Log.e(PRESENTER_WEATHER_TAG, "Load AQIData from db")
+        //        getViewState().showState(State.HasData);
+    }
+
+    private fun loadFavoritesFromDb() {
+        val loadFromDb = Single.fromCallable {
+            AppDatabase.getAppDatabase(context).favoritesDao().all
+        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { data: List<FavoritesEntity?>? ->
+                            mFavoritesList = data
+                            updateFavorites()
                         }) { th: Throwable -> handleDbError(th) }
         disposeOnDestroy(loadFromDb)
         Log.e(PRESENTER_WEATHER_TAG, "Load AQIData from db")

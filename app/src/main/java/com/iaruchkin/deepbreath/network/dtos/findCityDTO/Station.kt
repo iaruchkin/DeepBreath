@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Station(
         @SerializedName("geo")
-        var geo: List<Double>,
+        var geo: List<Double>?,
         @SerializedName("name")
         var name: String,
         @SerializedName("url")

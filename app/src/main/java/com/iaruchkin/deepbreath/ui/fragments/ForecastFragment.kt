@@ -3,6 +3,7 @@ package com.iaruchkin.deepbreath.ui.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -13,11 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import com.iaruchkin.deepbreath.R
-import com.iaruchkin.deepbreath.common.MvpAppCompatFragment
 import com.iaruchkin.deepbreath.common.State
 import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter
 import com.iaruchkin.deepbreath.presentation.view.ForecastView
@@ -25,12 +23,15 @@ import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity
-import com.iaruchkin.deepbreath.ui.MainActivity
+import com.iaruchkin.deepbreath.ui.*
 import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter
 import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter.ForecastAdapterOnClickHandler
 import com.iaruchkin.deepbreath.utils.AqiUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import io.reactivex.disposables.CompositeDisposable
+import moxy.MvpAppCompatFragment
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import java.util.*
 
 class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, ForecastView, OnRefreshListener {
@@ -38,12 +39,17 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     private var weatherItem: WeatherEntity? = null
     private var aqiItem: AqiEntity? = null
 
+//    private val presenter by moxyPresenter { todo try delegates
+//        ForecastPresenter(false, false, null)
+//    }
+
     @JvmField
     @InjectPresenter
     var forecastPresenter: ForecastPresenter? = null
     private var mAdapter: ForecastAdapter? = null
     private var mRecyclerView: RecyclerView? = null
     private var mError: View? = null
+    private var mIsSearch: Boolean = false
     private var errorAction: Button? = null
     private var mRefresh: SwipeRefreshLayout? = null
     private var toolbar: Toolbar? = null
@@ -51,13 +57,25 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
 
     @ProvidePresenter
     fun providePresenter(): ForecastPresenter {
-        val isGPS = if (arguments != null) arguments!!.getBoolean("GEO", false) else null
-        return ForecastPresenter(isGPS)
+        val isGPS = requireArguments().getBoolean("GEO", false)
+        val isSearch = requireArguments().getBoolean("SEARCH", false)
+        val location = requireArguments().getDoubleArray("LOCATION")
+
+        mIsSearch = isSearch
+
+        return ForecastPresenter(
+                isGPS,
+                isSearch,
+                Location("Search Location").apply {
+                    latitude = location?.get(0) ?: 0.0
+                    longitude = location?.get(1) ?: 0.0
+                }
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        Log.i(MainActivity.WEATHER_LIST_TAG, "OnCreateView executed on thread:" + Thread.currentThread().name)
+        Log.i(WEATHER_LIST_TAG, "OnCreateView executed on thread:" + Thread.currentThread().name)
         val view = inflater.inflate(LAYOUT, container, false)
         setupUi(view)
         setupUx()
@@ -65,7 +83,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     }
 
     override fun onStart() {
-        Log.i(MainActivity.WEATHER_LIST_TAG, "onStart")
+        Log.i(WEATHER_LIST_TAG, "onStart")
         super.onStart()
     }
 
@@ -98,6 +116,11 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.forecast, menu)
+        if (mIsSearch) {
+            menu.removeItem(R.id.action_find)
+        } else {
+            menu.removeItem(R.id.action_favorite)
+        }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -105,13 +128,13 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         return when (item.itemId) {
             R.id.action_settings -> {
                 if (listener != null) {
-                    listener!!.onActionClicked(MainActivity.SETTINGS_TAG)
+                    listener!!.onActionClicked(SETTINGS_TAG)
                 }
                 true
             }
             R.id.action_about -> {
                 if (listener != null) {
-                    listener!!.onActionClicked(MainActivity.ABOUT_TAG)
+                    listener!!.onActionClicked(ABOUT_TAG)
                 }
                 true
             }
@@ -123,14 +146,22 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
                 findCity()
                 true
             }
+            R.id.action_favorite -> {
+                addToFavorites()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun findCity() {
         if (listener != null) {
-            listener!!.onActionClicked(MainActivity.FIND_TAG)
+            listener!!.onActionClicked(FIND_TAG)
         }
+    }
+
+    private fun addToFavorites() {
+        forecastPresenter?.addToFavorites(aqiItem!!.aqi, "${aqiItem!!.stateName} ${aqiItem!!.cityName}")
     }
 
     @SuppressLint("StringFormatMatches")
@@ -140,10 +171,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
         var message = getString(R.string.github_link)
         if (aqiItem != null && weatherItem != null) {
-            message = String.format(Locale.getDefault(), getString(R.string.share_message)
-                    , StringUtils.transliterateLatToRus(weatherItem!!.location, weatherItem!!.country)
-                    , resources.getString(AqiUtils.getPollutionLevel(aqiItem!!.aqi))
-                    , getString(R.string.google_play_link))
+            message = String.format(Locale.getDefault(), getString(R.string.share_message), StringUtils.transliterateLatToRus(weatherItem!!.location, weatherItem!!.country), resources.getString(AqiUtils.getPollutionLevel(aqiItem!!.aqi)), getString(R.string.google_play_link))
         }
         i.putExtra(Intent.EXTRA_TEXT, message)
         startActivity(Intent.createChooser(i, getString(R.string.share)))
@@ -158,14 +186,16 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         (context as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         val actionBar = (context as AppCompatActivity?)!!.supportActionBar
         actionBar!!.setDisplayShowTitleEnabled(true)
-        actionBar.title = resources.getString(R.string.app_name)
+        actionBar.title = if (!mIsSearch)
+            resources.getString(R.string.app_name)
+        else "Поиск станции" //todo string res
     }
 
     private fun setHomeButton(view: View) {
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         (context as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         val supportActionBar = (context as AppCompatActivity?)!!.supportActionBar
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(mIsSearch)
     }
 
     private fun setupRecyclerViewAdapter() {
@@ -187,14 +217,12 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     }
 
     override fun onRefresh() {
-        //TODO надо просто view обновить а мы тут пересоздаем фрагмент! зачем?
         forecastPresenter?.update()
-//        listener!!.onActionClicked(MainActivity.WEATHER_LIST_TAG, true)
-        listener!!.onActionClicked(MainActivity.GET_LOCATION)
+        listener!!.onActionClicked(GET_LOCATION)
     }
 
     private fun setupUx() {
-        errorAction!!.setOnClickListener { v: View? -> listener!!.onActionClicked(MainActivity.WEATHER_LIST_TAG) }
+        errorAction!!.setOnClickListener { v: View? -> listener!!.onActionClicked(WEATHER_LIST_TAG) }
     }
 
     override fun showWeather(forecastEntity: List<ForecastEntity>,
@@ -208,7 +236,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
 
     override fun showAqi(aqiEntity: List<AqiEntity>) {
         if (aqiEntity.isNotEmpty()) {
-            mAdapter!!.setAqi(aqiEntity[0])
+            mAdapter!!.setAqi(aqiEntity[0], mIsSearch)
             aqiItem = aqiEntity[0]
         }
     }
@@ -258,7 +286,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     }
 
     private fun showErrorSnack() {
-        val snackbar = Snackbar.make(view!!, getString(R.string.error_snack_msg), Snackbar.LENGTH_INDEFINITE)
+        val snackbar = Snackbar.make(requireView(), getString(R.string.error_snack_msg), Snackbar.LENGTH_INDEFINITE)
         val snackBarView = snackbar.view
         snackBarView.setBackgroundColor(resources.getColor(R.color.error_snack))
         snackbar.show()
@@ -276,10 +304,12 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         private const val LAYOUT = R.layout.fragment_weather_list
 
         @JvmStatic
-        fun newInstance(isGPS: Boolean?): ForecastFragment {
+        fun newInstance(isGPS: Boolean, isSearch: Boolean = false, location: List<Double>? = null): ForecastFragment {
             val fragmentForecast = ForecastFragment()
             val bundle = Bundle()
-            bundle.putBoolean("GEO", isGPS!!)
+            bundle.putBoolean("GEO", isGPS)
+            bundle.putBoolean("SEARCH", isSearch)
+            bundle.putDoubleArray("LOCATION", location?.toDoubleArray())
             fragmentForecast.arguments = bundle
             return fragmentForecast
         }

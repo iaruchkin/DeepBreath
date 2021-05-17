@@ -1,11 +1,11 @@
 package com.iaruchkin.deepbreath.common;
 
-import com.arellomobile.mvp.MvpPresenter;
-import com.arellomobile.mvp.MvpView;
-
 import androidx.annotation.NonNull;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import moxy.MvpPresenter;
+import moxy.MvpView;
 
 public abstract class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
 

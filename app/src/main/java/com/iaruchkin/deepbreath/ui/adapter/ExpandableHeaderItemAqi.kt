@@ -3,6 +3,7 @@ package com.iaruchkin.deepbreath.ui.adapter
 import android.text.method.ScrollingMovementMethod
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.utils.AqiUtils
@@ -11,7 +12,7 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.aqi_card_layout.*
+import kotlinx.android.synthetic.main.aqi_layout.*
 import kotlinx.android.synthetic.main.expandable_header_aqi.*
 import java.lang.String.valueOf
 
@@ -28,7 +29,8 @@ class ExpandableHeaderItemAqi(private val aqiEntity: AqiEntity, val city: String
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         //setting color to imported card
-        viewHolder.aqi_exp_card_imported.setBackgroundResource(AqiUtils.getColor(aqiEntity.aqi))
+        val color = ContextCompat.getColor(viewHolder.itemView.context, AqiUtils.getColor(aqiEntity.aqi))
+        viewHolder.aqi_exp_card.setCardBackgroundColor(color)
 
         //setting full description and making it scrollable inside recyclerview
         viewHolder.aqi_level_full.setText(AqiUtils.getPollutionLevelFull(aqiEntity.aqi))

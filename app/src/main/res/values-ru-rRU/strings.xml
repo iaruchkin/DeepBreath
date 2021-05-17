@@ -5,7 +5,7 @@
     <string name="action_retry">повторить</string>
     <string name="cancel_work">отмена</string>
     <string name="action_about">О приложении</string>
-    <string name="action_find">Поиск города</string>
+    <string name="action_find">Поиск станции</string>
     <string name="action_share">Поделиться</string>
     <string name="action_settings">Настройки</string>
     <string name="action_refresh">Обновить</string>

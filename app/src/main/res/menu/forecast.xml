@@ -16,9 +16,16 @@
 
     <!--    TODO 1.3-->
     <item
-        android:visible="false"
+        android:visible="true"
         android:id="@+id/action_find"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/action_find"
+        app:showAsAction="always" />
+
+    <item
+        android:visible="true"
+        android:id="@+id/action_favorite"
+        android:icon="@android:drawable/btn_star"
         android:title="@string/action_find"
         app:showAsAction="always" />
 

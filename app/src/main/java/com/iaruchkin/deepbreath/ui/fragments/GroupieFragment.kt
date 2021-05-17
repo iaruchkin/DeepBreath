@@ -6,19 +6,16 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
-import com.iaruchkin.deepbreath.common.MvpAppCompatFragment
 import com.iaruchkin.deepbreath.presentation.presenter.DetailPresenter
 import com.iaruchkin.deepbreath.presentation.view.DetailView
 import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity
-import com.iaruchkin.deepbreath.ui.MainActivity.ABOUT_TAG
-import com.iaruchkin.deepbreath.ui.MainActivity.SETTINGS_TAG
+import com.iaruchkin.deepbreath.ui.ABOUT_TAG
+import com.iaruchkin.deepbreath.ui.SETTINGS_TAG
 import com.iaruchkin.deepbreath.ui.adapter.*
 import com.iaruchkin.deepbreath.utils.LocationUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
@@ -29,6 +26,9 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_details.*
+import moxy.MvpAppCompatFragment
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 
 class GroupieFragment : MvpAppCompatFragment(), DetailView {
 

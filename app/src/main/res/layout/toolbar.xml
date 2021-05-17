@@ -12,5 +12,3 @@
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
 </com.google.android.material.appbar.AppBarLayout>
-
-    <!--app:popupTheme="@style/AppTheme"-->
