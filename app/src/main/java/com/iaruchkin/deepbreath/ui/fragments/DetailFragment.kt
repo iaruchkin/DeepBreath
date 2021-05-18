@@ -30,14 +30,14 @@ import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 
-class GroupieFragment : MvpAppCompatFragment(), DetailView {
+class DetailFragment : MvpAppCompatFragment(), DetailView {
 
     private val LAYOUT = R.layout.fragment_details
 
     internal var context = App.INSTANCE.applicationContext
 
     private val compositeDisposable = CompositeDisposable()
-    val TAG = GroupieFragment::class.java.simpleName
+    val TAG = DetailFragment::class.java.simpleName
     private var listener: MessageFragmentListener? = null
 
     internal lateinit var weather: WeatherEntity
@@ -69,8 +69,8 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
         internal const val VIEW_TYPE = "extra:viewType"
 
         @JvmStatic
-        fun newInstance(idForecast: String, idWeather: String, idAqi: String, idCondition: String, viewType: Int): GroupieFragment {
-            val fragmentAqi = GroupieFragment()
+        fun newInstance(idForecast: String, idWeather: String, idAqi: String, idCondition: String, viewType: Int): DetailFragment {
+            val fragmentAqi = DetailFragment()
             val bundle = Bundle()
             bundle.putString(FORECAST_ID, idForecast)
             bundle.putString(WEATHER_ID, idWeather)

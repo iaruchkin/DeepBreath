@@ -15,10 +15,9 @@ import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.AppConstants
 import com.iaruchkin.deepbreath.common.AppPreferences
 import com.iaruchkin.deepbreath.common.GpsUtils
-import com.iaruchkin.deepbreath.ui.MainActivity
 import com.iaruchkin.deepbreath.ui.fragments.*
+import com.iaruchkin.deepbreath.ui.fragments.DetailFragment.Companion.newInstance
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment.Companion.newInstance
-import com.iaruchkin.deepbreath.ui.fragments.GroupieFragment.Companion.newInstance
 import com.iaruchkin.deepbreath.ui.fragments.intro.IntroFragment
 
 const val WEATHER_LIST_TAG = "WEATHER_LIST"
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
     private var mForecastSearchFragment: ForecastFragment? = null
     private var mAboutFragment: AboutFragment? = null
     private var mFindFragment: FindFragment? = null
-    private var mGroupieFragment: GroupieFragment? = null
+    private var mGroupieFragment: DetailFragment? = null
     private var mSettingsFragment: SettingsFragment? = null
     private var mIntroFragment: IntroFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
