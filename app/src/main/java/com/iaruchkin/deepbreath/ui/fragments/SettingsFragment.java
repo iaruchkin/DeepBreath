@@ -6,9 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.iaruchkin.deepbreath.App;
-import com.iaruchkin.deepbreath.R;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +15,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SeekBarPreference;
 import androidx.preference.SwitchPreference;
+
+import com.iaruchkin.deepbreath.App;
+import com.iaruchkin.deepbreath.R;
 
 import java.util.Locale;
 
@@ -112,7 +112,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 
     private void setupToolbar(View view) {
 
-        toolbar = view.findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.rToolbar);
         ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
 
         ActionBar actionBar = ((AppCompatActivity) getContext()).getSupportActionBar();

@@ -108,21 +108,18 @@ class DetailPresenter(private val ID_FORECAST: String, private val ID_WEATHER: S
         weatherEntity = data
         updateData()
         Log.i(PRESENTER_WEATHER_TAG, "loaded WeatherData from DB: " + data!!.id + " / " + data.location)
-        Log.i(PRESENTER_WEATHER_TAG, "updateWeatherData executed on thread: " + Thread.currentThread().name)
     }
 
     private fun updateForecastData(data: ForecastEntity?) {
         forecastEntity = data
         updateData()
         Log.i(PRESENTER_WEATHER_TAG, "loaded ForecastData from DB: " + data!!.id + " / " + data.locationName)
-        Log.i(PRESENTER_WEATHER_TAG, "updateForecastData executed on thread: " + Thread.currentThread().name)
     }
 
     private fun updateAqiData(data: AqiEntity?) {
         aqiEntity = data
         updateData()
         Log.i(PRESENTER_WEATHER_TAG, "loaded AqiData from DB: " + data!!.id + " / " + data.aqi)
-        Log.i(PRESENTER_WEATHER_TAG, "updateAqiData executed on thread: " + Thread.currentThread().name)
     }
 
     private fun updateConditionData(data: ConditionEntity?) {
@@ -130,7 +127,6 @@ class DetailPresenter(private val ID_FORECAST: String, private val ID_WEATHER: S
         conditionEntity = data
         updateData()
         Log.i(PRESENTER_WEATHER_TAG, "loaded condition from DB: " + data!!.id + " / " + data.dayText)
-        Log.i(PRESENTER_WEATHER_TAG, "update condition executed on thread: " + Thread.currentThread().name)
     }
 
     private fun updateData() {
@@ -147,7 +143,6 @@ class DetailPresenter(private val ID_FORECAST: String, private val ID_WEATHER: S
      */
     private fun handleError(th: Throwable) {
         Log.e(PRESENTER_WEATHER_TAG, th.message, th)
-        Log.e(PRESENTER_WEATHER_TAG, "handleError executed on thread: " + Thread.currentThread().name)
     }
 
 }

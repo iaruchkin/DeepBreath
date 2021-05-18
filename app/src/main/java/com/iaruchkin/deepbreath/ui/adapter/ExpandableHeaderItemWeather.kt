@@ -34,7 +34,7 @@ class ExpandableHeaderItemWeather(private val weatherEntity: WeatherEntity, priv
 
         var format = "%s"
         if(weatherEntity.region != "") format = "%s, %s"
-        viewHolder.location_desc.text = String.format(Locale.getDefault(), format
+        viewHolder.rLocationDesc.text = String.format(Locale.getDefault(), format
                 , StringUtils.transliterateLatToRus(weatherEntity.location, weatherEntity.country)
                 , StringUtils.transliterateLatToRus(weatherEntity.region, weatherEntity.country))
 

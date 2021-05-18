@@ -28,8 +28,7 @@ public class ConverterForecast {
 
                 //id
                 forecastEntity.setId(dto.getDate() + weatherDTO.getLocation().getName());
-            forecastEntity.setAutoid(dto.getDate().getTime());
-            Log.e("time", String.valueOf(dto.getDate().getTime()));
+                forecastEntity.setAutoid(dto.getDate().getTime());
 
                 //geo
                 forecastEntity.setParameter(weatherLocation);

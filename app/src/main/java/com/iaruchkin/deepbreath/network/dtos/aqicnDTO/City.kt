@@ -1,44 +1,22 @@
+package com.iaruchkin.deepbreath.network.dtos.aqicnDTO
 
-package com.iaruchkin.deepbreath.network.dtos.aqicnDTO;
+import android.location.Location
+import com.google.gson.annotations.SerializedName
 
-import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class City {
-
+class City {
     @SerializedName("geo")
-    @Expose
-    private List<Double> geo = null;
+    private var geo: List<Double>? = null
+
     @SerializedName("name")
-    @Expose
-    private String name;
+    var name: String? = null
+
     @SerializedName("url")
-    @Expose
-    private String url;
+    var url: String? = null
 
-    public List<Double> getGeo() {
-        return geo;
+    fun getCoordinates(): Location {
+        return Location("aqicnDTO").apply {
+            latitude = geo?.get(0) ?: 0.0
+            longitude = geo?.get(1) ?: 0.0
+        }
     }
-
-    public void setGeo(List<Double> geo) {
-        this.geo = geo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
 }

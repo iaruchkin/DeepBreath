@@ -20,122 +20,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp">
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textColor="@color/secondary_text"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/location_desc"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/location_desc"
-            tools:text="Today, April 03" />
-
-        <!-- Icon indicating weather condition -->
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/weather_icon"-->
-        <!--            android:layout_width="@dimen/list_icon"-->
-        <!--            android:layout_height="@dimen/list_icon"-->
-        <!--            android:layout_marginStart="20dp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@+id/location_desc"-->
-        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/location_desc"-->
-        <!--            app:layout_constraintTop_toTopOf="@+id/location_desc"-->
-        <!--            tools:src="@drawable/ic_clouds" />-->
-
-        <!--        &lt;!&ndash; Text that describes weather condition &ndash;&gt;-->
-        <!--        <TextView-->
-        <!--            android:id="@+id/weather_description"-->
-        <!--            android:layout_width="90dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:gravity="center"-->
-        <!--            android:textColor="@color/secondary_text"-->
-        <!--            android:textSize="14sp"-->
-        <!--            app:layout_constraintEnd_toEndOf="@+id/low_value"-->
-        <!--            app:layout_constraintLeft_toLeftOf="@+id/weather_icon"-->
-        <!--            app:layout_constraintRight_toRightOf="@+id/weather_icon"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/weather_icon"-->
-        <!--            tools:text="Rainy light snow" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/high_value"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:fontFamily="sans-serif-light"-->
-        <!--            android:textColor="@color/primary_text"-->
-        <!--            android:textSize="24sp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@+id/temperature_icon"-->
-        <!--            app:layout_constraintRight_toLeftOf="@+id/low_value"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/temperature_icon"-->
-        <!--            app:layout_constraintTop_toTopOf="@+id/temperature_icon"-->
-        <!--            tools:text="19\u00b0" />-->
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/temperature_icon"-->
-        <!--            android:layout_width="30dp"-->
-        <!--            android:layout_height="30dp"-->
-        <!--            android:src="@drawable/ic_temperature_1"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/weather_icon"-->
-        <!--            app:layout_constraintTop_toTopOf="@+id/weather_icon" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/low_value"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:fontFamily="sans-serif-light"-->
-        <!--            android:textSize="18sp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@+id/high_value"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/high_value"-->
-        <!--            tools:text="10\u00b0" />-->
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/aqi_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardUseCompatPadding="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:scaleX="0.7"
-            android:scaleY="0.7"
-            tools:cardBackgroundColor="@color/moderate">
-
-            <include
-                layout="@layout/aqi_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/location_desc"
-            android:layout_width="wrap_content"
+            android:id="@+id/rLocationDesc"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:gravity="start"
             android:textColor="@color/secondary_text"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/location_icon"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rFavoriteButton"
+            app:layout_constraintStart_toEndOf="@+id/rLocationIcon"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Moscow" />
 
         <ImageView
-            android:id="@+id/location_icon"
+            android:id="@+id/rLocationIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="4dp"
-            android:src="@drawable/ic_location_city_black_24dp"
+            android:src="@drawable/ic_location"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/location_desc"
+            app:layout_constraintTop_toTopOf="@+id/rLocationDesc"
+            app:tint="@color/secondary_text" />
+
+        <ImageView
+            android:id="@+id/rFavoriteButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_bookmark_remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/secondary_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="@+id/low_value" />
 
     <TextView
-        android:id="@+id/location_desc"
+        android:id="@+id/rLocationDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -64,9 +64,9 @@
         android:layout_marginTop="8dp"
         android:textColor="@color/secondary_text"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/location_desc"
-        app:layout_constraintStart_toStartOf="@+id/location_desc"
-        app:layout_constraintTop_toBottomOf="@+id/location_desc"
+        app:layout_constraintEnd_toEndOf="@+id/rLocationDesc"
+        app:layout_constraintStart_toStartOf="@+id/rLocationDesc"
+        app:layout_constraintTop_toBottomOf="@+id/rLocationDesc"
         tools:text="Saturday, September 24" />
 
     <ImageView

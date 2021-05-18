@@ -576,4 +576,8 @@
     <string name="aqi_label" translatable="false">aqi</string>
     <string name="invalid_data_sign" translatable="false">*</string>
     <string name="error_snack_msg">Network error! Check your connection or try again later.</string>
+    <string name="bookmarks">Favorites</string>
+    <string name="empty_favorites">Your favorites list is empty</string>
+    <string name="type_address">Type address</string>
+    <string name="station_search">Station search</string>
 </resources>

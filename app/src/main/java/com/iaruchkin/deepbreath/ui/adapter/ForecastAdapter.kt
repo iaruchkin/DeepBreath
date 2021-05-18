@@ -1,6 +1,6 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
-import android.util.Log
+import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,24 +27,16 @@ const val VIEW_TYPE_FUTURE_DAY = 1
 class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) : RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder>() {
 
     private val DATE_FORMAT = "HH:mm, EEEE"
-    private val TAG_ADAPTER = "ADAPTER"
-    private val mUseTodayLayout: Boolean
+    private val mUseTodayLayout: Boolean = App.INSTANCE.applicationContext.resources.getBoolean(R.bool.use_today_layout)
 
     private val context = App.INSTANCE.applicationContext
-    private val forecastItemList = ArrayList<ForecastEntity>()
-    private val conditionItemList = ArrayList<ConditionEntity>()
+    private val forecastItemList: MutableList<ForecastEntity> = mutableListOf()
+    private val conditionItemList: MutableList<ConditionEntity> = mutableListOf()
 
-    private var weatherItem: WeatherEntity = WeatherEntity()
-    private var aqiItem: AqiEntity? = AqiEntity()
+    private var weatherItem: WeatherEntity? = null
+    private var aqiItem: AqiEntity? = null
     private var mIsSearch: Boolean = false
 
-    interface ForecastAdapterOnClickHandler {
-        fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int)
-    }
-
-    init {
-        mUseTodayLayout = App.INSTANCE.applicationContext.resources.getBoolean(R.bool.use_today_layout)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
         val layoutId: Int
@@ -63,7 +55,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
     }
 
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
-        val forecastItem = forecastItemList[position]
+        val forecastItem = forecastItemList?.get(position)
         val conditionText: String?
         val aqi: Int
         val iconForecast: Int
@@ -73,28 +65,24 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         when (viewType) {
             VIEW_TYPE_TODAY -> {
 
-                if (conditionItemList.size != 0) {
-                    iconToday = conditionItemList[ConditionUtils.getConditionCode(weatherItem.conditionCode)].icon
-                    if (weatherItem.isDay == 1) {
-                        conditionText = conditionItemList[ConditionUtils.getConditionCode(weatherItem.conditionCode)].dayText
+                if (conditionItemList.isNotEmpty()) {
+                    iconToday = conditionItemList[ConditionUtils.getConditionCode(weatherItem!!.conditionCode)].icon
+                    if (weatherItem?.isDay == 1) {
+                        conditionText = conditionItemList[ConditionUtils.getConditionCode(weatherItem!!.conditionCode)].dayText
                     } else {
-                        conditionText = conditionItemList[ConditionUtils.getConditionCode(weatherItem.conditionCode)].nightText
+                        conditionText = conditionItemList[ConditionUtils.getConditionCode(weatherItem!!.conditionCode)].nightText
                     }
-                    Log.i(TAG_ADAPTER, forecastItem.toString())
-                    Log.i(TAG_ADAPTER, conditionText)
                 } else {
                     conditionText = null
                     iconToday = 0
                 }
 
-                holder.bindFirst(forecastItem, weatherItem, aqiItem, conditionText, iconToday)
+                holder.bindFirst(forecastItem, weatherItem!!, aqiItem, conditionText, iconToday)
             }
 
             VIEW_TYPE_FUTURE_DAY -> {
-                if (conditionItemList.size != 0) {
+                if (conditionItemList.isNotEmpty()) {
                     iconForecast = conditionItemList[ConditionUtils.getConditionCode(forecastItem.conditionCode)].icon
-                    Log.i(TAG_ADAPTER, forecastItem.toString())
-                    Log.i(TAG_ADAPTER, iconForecast.toString())
                 } else {
                     iconForecast = 0
                 }
@@ -159,7 +147,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         constructor(view: View) : super(view) {
             imageView = view.findViewById(R.id.weather_icon)
             weatherDescTextView = view.findViewById(R.id.weather_description)
-            locationTextView = view.findViewById<TextView>(R.id.location_desc)
+            locationTextView = view.findViewById<TextView>(R.id.rLocationDesc)
             dateTextView = view.findViewById(R.id.date)
             highTemperatureTextView = view.findViewById(R.id.high_value)
             lowTemperatureTextView = view.findViewById(R.id.low_value)
@@ -175,6 +163,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         }
 
         fun bindFirst(forecastItem: ForecastEntity, weatherItem: WeatherEntity, aqi: AqiEntity?, dayText: String?, icon: Int) {
+            showState(State.LoadingAqi)
 
             val highString = WeatherUtils.formatTemperature(context, weatherItem.temp_c)
             val lowString = WeatherUtils.formatTemperature(context, weatherItem.feelslike_c)
@@ -209,7 +198,17 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
                 aqiDesc?.setText(AqiUtils.getPollutionLevel(aqi.aqi))
                 aqiCard?.setCardBackgroundColor(context.resources.getColor(AqiUtils.getColor(aqi.aqi)))
 
-                if (LocationUtils.locationIsValid(aqi.locationLat, aqi.locationLon, context) || mIsSearch) {
+                val isValid = if (!mIsSearch) {
+                    LocationUtils.locationIsValid(aqi.getCoordinates(), context)
+                } else {
+                    val forecastLocation = Location("forecastItem Location").apply {
+                            latitude = forecastItem.locationLat
+                            longitude = forecastItem.locationLon
+                        }
+                    LocationUtils.locationIsValid(aqi.getCoordinates(), forecastLocation)
+                }
+
+                if (LocationUtils.locationIsValid(aqi.getCoordinates(), context) || mIsSearch) {
                     recomendation?.setText(AqiUtils.getRecomendation(aqi.aqi))
                     invalidData?.visibility = View.GONE
                 } else {
@@ -238,12 +237,12 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
             val adapterPosition = adapterPosition
             val forecastItem = forecastItemList[adapterPosition]
             val code = if (adapterPosition == 0)
-                weatherItem.conditionCode
+                weatherItem!!.conditionCode
             else
                 forecastItem.conditionCode
 
             val conditionItem = conditionItemList[ConditionUtils.getConditionCode(code)]
-            if (aqiItem?.aqi != null) mClickHandler.onClickList(forecastItem, weatherItem, aqiItem!!, conditionItem, itemViewType)
+            if (aqiItem?.aqi != null) mClickHandler.onClickList(forecastItem, weatherItem!!, aqiItem!!, conditionItem, itemViewType)
         }
 
         fun showState(state: State) {
@@ -264,4 +263,9 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
             }
         }
     }
+
+    interface ForecastAdapterOnClickHandler {
+        fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int)
+    }
+
 }

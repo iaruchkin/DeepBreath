@@ -98,7 +98,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
     private void setupToolbar(View view) {
         setHasOptionsMenu(true);
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.rToolbar);
         ((AppCompatActivity)getContext()).setSupportActionBar(toolbar);
 
         ActionBar actionBar = ((AppCompatActivity) getContext()).getSupportActionBar();

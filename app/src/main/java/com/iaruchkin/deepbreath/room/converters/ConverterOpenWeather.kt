@@ -23,7 +23,6 @@ object ConverterOpenWeather {
         //id
         weatherEntity.id = dto.dtTxt + weatherDTO.city.name
         weatherEntity.autoid = dto.dt.toLong()
-        Log.e("time", dto.dt.toString())
 
         //geo
         weatherEntity.parameter = weatherLocation

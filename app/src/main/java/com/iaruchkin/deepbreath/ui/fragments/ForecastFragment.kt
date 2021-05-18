@@ -5,14 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.google.android.material.snackbar.Snackbar
 import com.iaruchkin.deepbreath.R
@@ -29,6 +25,9 @@ import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter.ForecastAdapterOnClic
 import com.iaruchkin.deepbreath.utils.AqiUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_weather_list.*
+import kotlinx.android.synthetic.main.layout_error.*
+import kotlinx.android.synthetic.main.toolbar.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
@@ -36,55 +35,51 @@ import java.util.*
 
 class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, ForecastView, OnRefreshListener {
 
-//    private val presenter by moxyPresenter { todo try delegates
-//        ForecastPresenter(false, false, null)
-//    }
-
     @JvmField
     @InjectPresenter
     var forecastPresenter: ForecastPresenter? = null
+
     private var mListener: MessageFragmentListener? = null
     private var mAdapter: ForecastAdapter? = null
-    private var mRecyclerView: RecyclerView? = null
-    private var mError: View? = null
     private var mIsSearch: Boolean = false
-    private var errorAction: Button? = null
-    private var mRefresh: SwipeRefreshLayout? = null
+    private var mIsInFavorites: Boolean = false
     private var nWeatherItem: WeatherEntity? = null
     private var mAqiItem: AqiEntity? = null
-    private var toolbar: Toolbar? = null
     private val compositeDisposable = CompositeDisposable()
 
     @ProvidePresenter
     fun providePresenter(): ForecastPresenter {
         val isGPS = requireArguments().getBoolean("GEO", false)
         val isSearch = requireArguments().getBoolean("SEARCH", false)
-        val location = requireArguments().getDoubleArray("LOCATION")
+        val location = requireArguments().getParcelable<Location>("LOCATION")
 
         mIsSearch = isSearch
 
         return ForecastPresenter(
                 isGPS,
                 isSearch,
-                Location("Search Location").apply {
-                    latitude = location?.get(0) ?: 0.0
-                    longitude = location?.get(1) ?: 0.0
-                }
+                location
         )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        Log.i(WEATHER_LIST_TAG, "OnCreateView executed on thread:" + Thread.currentThread().name)
-        val view = inflater.inflate(LAYOUT, container, false)
-        setupUi(view)
-        setupUx()
-        return view
+    fun update() {
+        forecastPresenter?.update()
     }
 
-    override fun onStart() {
-        Log.i(WEATHER_LIST_TAG, "onStart")
-        super.onStart()
+    override fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int) {
+        mListener!!.onListClicked(forecastItem.id, weatherEntity.id, aqiEntity.id, conditionEntity.id, viewType)
+    }
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(LAYOUT, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupUi(view)
+        setupUx()
     }
 
     override fun onStop() {
@@ -95,7 +90,6 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     override fun onDestroy() {
         super.onDestroy()
         mAdapter = null
-        mRecyclerView = null
     }
 
     override fun onAttach(context: Context) {
@@ -105,19 +99,18 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         }
     }
 
-    private fun setupUi(view: View) {
-        findViews(view)
-        setupToolbar()
-        setupOrientation()
-        setupRecyclerViewAdapter()
-        setHomeButton(view)
-        mRefresh!!.setOnRefreshListener(this)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.forecast, menu)
         if (mIsSearch) {
+            forecastPresenter?.inFavoritesCheck()
             menu.removeItem(R.id.action_find)
+            menu.findItem(R.id.action_favorite).setIcon(
+                    if (mIsInFavorites) {
+                        R.drawable.ic_bookmark_added
+                    } else {
+                        R.drawable.ic_bookmark_border
+                    }
+            )
         } else {
             menu.removeItem(R.id.action_favorite)
         }
@@ -147,11 +140,111 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
                 true
             }
             R.id.action_favorite -> {
-                addToFavorites()
+                if (mIsInFavorites) {
+                    removeFromFavorites()
+                } else {
+                    addToFavorites()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onRefresh() {
+        if (!mIsSearch) mListener?.onActionClicked(GET_LOCATION)
+        else update()
+    }
+
+    override fun showWeather(forecastEntity: List<ForecastEntity>,
+                             weatherEntity: List<WeatherEntity>,
+                             conditionEntity: List<ConditionEntity>) {
+        if (forecastEntity.isNotEmpty() && weatherEntity.isNotEmpty() && conditionEntity.isNotEmpty()) {
+            mAdapter?.setWeather(forecastEntity, weatherEntity[0], conditionEntity)
+            nWeatherItem = weatherEntity[0]
+        }
+    }
+
+    override fun showAqi(aqiEntity: List<AqiEntity>) {
+        if (aqiEntity.isNotEmpty()) {
+            mAdapter!!.setAqi(aqiEntity[0], mIsSearch)
+            mAqiItem = aqiEntity[0]
+        }
+    }
+
+    override fun showState(state: State) {
+        when (state) {
+            State.HasData -> {
+                rRefresh?.visibility = View.VISIBLE
+                rForecastRecyclerView?.visibility = View.VISIBLE
+                rErrorLayout!!.visibility = View.GONE
+                showRefresher(false)
+            }
+            State.HasNoData -> {
+                rRefresh?.visibility = View.GONE
+                rErrorLayout?.visibility = View.VISIBLE
+                showRefresher(false)
+            }
+            State.NetworkError -> {
+                rRefresh?.visibility = View.GONE
+                rErrorLayout?.visibility = View.GONE
+                showRefresher(false)
+                showErrorSnack()
+            }
+            State.DbError -> {
+                rRefresh?.visibility = View.GONE
+                rErrorLayout?.visibility = View.VISIBLE
+                showRefresher(false)
+            }
+            State.Loading -> {
+                rRefresh?.visibility = View.VISIBLE
+                rForecastRecyclerView?.visibility = View.VISIBLE
+                rErrorLayout?.visibility = View.GONE
+                showRefresher(true)
+            }
+            State.LoadingAqi -> {
+                rRefresh?.visibility = View.VISIBLE
+                rForecastRecyclerView?.visibility = View.VISIBLE
+                rErrorLayout?.visibility = View.GONE
+                showRefresher(false)
+            }
+            else -> throw IllegalArgumentException("Unknown state: $state")
+        }
+    }
+
+    override fun updateIcon(inFavorites: Boolean) {
+        mIsInFavorites = inFavorites
+        rToolbar?.menu?.findItem(R.id.action_favorite)?.setIcon(
+                if (inFavorites) {
+                    R.drawable.ic_bookmark_added
+                } else {
+                    R.drawable.ic_bookmark_border
+                }
+        )
+    }
+
+
+    private fun showRefresher(show: Boolean) {
+        rRefresh?.isRefreshing = show
+    }
+
+    private fun showErrorSnack() {
+        val snackbar = Snackbar.make(requireView(), getString(R.string.error_snack_msg), Snackbar.LENGTH_INDEFINITE)
+        val snackBarView = snackbar.view
+        snackBarView.setBackgroundColor(resources.getColor(R.color.error_snack))
+        snackbar.show()
+    }
+
+    private fun setupUi(view: View) {
+        setupToolbar()
+        setupOrientation()
+        setupRecyclerViewAdapter()
+        setHomeButton(view)
+        rRefresh?.setOnRefreshListener(this)
+    }
+
+    private fun setupUx() {
+        rErrorActionButton?.setOnClickListener { mListener?.onActionClicked(WEATHER_LIST_TAG) }
     }
 
     private fun findCity() {
@@ -161,7 +254,11 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     }
 
     private fun addToFavorites() {
-        forecastPresenter?.addToFavorites()
+        forecastPresenter?.updateFavorites()
+    }
+
+    private fun removeFromFavorites() {
+        forecastPresenter?.updateFavorites(true)
     }
 
     @SuppressLint("StringFormatMatches")
@@ -177,37 +274,34 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         startActivity(Intent.createChooser(i, getString(R.string.share)))
     }
 
-    override fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int) {
-        mListener!!.onListClicked(forecastItem.id, weatherEntity.id, aqiEntity.id, conditionEntity.id, viewType)
-    }
-
     private fun setupToolbar() {
         setHasOptionsMenu(true)
-        (context as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        (context as AppCompatActivity?)!!.setSupportActionBar(rToolbar)
         val actionBar = (context as AppCompatActivity?)!!.supportActionBar
-        actionBar!!.setDisplayShowTitleEnabled(true)
-        actionBar.title = if (!mIsSearch)
+        actionBar?.setDisplayShowTitleEnabled(true)
+        actionBar?.title = if (!mIsSearch)
             resources.getString(R.string.app_name)
-        else "Поиск станции" //todo string res
+        else getString(R.string.station_search)
     }
 
     private fun setHomeButton(view: View) {
-        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+        val toolbar: Toolbar = view.findViewById(R.id.rToolbar)
         (context as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         val supportActionBar = (context as AppCompatActivity?)!!.supportActionBar
         supportActionBar?.setDisplayHomeAsUpEnabled(mIsSearch)
     }
 
     private fun setupRecyclerViewAdapter() {
-        mAdapter = ForecastAdapter(this)
-        mRecyclerView!!.adapter = mAdapter
+        if (mAdapter == null) {
+            mAdapter = ForecastAdapter(this)
+        }
+        rForecastRecyclerView?.adapter = mAdapter
     }
 
     private fun setupOrientation() {
-        mRecyclerView!!.layoutManager = LinearLayoutManager(context)
+        rForecastRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        //todo fix in future versions
-        //ability to rotate the screen
+        //todo add in future versions, ability to rotate the screen
 //        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 //            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        } else {
@@ -216,100 +310,17 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
 //        }
     }
 
-    override fun onRefresh() {
-        forecastPresenter?.update()
-        mListener!!.onActionClicked(GET_LOCATION)
-    }
-
-    private fun setupUx() {
-        errorAction!!.setOnClickListener { v: View? -> mListener!!.onActionClicked(WEATHER_LIST_TAG) }
-    }
-
-    override fun showWeather(forecastEntity: List<ForecastEntity>,
-                             weatherEntity: List<WeatherEntity>,
-                             conditionEntity: List<ConditionEntity>) {
-        if (forecastEntity.isNotEmpty() && weatherEntity.isNotEmpty() && conditionEntity.isNotEmpty()) {
-            mAdapter!!.setWeather(forecastEntity, weatherEntity[0], conditionEntity)
-            nWeatherItem = weatherEntity[0]
-        }
-    }
-
-    override fun showAqi(aqiEntity: List<AqiEntity>) {
-        if (aqiEntity.isNotEmpty()) {
-            mAdapter!!.setAqi(aqiEntity[0], mIsSearch)
-            mAqiItem = aqiEntity[0]
-        }
-    }
-
-    override fun showState(state: State) {
-        when (state) {
-            State.HasData -> {
-                mRefresh!!.visibility = View.VISIBLE
-                mRecyclerView!!.visibility = View.VISIBLE
-                mError!!.visibility = View.GONE
-                showRefresher(false)
-            }
-            State.HasNoData -> {
-                mRefresh!!.visibility = View.GONE
-                mError!!.visibility = View.VISIBLE
-                showRefresher(false)
-            }
-            State.NetworkError -> {
-                mRefresh!!.visibility = View.GONE
-                mError!!.visibility = View.GONE
-                showRefresher(false)
-                showErrorSnack()
-            }
-            State.DbError -> {
-                mRefresh!!.visibility = View.GONE
-                mError!!.visibility = View.VISIBLE
-                showRefresher(false)
-            }
-            State.Loading -> {
-                mRefresh!!.visibility = View.VISIBLE
-                mRecyclerView!!.visibility = View.VISIBLE
-                mError!!.visibility = View.GONE
-                showRefresher(true)
-            }
-            State.LoadingAqi -> {
-                mRefresh!!.visibility = View.VISIBLE
-                mRecyclerView!!.visibility = View.VISIBLE
-                mError!!.visibility = View.GONE
-                showRefresher(false)
-            }
-            else -> throw IllegalArgumentException("Unknown state: $state")
-        }
-    }
-
-    private fun showRefresher(show: Boolean) {
-        mRefresh!!.isRefreshing = show
-    }
-
-    private fun showErrorSnack() {
-        val snackbar = Snackbar.make(requireView(), getString(R.string.error_snack_msg), Snackbar.LENGTH_INDEFINITE)
-        val snackBarView = snackbar.view
-        snackBarView.setBackgroundColor(resources.getColor(R.color.error_snack))
-        snackbar.show()
-    }
-
-    private fun findViews(view: View) {
-        toolbar = view.findViewById(R.id.toolbar)
-        mRecyclerView = view.findViewById(R.id.idRecyclerView)
-        mError = view.findViewById(R.id.error_layout)
-        errorAction = view.findViewById(R.id.action_button)
-        mRefresh = view.findViewById(R.id.refresh)
-    }
 
     companion object {
         private const val LAYOUT = R.layout.fragment_weather_list
 
         @JvmStatic
-        fun newInstance(isGPS: Boolean, isSearch: Boolean = false, location: List<Double>? = null): ForecastFragment {
+        fun newInstance(isGPS: Boolean, isSearch: Boolean = false, location: Location? = null): ForecastFragment {
             val fragmentForecast = ForecastFragment()
             val bundle = Bundle()
             bundle.putBoolean("GEO", isGPS)
             bundle.putBoolean("SEARCH", isSearch)
-            bundle.putDoubleArray("LOCATION", location?.toDoubleArray())
+            bundle.putParcelable("LOCATION", location)
             fragmentForecast.arguments = bundle
             return fragmentForecast
         }

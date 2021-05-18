@@ -2,6 +2,7 @@ package com.iaruchkin.deepbreath.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.preference.PreferenceManager;
 
 import com.iaruchkin.deepbreath.R;
@@ -12,12 +13,12 @@ public final class AppPreferences {
     private static final String PREF_COORD_LONG = "coord_long";
     private static final String FIRST = "first launch";
 
-    public static void setLocationDetails(Context context, double lat, double lon) {
+    public static void setLocationDetails(Context context, Location location) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
 
-        editor.putLong(PREF_COORD_LAT, Double.doubleToRawLongBits(lat));
-        editor.putLong(PREF_COORD_LONG, Double.doubleToRawLongBits(lon));
+        editor.putLong(PREF_COORD_LAT, Double.doubleToRawLongBits(location.getLatitude()));
+        editor.putLong(PREF_COORD_LONG, Double.doubleToRawLongBits(location.getLongitude()));
         editor.apply();
     }
 

@@ -3,6 +3,8 @@ package com.iaruchkin.deepbreath.network.parsers;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.iaruchkin.deepbreath.App;
@@ -13,8 +15,6 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 public class ConditionParser {
 
@@ -51,14 +51,12 @@ public class ConditionParser {
                 Log.e(LOG, e.getMessage(), e);
             }
 
-        Log.e(LOG,tContents);
+        Log.v(LOG,tContents);
 
         Gson gson = new Gson();
-
         Type collectionType = new TypeToken<Collection<WeatherCondition>>(){}.getType();
         List<WeatherCondition> enums = gson.fromJson(tContents, collectionType);
 
-        Log.e(LOG, enums.get(0).getDay());
         return enums;
     }
 

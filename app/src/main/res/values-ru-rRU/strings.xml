@@ -218,4 +218,8 @@
         Угарный газ очень опасен, так как не имеет запаха и вызывает отравление и даже смерть.
     </string>
     <string name="error_snack_msg">Ошибка сети! Проверьте ваше соединение или попробуйте позже.</string>
+    <string name="bookmarks">Избранное</string>
+    <string name="empty_favorites">Пока вы ничего сюда не добавили</string>
+    <string name="type_address">Введите адрес</string>
+    <string name="station_search">Поиск станции</string>
 </resources>

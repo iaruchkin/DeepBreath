@@ -52,11 +52,11 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
 
     @ProvidePresenter
     internal fun providePresenter(): DetailPresenter {
-        val idForecast = if (arguments != null) arguments!!.getString(FORECAST_ID, "") else null
-        val idWeather = if (arguments != null) arguments!!.getString(WEATHER_ID, "") else null
-        val idAqi = if (arguments != null) arguments!!.getString(AQI_ID, "") else null
-        val idCondition = if (arguments != null) arguments!!.getString(CONDITION_ID, "") else null
-        val viewType = if (arguments != null) arguments!!.getInt(VIEW_TYPE, 1) else 0
+        val idForecast = requireArguments().getString(FORECAST_ID, "")
+        val idWeather = requireArguments().getString(WEATHER_ID, "")
+        val idAqi = requireArguments().getString(AQI_ID, "")
+        val idCondition = requireArguments().getString(CONDITION_ID, "")
+        val viewType = requireArguments().getInt(VIEW_TYPE, 1)
         return DetailPresenter(idForecast!!, idWeather!!, idAqi!!, idCondition!!, viewType)
     }
 
@@ -87,7 +87,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(LAYOUT, container, false)
 
-        toolbar = view.findViewById(R.id.toolbar)
+        toolbar = view.findViewById(R.id.rToolbar)
 
         setupToolbar()
 
@@ -237,7 +237,7 @@ class GroupieFragment : MvpAppCompatFragment(), DetailView {
             adapter = groupAdapter
         }
 
-        val city = if (LocationUtils.locationIsValid(aqiEntity.locationLat, aqiEntity.locationLon, context)) aqiEntity.cityName else weatherEntity.location
+        val city = if (LocationUtils.locationIsValid(aqiEntity.getCoordinates(), context)) aqiEntity.cityName else weatherEntity.location
 
         ExpandableGroup(ExpandableHeaderItemAqi(aqiEntity, city), false).apply {
             add(Section(aqiItems))

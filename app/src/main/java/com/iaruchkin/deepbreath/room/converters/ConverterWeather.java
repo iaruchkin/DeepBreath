@@ -23,10 +23,9 @@ public class ConverterWeather {
         List<WeatherEntity> listDao = new ArrayList<>();
         WeatherEntity weatherEntity = new WeatherEntity();
 
-            //id
+        //id
             weatherEntity.setId(weatherDTO.getCurrent().getLastUpdateEpoch() + weatherDTO.getLocation().getName());
-        weatherEntity.setAutoid(weatherDTO.getCurrent().getLastUpdateEpoch());
-        Log.e("time", String.valueOf(weatherDTO.getCurrent().getLastUpdateEpoch()));
+            weatherEntity.setAutoid(weatherDTO.getCurrent().getLastUpdateEpoch());
 
         //geo
             weatherEntity.setParameter(weatherLocation);
@@ -64,7 +63,7 @@ public class ConverterWeather {
             weatherEntity.setConditionCode(weatherDTO.getCurrent().getCondition().getCode());
 
         listDao.add(weatherEntity);
-        Log.w(TAG, weatherEntity.toString());
+        Log.v(TAG, weatherEntity.toString());
 
         return listDao;
     }
@@ -76,38 +75,36 @@ public class ConverterWeather {
 
     public static List<WeatherEntity> getDataByParameter(Context context, String parameter) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        Log.i(TAG, "AQI data loaded from DB");
+        Log.v(TAG, "AQI data loaded from DB");
         return db.weatherDao().getByParameter(parameter);
     }
 
     public static List<WeatherEntity> getLastData(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        Log.i(TAG, "AQI data loaded from DB");
+        Log.v(TAG, "AQI data loaded from DB");
         return db.weatherDao().getLast();
     }
 
     public static List<WeatherEntity> getDataByLocation(Context context, String location) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        Log.i(TAG, "AQI data loaded from DB");
+        Log.v(TAG, "AQI data loaded from DB");
         return db.weatherDao().getAll(location);
     }
 
     public static List<WeatherEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        Log.i(TAG, "AQI data loaded from DB");
+        Log.v(TAG, "AQI data loaded from DB");
         return db.weatherDao().getAll();
     }
 
     public static void saveAllDataToDb(Context context, List<WeatherEntity> list, String parameter){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         db.weatherDao().deleteAll(parameter);
-        Log.i(TAG, "AQI DB: deleteAll");
+        Log.v(TAG, "AQI DB: deleteAll");
 
         WeatherEntity data[] = list.toArray(new WeatherEntity[list.size()]);
         db.weatherDao().insertAll(data);
-        Log.i(TAG, "AQI DB: insertAll");
-
-        Log.i(TAG, "AQI data saved to DB");
+        Log.v(TAG, "AQI DB: insertAll");
         weatherDao.insertAll(data);
     }
 }

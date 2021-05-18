@@ -25,14 +25,14 @@
     <item
         android:visible="true"
         android:id="@+id/action_favorite"
-        android:icon="@android:drawable/btn_star"
+        android:icon="@drawable/ic_bookmark_added"
         android:title="@string/action_find"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_share"
-        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+        android:icon="@drawable/ic_share"
         android:title="@string/action_share"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

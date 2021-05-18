@@ -47,8 +47,8 @@ class AutocompleteAdapter(context: Context, items: List<Station>) :
                     .inflate(R.layout.autocomplete_list_item, parent, false)
         }
         (view?.findViewWithTag<View>("autoCompleteItem") as TextView).text = item?.name
-        val distance = (LocationUtils.locationDistance(item?.geo?.get(0) ?: 0.0, item?.geo?.get(1) ?: 0.0, context)/1000)
-        (view?.findViewWithTag<View>("autoCompleteItemDistance") as TextView).text =
+        val distance = (LocationUtils.locationDistance(item?.getCoordinates(), context)/1000)
+        (view.findViewWithTag<View>("autoCompleteItemDistance") as TextView).text =
                 String.format("%.2f км от вас", distance)
 
         if (isActive) {
@@ -114,7 +114,7 @@ class AutocompleteAdapter(context: Context, items: List<Station>) :
                 addAll((results.values as ArrayList<Station>))
                 true
             } else {
-                addAll(listOf(Station(null, "", ""))) //todo fix
+                addAll(listOf(Station()))
                 false
             }
             notifyDataSetChanged()

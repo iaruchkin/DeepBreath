@@ -1,301 +1,101 @@
-package com.iaruchkin.deepbreath.room.entities;
+package com.iaruchkin.deepbreath.room.entities
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.iaruchkin.deepbreath.room.utils.DateConverter;
+import android.location.Location
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.iaruchkin.deepbreath.room.utils.DateConverter
 
 @Entity(tableName = "aqi")
-@TypeConverters(DateConverter.class)
+@TypeConverters(DateConverter::class)
+class AqiEntity {
 
-public class AqiEntity {
-
-    public AqiEntity() {
-    }
-
-    @NonNull
     @PrimaryKey
     @ColumnInfo(name = "id")
-    private String id;
+    var id: String = ""
 
     @ColumnInfo(name = "autoid")
-    private long autoid;
-
-    public long getAutoid() {
-        return autoid;
-    }
-
-    public void setAutoid(long autoid) {
-        this.autoid = autoid;
-    }
+    var autoid: Long = 0
 
     @ColumnInfo(name = "idx")
-    private String mIdx;
+    var idx: String? = null
 
-    @NonNull
     @ColumnInfo(name = "parameter")
-    private String parameter;
+    var parameter: String = ""
 
-    @NonNull
-    @ColumnInfo(name ="locationLat")
-    private double locationLat;
-
-    @NonNull
-    @ColumnInfo(name ="locationLon")
-    private double locationLon;
-
-    @NonNull
     @ColumnInfo(name = "cityName")
-    private String mCityName;
+    var cityName: String = ""
 
     @ColumnInfo(name = "cityUrl")
-    private String mCityUrl;
+    var cityUrl: String? = null
 
     @ColumnInfo(name = "countryName")
-    private String mCountryName;
+    var countryName: String? = null
 
     @ColumnInfo(name = "stateName")
-    private String mStateName;
+    var stateName: String? = null
 
-    @NonNull
     @ColumnInfo(name = "aqi")
-    private Integer mAqi;
+    var aqi: Int = 0
+
+    @ColumnInfo(name = "date")
+    var date: String = ""
+
+    @ColumnInfo(name = "date_epoch")
+    var dateEpoch: Int = 0
+
+    @ColumnInfo(name = "locationLat")
+    var locationLat = 0.0
+
+    @ColumnInfo(name = "locationLon")
+    var locationLon = 0.0
 
     @ColumnInfo(name = "Co")
-    private Double mCo;
+    var co: Double? = null
 
     @ColumnInfo(name = "No2")
-    private Double mNo2;
+    var no2: Double? = null
 
     @ColumnInfo(name = "O3")
-    private Double mO3;
+    var o3: Double? = null
 
     @ColumnInfo(name = "pm10")
-    private Integer mPm10;
+    var pm10: Int? = null
 
     @ColumnInfo(name = "pm25")
-    private Integer mPm25;
+    var pm25: Int? = null
 
     @ColumnInfo(name = "So2")
-    private Double mSo2;
+    var so2: Double? = null
 
     @ColumnInfo(name = "h")
-    private Double mH;
+    var h: Double? = null
 
     @ColumnInfo(name = "p")
-    private Double mP;
+    var p: Double? = null
 
     @ColumnInfo(name = "w")
-    private Double mW;
+    var w: Double? = null
 
     @ColumnInfo(name = "wg")
-    private Double mWg;
+    var wg: Double? = null
 
-    @NonNull
-    @ColumnInfo(name = "date")
-    private String mDate;
 
-    @NonNull
-    @ColumnInfo(name = "date_epoch")
-    private Integer mDateEpoch;
-
-    @NonNull
-    public String getId() {
-        return id;
+    fun getCoordinates(): Location {
+        return Location("AqiEntity Location").apply {
+            latitude = locationLat
+            longitude = locationLon
+        }
     }
 
-    @NonNull
-    public String getIdx() {
-        return mIdx;
-    }
-
-    @NonNull
-    public String getParameter() {
-        return parameter;
-    }
-
-    public double getLocationLat() {
-        return locationLat;
-    }
-
-    public double getLocationLon() {
-        return locationLon;
-    }
-
-    @NonNull
-    public String getCityName() {
-        return mCityName;
-    }
-
-    @NonNull
-    public String getCityUrl() {
-        return mCityUrl;
-    }
-
-    @NonNull
-    public String getCountryName() {
-        return mCountryName;
-    }
-
-    @NonNull
-    public String getStateName() {
-        return mStateName;
-    }
-
-    @NonNull
-    public Integer getAqi() {
-        return mAqi;
-    }
-
-    public Double getCo() {
-        return mCo;
-    }
-
-    public Double getNo2() {
-        return mNo2;
-    }
-
-    public Double getO3() {
-        return mO3;
-    }
-
-    public Integer getPm10() {
-        return mPm10;
-    }
-
-    public Integer getPm25() {
-        return mPm25;
-    }
-
-    public Double getSo2() {
-        return mSo2;
-    }
-
-    public Double getH() {
-        return mH;
-    }
-
-    public Double getP() {
-        return mP;
-    }
-
-    public Double getW() {
-        return mW;
-    }
-
-    public Double getWg() {
-        return mWg;
-    }
-
-    @NonNull
-    public String getDate() {
-        return mDate;
-    }
-
-    @NonNull
-    public Integer getDateEpoch() {
-        return mDateEpoch;
-    }
-
-    public void setId(@NonNull String id) {
-        this.id = id;
-    }
-
-    public void setIdx(@NonNull String idx) {
-        mIdx = idx;
-    }
-
-    public void setParameter(@NonNull String parameter) {
-        this.parameter = parameter;
-    }
-
-    public void setLocationLat(double locationLat) {
-        this.locationLat = locationLat;
-    }
-
-    public void setLocationLon(double locationLon) {
-        this.locationLon = locationLon;
-    }
-
-    public void setCityName(@NonNull String cityName) {
-        mCityName = cityName;
-    }
-
-    public void setCityUrl(@NonNull String cityUrl) {
-        mCityUrl = cityUrl;
-    }
-
-    public void setCountryName(@NonNull String mCountryName) {
-        this.mCountryName = mCountryName;
-    }
-
-    public void setStateName(@NonNull String mStateName) {
-        this.mStateName = mStateName;
-    }
-
-    public void setAqi(@NonNull Integer aqi) {
-        mAqi = aqi;
-    }
-
-    public void setCo(@NonNull Double co) {
-        mCo = co;
-    }
-
-    public void setNo2(@NonNull Double no2) {
-        mNo2 = no2;
-    }
-
-    public void setO3(@NonNull Double o3) {
-        mO3 = o3;
-    }
-
-    public void setPm10(@NonNull Integer pm10) {
-        mPm10 = pm10;
-    }
-
-    public void setPm25(@NonNull Integer pm25) {
-        mPm25 = pm25;
-    }
-
-    public void setSo2(@NonNull Double so2) {
-        mSo2 = so2;
-    }
-
-    public void setH(@NonNull Double h) {
-        mH = h;
-    }
-
-    public void setP(@NonNull Double p) {
-        mP = p;
-    }
-
-    public void setW(@NonNull Double w) {
-        mW = w;
-    }
-
-    public void setWg(@NonNull Double wg) {
-        mWg = wg;
-    }
-
-    public void setDate(@NonNull String date) {
-        mDate = date;
-    }
-
-    public void setDateEpoch(@NonNull Integer mDateEpoch) {
-        this.mDateEpoch = mDateEpoch;
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "AqiEntity{" +
                 "id='" + id + '\'' +
                 "parameter='" + parameter + '\'' +
-                ", mAqi= "+ mAqi + '\'' +
-                ", mCityName='" + mCityName + '\'' +
-                ", mDate='" + mDate + '\'' +
-                '}';
+                ", mAqi= " + aqi + '\'' +
+                ", mCityName='" + cityName + '\'' +
+                ", mDate='" + date + '\'' +
+                '}'
     }
 }

@@ -21,7 +21,7 @@ public class ConverterAqi {
 
     private static AqiDao aqiDao = AppDatabase.getAppDatabase(App.INSTANCE).aqiDao();
 
-    public static List<AqiEntity> dtoToDao(AqiData aqiDTO, String parameter){
+    public static List<AqiEntity> dtoToDao(AqiData aqiDTO, String parameter){ //todo избавиться от списка, нужна только последняя строка всегда
 
         List<AqiEntity> listDao = new ArrayList<>();
         AqiEntity aqiEntity = new AqiEntity();
@@ -30,13 +30,11 @@ public class ConverterAqi {
             aqiEntity.setIdx(aqiDTO.getIdx().toString());
         aqiEntity.setAutoid(aqiDTO.getTime().getV());
 
-        Log.e("time", String.valueOf(aqiDTO.getTime().getV()));
-
         //parameter
             aqiEntity.setParameter(parameter);
             //location
-            aqiEntity.setLocationLat(aqiDTO.getCity().getGeo().get(0));
-            aqiEntity.setLocationLon(aqiDTO.getCity().getGeo().get(1));
+            aqiEntity.setLocationLat(aqiDTO.getCity().getCoordinates().getLatitude());
+            aqiEntity.setLocationLon(aqiDTO.getCity().getCoordinates().getLongitude());
             aqiEntity.setCityName(aqiDTO.getCity().getName());
             aqiEntity.setCityUrl(aqiDTO.getCity().getUrl());
 
@@ -64,18 +62,17 @@ public class ConverterAqi {
         return listDao;
     }
 
-    public static List<AqiEntity> dtoToDao(AqiAvData aqiDTO, String parameter){
+    public static List<AqiEntity> dtoToDao(AqiAvData aqiDTO, String parameter){ //todo избавиться от списка, нужна только последняя строка всегда
 
         List<AqiEntity> listDao = new ArrayList<>();
         AqiEntity aqiEntity = new AqiEntity();
 
-        aqiEntity.setId(aqiDTO.getLocation().toString() + aqiDTO.getCurrent().getWeather().getUpdatedAt());
-
+        aqiEntity.setId(aqiDTO.getLocation().getCoordinates() + aqiDTO.getCurrent().getWeather().getCreatedAt());
         //parameter
         aqiEntity.setParameter(parameter);
         //location
-        aqiEntity.setLocationLat(aqiDTO.getLocation().getCoordinates().get(0));
-        aqiEntity.setLocationLon(aqiDTO.getLocation().getCoordinates().get(1));
+        aqiEntity.setLocationLat(aqiDTO.getLocation().getCoordinates().getLatitude());
+        aqiEntity.setLocationLon(aqiDTO.getLocation().getCoordinates().getLongitude());
         aqiEntity.setCityName(String.format(Locale.getDefault(),"%s, %s",aqiDTO.getCity(), aqiDTO.getCountry()));
         aqiEntity.setCountryName(aqiDTO.getCountry());
         aqiEntity.setStateName(aqiDTO.getState());

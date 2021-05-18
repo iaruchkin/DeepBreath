@@ -19,30 +19,49 @@
         app:boxCornerRadiusTopEnd="12dp">
 
         <AutoCompleteTextView
-            android:id="@+id/findCity"
+            android:id="@+id/rFindCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="26dp"
-            android:hint="Type address"/>
+            android:hint="@string/type_address"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:layout_width="match_parent"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/bookmarks"
+        app:drawableEndCompat="@drawable/ic_location_city_black_24dp"
+        app:drawableTint="@color/colorPrimaryDark"
+        android:drawablePadding="10dp"/>
+
+    <TextView
+        android:id="@+id/rEmptyFavorites"
         style="@style/TextAppearance.MaterialComponents.Body1"
-        android:text="Избранное"/>
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:paddingBottom="100dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/empty_favorites"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favorites_recyclerview"
+        android:id="@+id/rFavoritesRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingTop="10dp"
         android:paddingBottom="16dp"
         android:paddingStart="16dp"
         android:paddingEnd="20dp"
         tools:listitem="@layout/item_favorites_forecast"/>
+
+    <include layout="@layout/layout_error"
+        android:visibility="gone"/>
 
 </LinearLayout>

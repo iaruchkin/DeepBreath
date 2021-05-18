@@ -1,8 +1,10 @@
 package com.iaruchkin.deepbreath.ui.adapter
 
+import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -12,18 +14,9 @@ import com.iaruchkin.deepbreath.room.entities.FavoritesEntity
 
 class FavoriteItemAdapter(
         private val mClickHandler: AdapterOnClickHandler?
-) :
-        RecyclerView.Adapter<FavoriteItemAdapter.FavoritesViewHolder>() {
-
-    //region Private fields
-
+) : RecyclerView.Adapter<FavoriteItemAdapter.FavoritesViewHolder>() {
 
     private val mFavoritesItemList = mutableListOf<FavoritesEntity?>()
-
-
-    //endregion
-    //region Public methods
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
         val itemListView =
@@ -49,54 +42,26 @@ class FavoriteItemAdapter(
         notifyDataSetChanged()
     }
 
+    inner class FavoritesViewHolder(val view: View) : ViewHolder(view) {
 
-    //endregion
-    //region Inner classes
+        private val locationName: TextView = view.findViewById(R.id.rLocationDesc)
+        private val favoriteButton: ImageView = view.findViewById(R.id.rFavoriteButton)
 
-
-    inner class FavoritesViewHolder(view: View) : ViewHolder(view), View.OnClickListener {
-
-        //region Private fields
-
-
-        private val aqiValue: TextView = view.findViewById(R.id.aqi_value)
-        private val locationName: TextView = view.findViewById(R.id.location_desc)
-
-
-        //endregion
-        //region Public methods
-
-
-        fun bind(filterItem: FavoritesEntity) {
-
-            aqiValue.text = filterItem.aqi.toString()
-            locationName.text = filterItem.locationName
-
+        fun bind(item: FavoritesEntity) {
+            locationName.text = item.locationName
+            favoriteButton.setOnClickListener {
+                mClickHandler?.onBookmarkRemove(item.id)
+            }
+            view.setOnClickListener {
+                mClickHandler?.onBookmarkOpen(item.getCoordinates())
+            }
         }
 
-        override fun onClick(p0: View?) {
-
-        }
-
-        init {
-
-            view.setOnClickListener(this)
-        }
     }
-
-
-    //endregion
-    //region Interfaces
-
 
     interface AdapterOnClickHandler {
-        fun onFilterSelected(filterId: String)
-        fun onFilterRemove(filterId: String)
-        fun onFilterEdit(pos: Int)
-        fun onFilterClearSelection()
+        fun onBookmarkOpen(location: Location)
+        fun onBookmarkRemove(id: String)
     }
-
-
-    //endregion
 
 }

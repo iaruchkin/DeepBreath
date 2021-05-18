@@ -10,25 +10,25 @@
     <include layout="@layout/toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+        android:id="@+id/rRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/idRecyclerView"
+                android:id="@+id/rForecastRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
+                android:paddingTop="20dp"
+                android:paddingBottom="40dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:context=".ui.fragments.ForecastFragment"
                 tools:listitem="@layout/item_forecast"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include
-        android:id="@+id/error_layout"
-        layout="@layout/layout_error"
-        android:visibility="gone" />
+    <include layout="@layout/layout_error"
+        tools:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

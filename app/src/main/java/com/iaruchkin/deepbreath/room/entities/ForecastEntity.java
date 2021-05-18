@@ -217,7 +217,6 @@ public class ForecastEntity {
         return totalprecip_in;
     }
 
-//    @NonNull
     public String getConditionText() {
         return conditionText;
     }
@@ -405,31 +404,10 @@ public class ForecastEntity {
                 "id='" + id + '\'' +
                 "parameter='" + parameter + '\'' +
                 ", date='" + date + '\'' +
-//                ", date_epoch=" + date_epoch +
                 ", maxtemp_c=" + maxtemp_c +
-//                ", maxtemp_f=" + maxtemp_f +
-//                ", mintemp_c=" + mintemp_c +
-//                ", mintemp_f=" + mintemp_f +
-//                ", avgtemp_c=" + avgtemp_c +
-//                ", avgtemp_f=" + avgtemp_f +
-//                ", maxwind_mph=" + maxwind_mph +
-//                ", maxwind_kph=" + maxwind_kph +
-//                ", totalprecip_mm=" + totalprecip_mm +
-//                ", totalprecip_in=" + totalprecip_in +
                 ", conditionText='" + conditionText + '\'' +
                 ", conditionCode=" + conditionCode +
                 ", locationName='" + locationName + '\'' +
-//                ", locationRegion='" + locationRegion + '\'' +
-//                ", locationCountry='" + locationCountry + '\'' +
-//                ", locationTz_id='" + locationTz_id + '\'' +
-//                ", locationLocaltime='" + locationLocaltime + '\'' +
-//                ", locationLat=" + locationLat +
-//                ", locationLon=" + locationLon +
-//                ", locationLocaltime_epoch=" + locationLocaltime_epoch +
-//                ", sunrise='" + sunrise + '\'' +
-//                ", sunset='" + sunset + '\'' +
-//                ", moonrise='" + moonrise + '\'' +
-//                ", moonset='" + moonset + '\'' +
                 '}';
     }
 

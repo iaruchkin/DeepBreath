@@ -35,7 +35,7 @@ class ExpandableHeaderItemForecast(private val forecastEntity: ForecastEntity, p
 
         var format = "%s"
         if(forecastEntity.locationRegion != "") format = "%s, %s"
-        viewHolder.location_desc.text = String.format(Locale.getDefault(), format
+        viewHolder.rLocationDesc.text = String.format(Locale.getDefault(), format
                 , StringUtils.transliterateLatToRus(forecastEntity.locationName, forecastEntity.locationCountry)
                 , StringUtils.transliterateLatToRus(forecastEntity.locationRegion, forecastEntity.locationCountry))
 

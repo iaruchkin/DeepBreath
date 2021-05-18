@@ -17,7 +17,7 @@ public class AqiAvData {
     private String country;
     @SerializedName("location")
     @Expose
-    private Location location;
+    private LocationAv location;
     @SerializedName("current")
     @Expose
     private Current current;
@@ -46,11 +46,11 @@ public class AqiAvData {
         this.country = country;
     }
 
-    public Location getLocation() {
+    public LocationAv getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationAv location) {
         this.location = location;
     }
 

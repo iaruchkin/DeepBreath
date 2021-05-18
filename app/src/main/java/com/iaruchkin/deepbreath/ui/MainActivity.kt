@@ -10,7 +10,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.FragmentManager
 import com.google.android.gms.location.*
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.AppConstants
@@ -33,8 +32,8 @@ const val GET_LOCATION = "LOCATION"
 
 class MainActivity : AppCompatActivity(), MessageFragmentListener {
     var firstLaunch = false
-    private var mFragmentManager: FragmentManager? = null
     private var mForecastFragment: ForecastFragment? = null
+    private var mForecastSearchFragment: ForecastFragment? = null
     private var mAboutFragment: AboutFragment? = null
     private var mFindFragment: FindFragment? = null
     private var mGroupieFragment: GroupieFragment? = null
@@ -82,20 +81,20 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
     }
 
     private fun startForecast() {
-        mForecastFragment = newInstance(isGPS)
+        if (mForecastFragment == null) mForecastFragment = newInstance(isGPS)
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.frame_list, mForecastFragment!!)
-                .commitAllowingStateLoss() //todo fix in future
+                .commitAllowingStateLoss()
     }
 
-    private fun startForecast(location: List<Double>) {
-        mForecastFragment = newInstance(false, true, location)
+    private fun startForecast(location: Location) {
+        mForecastSearchFragment = newInstance(false, true, location)
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.frame_list, mForecastFragment!!)
+                .replace(R.id.frame_list, mForecastSearchFragment!!)
                 .addToBackStack(null)
-                .commitAllowingStateLoss() //todo fix in future
+                .commitAllowingStateLoss()
     }
 
     private fun startDetails(idForecast: String?, idWeather: String?, idAqi: String?, idCondition: String?, viewType: Int) {
@@ -108,7 +107,7 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
     }
 
     private fun startSettings() {
-        mSettingsFragment = SettingsFragment()
+        if (mSettingsFragment == null) mSettingsFragment = SettingsFragment()
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.frame_list, mSettingsFragment!!)
@@ -123,14 +122,13 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
 
     private fun init() {
         setContentView(R.layout.activity_main)
-        mFragmentManager = supportFragmentManager
     }
 
     override fun onListClicked(idF: String?, idW: String?, idA: String?, idC: String?, viewType: Int) {
         startDetails(idF, idW, idA, idC, viewType)
     }
 
-    override fun onStationInfoShow(location: List<Double>){
+    override fun onStationInfoShow(location: Location){
         startForecast(location)
     }
 
@@ -154,7 +152,7 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
     private var isGPS = false
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private fun saveLocation(location: Location) {
-        AppPreferences.setLocationDetails(this, location.latitude, location.longitude)
+        AppPreferences.setLocationDetails(this, location)
     }
 
     private fun resetLocation() {
@@ -183,7 +181,10 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
                 for (location in locationResult.locations) {
                     if (location != null) {
                         saveLocation(location)
-                        if (!firstLaunch) startForecast()
+                        if (!firstLaunch) {
+//                            startForecast() TODO check!!!!!test
+                            mForecastFragment?.update()
+                        }
                         Log.w("GPS setupLocation", location.toString())
                         if (mFusedLocationClient != null) {
                             mFusedLocationClient!!.removeLocationUpdates(locationCallback)
@@ -210,8 +211,11 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
                 mFusedLocationClient!!.lastLocation.addOnSuccessListener(this@MainActivity) { location: Location? ->
                     if (location != null) {
                         saveLocation(location)
-                        if (!firstLaunch) startForecast()
-                        Log.w("GPS getLocation", location.toString())
+                        if (!firstLaunch) {
+//                            startForecast() TODO check!!!!!test
+                            mForecastFragment?.update()
+                        }
+                        Log.i("GPS getLocation", location.toString())
                     } else {
                         mFusedLocationClient!!.requestLocationUpdates(locationRequest, locationCallback, null)
                     }

@@ -89,7 +89,7 @@ class WeatherRequestService(context: Context, workerParams: WorkerParameters) : 
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             { aqiEntities: AqiResponse ->
-                                val isValid = LocationUtils.locationIsValid(aqiEntities.aqiData.city.geo[0], aqiEntities.aqiData.city.geo[1], applicationContext)
+                                val isValid = LocationUtils.locationIsValid(aqiEntities.aqiData.city.getCoordinates(), applicationContext)
                                 if (!isValid) aqiAv else makeNotification(aqiEntities.aqiData.aqi, true)
                             }) { throwable: Throwable -> logError(throwable) }
         }

@@ -43,7 +43,6 @@ object ConverterOpenForecast {
             //id
             forecastEntity.id = dto.dtTxt + weatherDTO.city.name
             forecastEntity.autoid = dto.dt.toLong()
-            Log.e("time", dto.dt.toString())
 
             //geo
             forecastEntity.parameter = weatherLocation

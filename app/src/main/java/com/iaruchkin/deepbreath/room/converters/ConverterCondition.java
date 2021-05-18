@@ -51,7 +51,7 @@ public class ConverterCondition {
 
             }
             listDao.add(conditionEntity);
-            Log.i(TAG, conditionEntity.toString());
+            Log.v(TAG, conditionEntity.toString());
         }
         return listDao;
     }
@@ -62,26 +62,24 @@ public class ConverterCondition {
     }
     public static List<ConditionEntity> getDataByLang(Context context, Integer lang) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        Log.i(TAG, "Condition data loaded from DB");
+        Log.v(TAG, "Condition data loaded from DB");
         return db.conditionDao().getDataByLang(lang);
     }
 
     public static List<ConditionEntity> loadDataFromDb(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
-        Log.i(TAG, "Condition data loaded from DB");
+        Log.v(TAG, "Condition data loaded from DB");
         return db.conditionDao().getAll();
     }
 
     public static void saveAllDataToDb(Context context, List<ConditionEntity> list){
         AppDatabase db = AppDatabase.getAppDatabase(context);
         db.conditionDao().deleteAll();
-        Log.i(TAG, "Condition DB: deleteAll");
+        Log.v(TAG, "Condition DB: deleteAll");
 
         ConditionEntity data[] = list.toArray(new ConditionEntity[list.size()]);
         db.conditionDao().insertAll(data);
-        Log.i(TAG, "Condition DB: insertAll");
-
-        Log.i(TAG, "Condition data saved to DB");
+        Log.v(TAG, "Condition DB: insertAll");
         conditionDao.insertAll(data);
     }
 }
