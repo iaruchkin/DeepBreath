@@ -13,8 +13,6 @@
         android:id="@+id/action_about"
         android:title="@string/action_about"
         app:showAsAction="never" />
-
-    <!--    TODO 1.3-->
     <item
         android:visible="true"
         android:id="@+id/action_find"
