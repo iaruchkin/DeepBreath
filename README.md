@@ -2,7 +2,7 @@
 <img src="https://github.com/iaruchkin/DeepBreath/blob/develop/app/src/main/ic_launcher-web.png?raw=true"
 align="left" width="200" hspace="10" vspace="10">
 
-App mostly for monitoring **Air Quality Index** at your current location(choose location option will be added in future udates) and additionally for **Weather Forecast**. You can download this app from **Google Play** or install it from **APK**.
+App mostly for monitoring **Air Quality Index** at your current location(or choosen location) and additionally for **Weather Forecast**. You can download this app from **Google Play** or install it from **APK**.
 
 ## Used API's:
 * [AQI](http://aqicn.org)
