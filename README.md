@@ -6,7 +6,7 @@ App mostly for monitoring **Air Quality Index** at your current location(choose 
 
 ## Used API's:
 * [AQI](http://aqicn.org)
-* [Weather](https://www.apixu.com/)
+* [Weather](https://openweathermap.org/)
 
 ## Screenshots
 <div style="display:flex;" >
