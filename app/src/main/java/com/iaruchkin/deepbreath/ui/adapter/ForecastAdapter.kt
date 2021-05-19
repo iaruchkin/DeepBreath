@@ -128,43 +128,27 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         mIsSearch = isSearch
     }
 
-    inner class WeatherViewHolder : RecyclerView.ViewHolder, View.OnClickListener {
-        private var imageView: ImageView?
-        private var weatherDescTextView: TextView?
-        private var locationTextView: TextView?
-        private var dateTextView: TextView?
-        private var highTemperatureTextView: TextView?
-        private var lowTemperatureTextView: TextView?
-        private var aqiTextView: TextView?
-        private var aqiDesc: TextView?
-        private var aqiHead: TextView?
-        private var aqiCard: CardView?
-        private var weatherCard: CardView?
-        private var recomendation: TextView?
-        private var invalidData: TextView?
-        private var mProgressBar: ProgressBar?
+    inner class WeatherViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        private var imageView: ImageView? = view.findViewById(R.id.weather_icon)
+        private var weatherDescTextView: TextView? = view.findViewById(R.id.weather_description)
+        private var locationTextView: TextView? = view.findViewById<TextView>(R.id.rLocationDesc)
+        private var dateTextView: TextView? = view.findViewById(R.id.date)
+        private var highTemperatureTextView: TextView? = view.findViewById(R.id.high_value)
+        private var lowTemperatureTextView: TextView? = view.findViewById(R.id.low_value)
+        private var aqiTextView: TextView? = view.findViewById(R.id.aqi_value)
+        private var aqiDesc: TextView? = view.findViewById(R.id.aqi_description)
+        private var aqiHead: TextView? = view.findViewById(R.id.aqi_head)
+        private var aqiCard: CardView? = view.findViewById(R.id.aqi_card)
+        private var weatherCard: CardView? = view.findViewById(R.id.today_card)
+        private var recomendation: TextView? = view.findViewById(R.id.recomendation)
+        private var invalidData: TextView? = view.findViewById(R.id.invalid_data_sign)
+        private var mProgressBar: ProgressBar? = view.findViewById(R.id.progress_bar)
 
-        constructor(view: View) : super(view) {
-            imageView = view.findViewById(R.id.weather_icon)
-            weatherDescTextView = view.findViewById(R.id.weather_description)
-            locationTextView = view.findViewById<TextView>(R.id.rLocationDesc)
-            dateTextView = view.findViewById(R.id.date)
-            highTemperatureTextView = view.findViewById(R.id.high_value)
-            lowTemperatureTextView = view.findViewById(R.id.low_value)
-            aqiTextView = view.findViewById(R.id.aqi_value)
-            aqiDesc = view.findViewById(R.id.aqi_description)
-            aqiHead = view.findViewById(R.id.aqi_head)
-            aqiCard = view.findViewById(R.id.aqi_card)
-            weatherCard = view.findViewById(R.id.today_card)
-            recomendation = view.findViewById(R.id.recomendation)
-            invalidData = view.findViewById(R.id.invalid_data_sign)
-            mProgressBar = view.findViewById(R.id.progress_bar)
+        init {
             view.setOnClickListener(this)
         }
 
         fun bindFirst(forecastItem: ForecastEntity, weatherItem: WeatherEntity, aqi: AqiEntity?, dayText: String?, icon: Int) {
-            showState(State.LoadingAqi)
-
             val highString = WeatherUtils.formatTemperature(context, weatherItem.temp_c)
             val lowString = WeatherUtils.formatTemperature(context, weatherItem.feelslike_c)
 
@@ -248,10 +232,10 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         fun showState(state: State) {
             when (state) {
                 State.LoadingAqi -> {
+                    mProgressBar?.visibility = View.VISIBLE
                     aqiTextView?.visibility = View.INVISIBLE
                     aqiDesc?.visibility = View.INVISIBLE
                     aqiHead?.visibility = View.INVISIBLE
-                    mProgressBar?.visibility = View.VISIBLE
                 }
                 State.HasData -> {
                     mProgressBar?.visibility = View.GONE

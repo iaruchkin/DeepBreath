@@ -35,9 +35,7 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     private val LAYOUT = R.layout.fragment_details
 
     internal var context = App.INSTANCE.applicationContext
-
     private val compositeDisposable = CompositeDisposable()
-    val TAG = DetailFragment::class.java.simpleName
     private var listener: MessageFragmentListener? = null
 
     internal lateinit var weather: WeatherEntity
@@ -51,36 +49,13 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
     var detailPresenter: DetailPresenter? = null
 
     @ProvidePresenter
-    internal fun providePresenter(): DetailPresenter {
+    fun providePresenter(): DetailPresenter {
         val idForecast = requireArguments().getString(FORECAST_ID, "")
         val idWeather = requireArguments().getString(WEATHER_ID, "")
         val idAqi = requireArguments().getString(AQI_ID, "")
         val idCondition = requireArguments().getString(CONDITION_ID, "")
         val viewType = requireArguments().getInt(VIEW_TYPE, 1)
-        return DetailPresenter(idForecast!!, idWeather!!, idAqi!!, idCondition!!, viewType)
-    }
-
-    companion object {
-
-        internal const val FORECAST_ID = "extra:forecast"
-        internal const val WEATHER_ID = "extra:weather"
-        internal const val AQI_ID = "extra:aqi"
-        internal const val CONDITION_ID = "extra:condition"
-        internal const val VIEW_TYPE = "extra:viewType"
-
-        @JvmStatic
-        fun newInstance(idForecast: String, idWeather: String, idAqi: String, idCondition: String, viewType: Int): DetailFragment {
-            val fragmentAqi = DetailFragment()
-            val bundle = Bundle()
-            bundle.putString(FORECAST_ID, idForecast)
-            bundle.putString(WEATHER_ID, idWeather)
-            bundle.putString(AQI_ID, idAqi)
-            bundle.putString(CONDITION_ID, idCondition)
-            bundle.putInt(VIEW_TYPE, viewType)
-
-            fragmentAqi.arguments = bundle
-            return fragmentAqi
-        }
+        return DetailPresenter(idForecast, idWeather, idAqi, idCondition, viewType)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -292,5 +267,28 @@ class DetailFragment : MvpAppCompatFragment(), DetailView {
 
     override fun showForecastData(forecastEntity: ForecastEntity, condition: ConditionEntity) {
         setupForecast(forecastEntity, condition)
+    }
+
+    companion object {
+
+        internal const val FORECAST_ID = "extra:forecast"
+        internal const val WEATHER_ID = "extra:weather"
+        internal const val AQI_ID = "extra:aqi"
+        internal const val CONDITION_ID = "extra:condition"
+        internal const val VIEW_TYPE = "extra:viewType"
+
+        @JvmStatic
+        fun newInstance(idForecast: String, idWeather: String, idAqi: String, idCondition: String, viewType: Int): DetailFragment {
+            val fragmentAqi = DetailFragment()
+            val bundle = Bundle()
+            bundle.putString(FORECAST_ID, idForecast)
+            bundle.putString(WEATHER_ID, idWeather)
+            bundle.putString(AQI_ID, idAqi)
+            bundle.putString(CONDITION_ID, idCondition)
+            bundle.putInt(VIEW_TYPE, viewType)
+
+            fragmentAqi.arguments = bundle
+            return fragmentAqi
+        }
     }
 }

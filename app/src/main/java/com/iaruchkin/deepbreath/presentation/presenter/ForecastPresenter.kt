@@ -160,6 +160,49 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
         viewState?.showState(State.HasData)
     }
 
+    private fun loadWeatherFromDb() {
+        val loadFromDb = Single.fromCallable { ConverterOpenWeather.getLastData(context) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { data: List<WeatherEntity>? ->
+                            weatherEntity = data
+                            updateWeather()
+                        }) { th: Throwable -> handleDbError(th, "loadWeatherFromDb") }
+        disposeOnDestroy(loadFromDb)
+        Log.d(PRESENTER_WEATHER_TAG, "Load WeatherData from db")
+        viewState!!.showState(State.HasData)
+    }
+
+    private fun loadForecastFromDb() {
+        val loadFromDb = Single.fromCallable { ConverterOpenForecast.getLastData(context) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { data: List<ForecastEntity>? ->
+                            forecastEntity = data
+                            updateWeather()
+                        }) { th: Throwable -> handleDbError(th, "loadForecastFromDb") }
+        disposeOnDestroy(loadFromDb)
+        Log.d(PRESENTER_WEATHER_TAG, "Load ForecastData from db")
+        viewState!!.showState(State.HasData)
+    }
+
+    private fun loadAQIFromDb() {
+        val loadFromDb = Single.fromCallable { ConverterAqi.getLastData(context) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { data: List<AqiEntity>? ->
+                            aqiEntity = data
+                            updateAqi()
+                        }) { th: Throwable -> handleDbError(th,"loadAQIFromDb") }
+        disposeOnDestroy(loadFromDb)
+        Log.d(PRESENTER_WEATHER_TAG, "Load AQIData from db")
+        viewState!!.showState(State.HasData)
+    }
+
+
     /**check db responce
      *
      * @param data
@@ -443,6 +486,7 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
         viewState?.showState(State.HasData)
     }
 
+
     /**setting data objects
      *
      */
@@ -470,48 +514,6 @@ class ForecastPresenter(isGps: Boolean, isSearch: Boolean, location: Location?) 
         loadForecastFromDb()
         loadAQIFromDb()
         Log.e(PRESENTER_WEATHER_TAG, "handleError " + method + " " + th.message, th)
-    }
-
-    private fun loadWeatherFromDb() {
-        val loadFromDb = Single.fromCallable { ConverterOpenWeather.getLastData(context) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { data: List<WeatherEntity>? ->
-                            weatherEntity = data
-                            updateWeather()
-                        }) { th: Throwable -> handleDbError(th, "loadWeatherFromDb") }
-        disposeOnDestroy(loadFromDb)
-        Log.d(PRESENTER_WEATHER_TAG, "Load WeatherData from db")
-        viewState!!.showState(State.HasData)
-    }
-
-    private fun loadForecastFromDb() {
-        val loadFromDb = Single.fromCallable { ConverterOpenForecast.getLastData(context) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { data: List<ForecastEntity>? ->
-                            forecastEntity = data
-                            updateWeather()
-                        }) { th: Throwable -> handleDbError(th, "loadForecastFromDb") }
-        disposeOnDestroy(loadFromDb)
-        Log.d(PRESENTER_WEATHER_TAG, "Load ForecastData from db")
-        viewState!!.showState(State.HasData)
-    }
-
-    private fun loadAQIFromDb() {
-        val loadFromDb = Single.fromCallable { ConverterAqi.getLastData(context) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { data: List<AqiEntity>? ->
-                            aqiEntity = data
-                            updateAqi()
-                        }) { th: Throwable -> handleDbError(th,"loadAQIFromDb") }
-        disposeOnDestroy(loadFromDb)
-        Log.d(PRESENTER_WEATHER_TAG, "Load AQIData from db")
-        viewState!!.showState(State.HasData)
     }
 
     private fun handleDbError(th: Throwable, method: String) {

@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         android:layout_margin="12dp"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/aqi_description"
         app:layout_constraintEnd_toEndOf="@+id/aqi_value"
         app:layout_constraintStart_toStartOf="@+id/aqi_value"

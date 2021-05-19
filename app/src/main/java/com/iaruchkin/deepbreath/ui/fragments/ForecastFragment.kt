@@ -176,28 +176,33 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         when (state) {
             State.HasData -> {
                 rRefresh?.visibility = View.VISIBLE
+                rProgressBar?.visibility = View.GONE
                 rForecastRecyclerView?.visibility = View.VISIBLE
                 rErrorLayout!!.visibility = View.GONE
                 showRefresher(false)
             }
             State.HasNoData -> {
                 rRefresh?.visibility = View.GONE
+                rProgressBar?.visibility = View.GONE
                 rErrorLayout?.visibility = View.VISIBLE
                 showRefresher(false)
             }
             State.NetworkError -> {
                 rRefresh?.visibility = View.GONE
+                rProgressBar?.visibility = View.GONE
                 rErrorLayout?.visibility = View.GONE
                 showRefresher(false)
                 showErrorSnack()
             }
             State.DbError -> {
                 rRefresh?.visibility = View.GONE
+                rProgressBar?.visibility = View.GONE
                 rErrorLayout?.visibility = View.VISIBLE
                 showRefresher(false)
             }
             State.Loading -> {
                 rRefresh?.visibility = View.VISIBLE
+                rProgressBar?.visibility = View.VISIBLE
                 rForecastRecyclerView?.visibility = View.VISIBLE
                 rErrorLayout?.visibility = View.GONE
                 showRefresher(true)
@@ -205,6 +210,8 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
             State.LoadingAqi -> {
                 rRefresh?.visibility = View.VISIBLE
                 rForecastRecyclerView?.visibility = View.VISIBLE
+                (rForecastRecyclerView?.findViewHolderForAdapterPosition(0)
+                        as? ForecastAdapter.WeatherViewHolder)?.showState(State.LoadingAqi)
                 rErrorLayout?.visibility = View.GONE
                 showRefresher(false)
             }

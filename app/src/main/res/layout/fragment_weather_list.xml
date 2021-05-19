@@ -31,4 +31,10 @@
     <include layout="@layout/layout_error"
         tools:visibility="gone"/>
 
+    <ProgressBar
+        android:id="@+id/rProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
