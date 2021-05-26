@@ -13,6 +13,7 @@ local.properties
 
 # Gradle generated files
 .gradle/
+/gradle.properties
 
 # Signing files
 .signing/
@@ -45,3 +46,4 @@ app/src/main/java/com/iaruchkin/deepbreath/common/ApiKeys.java
 ehthumbs.db
 Thumbs.db
 
+/apikey.properties
