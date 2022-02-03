@@ -16,7 +16,6 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SeekBarPreference;
 import androidx.preference.SwitchPreference;
 
-import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.R;
 
 import java.util.Locale;
@@ -93,7 +92,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         Preference preference = findPreference(key);
         if (null != preference) {
             if (preference instanceof SwitchPreference) {
-                App.performsScheduledWork();
+//                App.performsScheduledWork();
             }else if (preference instanceof SeekBarPreference) {
                 setPreferenceSummary(preference, String.format(Locale.getDefault(), getContext().getString(R.string.distance_unit_km), sharedPreferences.getInt(key, 0)));
           }else {

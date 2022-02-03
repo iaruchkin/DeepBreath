@@ -11,7 +11,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-
 public final class AqiApiKeyInterceptor implements Interceptor {
 
     private static final String API_KEY_HEADER_NAME = "token";

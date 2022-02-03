@@ -3,22 +3,19 @@ package com.iaruchkin.deepbreath.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
-
-import com.iaruchkin.deepbreath.App;
-
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.work.WorkManager;
+
+import com.iaruchkin.deepbreath.core.application.App;
+
+import java.util.UUID;
+
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
-
-import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class NetworkUtils {
 
@@ -39,14 +36,16 @@ public class NetworkUtils {
         }
     }
 
+    //todo refactor
     public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) App.INSTANCE
-                .getApplicationContext()
-                .getSystemService(CONNECTIVITY_SERVICE);
-        if (connectivityManager == null)
-            return false;
-        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-        return info != null && info.isConnected();
+//        ConnectivityManager connectivityManager = (ConnectivityManager) App.INSTANCE
+//                .getApplicationContext()
+//                .getSystemService(CONNECTIVITY_SERVICE);
+//        if (connectivityManager == null)
+//            return false;
+//        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+//        return info != null && info.isConnected();
+        return true;
     }
 
     public NetworkReceiver getNetworkReceiver() {

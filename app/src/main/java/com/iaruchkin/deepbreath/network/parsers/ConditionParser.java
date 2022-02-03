@@ -1,19 +1,9 @@
 package com.iaruchkin.deepbreath.network.parsers;
 
-import android.content.Context;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.iaruchkin.deepbreath.App;
 import com.iaruchkin.deepbreath.network.dtos.weatherApixuDTO.OfflineCondition.WeatherCondition;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
 
 public class ConditionParser {
@@ -32,33 +22,35 @@ public class ConditionParser {
 
     private ConditionParser(){
 
-        weatherConditions = response();
+//        weatherConditions = response();
     }
 
-    private List<WeatherCondition> response() {
-        Context context = App.INSTANCE.getApplicationContext();
-        String tContents = "";
+//todo refactor
 
-            try {
-                InputStream stream = context.getAssets().open("conditions.json");
-
-                int size = stream.available();
-                byte[] buffer = new byte[size];
-                stream.read(buffer);
-                stream.close();
-                tContents = new String(buffer);
-            } catch (IOException e) {
-                Log.e(LOG, e.getMessage(), e);
-            }
-
-        Log.v(LOG,tContents);
-
-        Gson gson = new Gson();
-        Type collectionType = new TypeToken<Collection<WeatherCondition>>(){}.getType();
-        List<WeatherCondition> enums = gson.fromJson(tContents, collectionType);
-
-        return enums;
-    }
+//    private List<WeatherCondition> response() {
+//        Context context = App.INSTANCE.getApplicationContext();
+//        String tContents = "";
+//
+//            try {
+//                InputStream stream = context.getAssets().open("conditions.json");
+//
+//                int size = stream.available();
+//                byte[] buffer = new byte[size];
+//                stream.read(buffer);
+//                stream.close();
+//                tContents = new String(buffer);
+//            } catch (IOException e) {
+//                Log.e(LOG, e.getMessage(), e);
+//            }
+//
+//        Log.v(LOG,tContents);
+//
+//        Gson gson = new Gson();
+//        Type collectionType = new TypeToken<Collection<WeatherCondition>>(){}.getType();
+//        List<WeatherCondition> enums = gson.fromJson(tContents, collectionType);
+//
+//        return enums;
+//    }
 
     @NonNull
     public List<WeatherCondition> conditions() {

@@ -9,7 +9,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.AppPreferences
 import com.iaruchkin.deepbreath.common.State
@@ -27,9 +26,7 @@ const val VIEW_TYPE_FUTURE_DAY = 1
 class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) : RecyclerView.Adapter<ForecastAdapter.WeatherViewHolder>() {
 
     private val DATE_FORMAT = "HH:mm, EEEE"
-    private val mUseTodayLayout: Boolean = App.INSTANCE.applicationContext.resources.getBoolean(R.bool.use_today_layout)
 
-    private val context = App.INSTANCE.applicationContext
     private val forecastItemList: MutableList<ForecastEntity> = mutableListOf()
     private val conditionItemList: MutableList<ConditionEntity> = mutableListOf()
 
@@ -99,7 +96,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (mUseTodayLayout && position == 0) {
+        return if (position == 0) {
             VIEW_TYPE_TODAY
         } else {
             VIEW_TYPE_FUTURE_DAY
@@ -128,7 +125,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         mIsSearch = isSearch
     }
 
-    inner class WeatherViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+    inner class WeatherViewHolder(var view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private var imageView: ImageView? = view.findViewById(R.id.weather_icon)
         private var weatherDescTextView: TextView? = view.findViewById(R.id.weather_description)
         private var locationTextView: TextView? = view.findViewById<TextView>(R.id.rLocationDesc)
@@ -149,8 +146,8 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
         }
 
         fun bindFirst(forecastItem: ForecastEntity, weatherItem: WeatherEntity, aqi: AqiEntity?, dayText: String?, icon: Int) {
-            val highString = WeatherUtils.formatTemperature(context, weatherItem.temp_c)
-            val lowString = WeatherUtils.formatTemperature(context, weatherItem.feelslike_c)
+            val highString = WeatherUtils.formatTemperature(view.context, weatherItem.temp_c)
+            val lowString = WeatherUtils.formatTemperature(view.context, weatherItem.feelslike_c)
 
             imageView?.setImageResource(WeatherUtils.getLargeArtResource(icon, weatherItem.isDay))
 
@@ -164,7 +161,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
 
             weatherDescTextView?.text = dayText
 
-            dateTextView?.text = String.format(Locale.getDefault(), context.resources.getString(R.string.today) + " %s",
+            dateTextView?.text = String.format(Locale.getDefault(), view.context.resources.getString(R.string.today) + " %s",
                     StringUtils.formatDate((weatherItem.last_updated_epoch).toLong(), "HH:mm"))
 
             highTemperatureTextView?.text = highString
@@ -172,18 +169,18 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
 
 
             if (aqi?.aqi == null) {
-                aqiCard?.setCardBackgroundColor(context.resources.getColor(AqiUtils.getColor(AppPreferences.lastKnownAqi(context))))
+                aqiCard?.setCardBackgroundColor(view.context.resources.getColor(AqiUtils.getColor(AppPreferences.lastKnownAqi(view.context))))
                 showState(State.LoadingAqi)
             } else {
-                AppPreferences.saveAqi(context, aqi.aqi)
+                AppPreferences.saveAqi(view.context, aqi.aqi)
 
                 showState(State.HasData)
                 aqiTextView?.text = aqi.aqi.toString()
                 aqiDesc?.setText(AqiUtils.getPollutionLevel(aqi.aqi))
-                aqiCard?.setCardBackgroundColor(context.resources.getColor(AqiUtils.getColor(aqi.aqi)))
+                aqiCard?.setCardBackgroundColor(view.context.resources.getColor(AqiUtils.getColor(aqi.aqi)))
 
                 val isValid = if (!mIsSearch) {
-                    LocationUtils.locationIsValid(aqi.getCoordinates(), context)
+                    LocationUtils.locationIsValid(aqi.getCoordinates(), view.context)
                 } else {
                     val forecastLocation = Location("forecastItem Location").apply {
                             latitude = forecastItem.locationLat
@@ -192,7 +189,7 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
                     LocationUtils.locationIsValid(aqi.getCoordinates(), forecastLocation)
                 }
 
-                if (LocationUtils.locationIsValid(aqi.getCoordinates(), context) || mIsSearch) {
+                if (LocationUtils.locationIsValid(aqi.getCoordinates(), view.context) || mIsSearch) {
                     recomendation?.setText(AqiUtils.getRecomendation(aqi.aqi))
                     invalidData?.visibility = View.GONE
                 } else {
@@ -204,8 +201,8 @@ class ForecastAdapter(private val mClickHandler: ForecastAdapterOnClickHandler) 
 
         fun bindFuture(forecastItem: ForecastEntity, icon: Int) {
 
-            val highString = WeatherUtils.formatTemperature(context, forecastItem.maxtemp_c)
-            val lowString = WeatherUtils.formatTemperature(context, forecastItem.mintemp_c)
+            val highString = WeatherUtils.formatTemperature(view.context, forecastItem.maxtemp_c)
+            val lowString = WeatherUtils.formatTemperature(view.context, forecastItem.mintemp_c)
 
             imageView?.setImageResource(WeatherUtils.getSmallArtResource(icon, forecastItem.isDay))
 

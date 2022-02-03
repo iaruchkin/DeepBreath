@@ -1,11 +1,12 @@
 package com.iaruchkin.deepbreath.network.parsers;
 
-import com.iaruchkin.deepbreath.network.endpoints.AqiEndpoint;
+import androidx.annotation.NonNull;
+
+import com.iaruchkin.deepbreath.data.aqi.remote.AqiEndpoint;
 import com.iaruchkin.deepbreath.network.interceptors.AqiApiKeyInterceptor;
 
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

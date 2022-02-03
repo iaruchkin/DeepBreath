@@ -12,8 +12,8 @@ import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.iaruchkin.deepbreath.R
+import com.iaruchkin.deepbreath.data.aqi.remote.AqiResponse
 import com.iaruchkin.deepbreath.network.dtos.AqiAvResponse
-import com.iaruchkin.deepbreath.network.dtos.AqiResponse
 import com.iaruchkin.deepbreath.network.parsers.AqiApi
 import com.iaruchkin.deepbreath.network.parsers.AqiAvApi
 import com.iaruchkin.deepbreath.ui.MainActivity

@@ -1,34 +1,49 @@
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
+
+// Hilt. Allow references to generated code
+kapt {
+    correctErrorTypes true
+}
 
 androidExtensions {
     experimental = true
 }
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
+
+    def apikeyPropertiesFile = rootProject.file("apikey.properties")
+    def apikeyProperties = new Properties()
+    apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
     defaultConfig {
         applicationId "com.iaruchkin.deepbreath"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 26
-        versionName "1.4.1"
+        versionName "2.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
 
         //Api keys stored in gradle.properties
-        buildConfigField("String", "WEATHER_API_KEY", WEATHER_API_KEY)
-        buildConfigField("String", "OPEN_WEATHER_API_KEY", OPEN_WEATHER_API_KEY)
-        buildConfigField("String", "AQI_API_KEY", AQI_API_KEY)
-        buildConfigField("String", "AQIAV_API_KEY", AQIAV_API_KEY)
+        buildConfigField("String", "WEATHER_API_KEY",  apikeyProperties['WEATHER_API_KEY'])
+        buildConfigField("String", "OPEN_WEATHER_API_KEY",  apikeyProperties['OPEN_WEATHER_API_KEY'])
+        buildConfigField("String", "AQI_API_KEY",  apikeyProperties['AQI_API_KEY'])
+        buildConfigField("String", "AQIAV_API_KEY",  apikeyProperties['AQIAV_API_KEY'])
+
+        //Api endpoints
+        buildConfigField("String", "AQI_URL",  "\"https://api.waqi.info/\"")
+
     }
     buildTypes {
         release {
@@ -43,45 +58,58 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.0"
-
-    //groupie
-    implementation 'com.xwray:groupie:2.2.0'
-    implementation 'com.xwray:groupie-kotlin-android-extensions:2.2.0'
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.21"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
 
     //test
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test:runner:1.4.0-alpha06'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0-alpha06'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //networking
-    implementation "com.squareup.retrofit2:retrofit:2.7.1"
-    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.9.1"
-    implementation "com.github.bumptech.glide:glide:4.8.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    implementation "com.github.bumptech.glide:glide:4.11.0"
 
     //other
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+    implementation 'com.google.dagger:hilt-android:2.40'
+    kapt "com.google.dagger:hilt-android-compiler:2.40"
 
     //appCompat
-    implementation "androidx.appcompat:appcompat:1.3.0"
+    implementation "androidx.appcompat:appcompat:1.3.1"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.2.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0-beta02'
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "androidx.preference:preference-ktx:1.1.1"
-    implementation "com.google.android.material:material:1.4.0-beta01"
+    implementation "com.google.android.material:material:1.4.0"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0'
+    implementation "androidx.activity:activity-ktx:1.4.0"
+    implementation "androidx.collection:collection-ktx:1.1.0"
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.fragment:fragment-ktx:1.3.6"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
 
     //glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-    implementation "com.github.bumptech.glide:glide:4.8.0"
+    implementation "com.github.bumptech.glide:glide:4.11.0"
 
     //room
     implementation "androidx.room:room-runtime:2.3.0"
@@ -93,15 +121,7 @@ dependencies {
     implementation "me.relex:circleindicator:2.1.0"
 
     //worker service
-    implementation "androidx.work:work-runtime:2.6.0-alpha02"
-
-    //moxy
-    implementation "com.github.moxy-community:moxy:2.2.2"
-    annotationProcessor "com.github.moxy-community:moxy-compiler:2.2.2"
-    kapt "com.github.moxy-community:moxy-compiler:2.2.2"
-    implementation "com.github.moxy-community:moxy-ktx:2.2.2"
-    implementation "com.github.moxy-community:moxy-androidx:2.2.2"
-
+    implementation "androidx.work:work-runtime:2.7.0"
 
     //location
     implementation "com.google.android.gms:play-services-location:18.0.0"

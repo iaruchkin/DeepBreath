@@ -1,5 +1,7 @@
 package com.iaruchkin.deepbreath.ui.fragments;
 
+import static com.iaruchkin.deepbreath.ui.MainActivityKt.ABOUT_TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,18 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import com.iaruchkin.deepbreath.R;
-import com.iaruchkin.deepbreath.presentation.presenter.AboutPresenter;
-import com.iaruchkin.deepbreath.presentation.view.AboutView;
 
-import moxy.MvpAppCompatFragment;
-import moxy.presenter.InjectPresenter;
-import moxy.presenter.ProvidePresenter;
-
-import static com.iaruchkin.deepbreath.ui.MainActivityKt.ABOUT_TAG;
-
-public class AboutFragment extends MvpAppCompatFragment implements AboutView {
+public class AboutFragment extends Fragment {
 
     private View mDeveloper;
     private View mGithub;
@@ -34,14 +29,6 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
     private View mWeatherLink;
     private View mIconsLink;
     private View mLogoLink;
-
-    @InjectPresenter
-    AboutPresenter presenter;
-
-    @ProvidePresenter
-    AboutPresenter providePresenter() {
-        return new AboutPresenter();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -56,7 +43,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
         return view;
     }
 
-    @Override
+//    @Override
     public void openURL(@NonNull String url){
         Intent intent = new Intent()
                 .setAction(Intent.ACTION_VIEW)
@@ -69,7 +56,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
             Toast.makeText(getContext(), getString(R.string.error_no_browser), Toast.LENGTH_SHORT).show();
         }    }
 
-    @Override
+//    @Override
     public void composeEmail() {
 
         Log.i(ABOUT_TAG, "composeEmail");
@@ -85,13 +72,13 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
     }
 
     private void setupUx(){
-        mDeveloper.setOnClickListener(v -> presenter.sendMessage());
-        mGithub.setOnClickListener(v -> presenter.openLink(getString(R.string.github_link)));
-        mAqiLink.setOnClickListener(v -> presenter.openLink(getString(R.string.aqi_link)));
-        mAqiAvLink.setOnClickListener(v -> presenter.openLink(getString(R.string.aqiav_link)));
-        mWeatherLink.setOnClickListener(v -> presenter.openLink(getString(R.string.weather_link)));
-        mIconsLink.setOnClickListener(v -> presenter.openLink(getString(R.string.icons_link)));
-        mLogoLink.setOnClickListener(v -> presenter.openLink(getString(R.string.logo_link)));
+//        mDeveloper.setOnClickListener(v -> presenter.sendMessage());
+//        mGithub.setOnClickListener(v -> presenter.openLink(getString(R.string.github_link)));
+//        mAqiLink.setOnClickListener(v -> presenter.openLink(getString(R.string.aqi_link)));
+//        mAqiAvLink.setOnClickListener(v -> presenter.openLink(getString(R.string.aqiav_link)));
+//        mWeatherLink.setOnClickListener(v -> presenter.openLink(getString(R.string.weather_link)));
+//        mIconsLink.setOnClickListener(v -> presenter.openLink(getString(R.string.icons_link)));
+//        mLogoLink.setOnClickListener(v -> presenter.openLink(getString(R.string.logo_link)));
 
     }
 

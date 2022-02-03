@@ -16,9 +16,9 @@ import com.iaruchkin.deepbreath.common.AppConstants
 import com.iaruchkin.deepbreath.common.AppPreferences
 import com.iaruchkin.deepbreath.common.GpsUtils
 import com.iaruchkin.deepbreath.ui.fragments.*
-import com.iaruchkin.deepbreath.ui.fragments.DetailFragment.Companion.newInstance
 import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment.Companion.newInstance
 import com.iaruchkin.deepbreath.ui.fragments.intro.IntroFragment
+import dagger.hilt.android.AndroidEntryPoint
 
 const val WEATHER_LIST_TAG = "WEATHER_LIST"
 const val SEARCH_LIST_TAG = "SEARCH_LIST"
@@ -29,13 +29,14 @@ const val ABOUT_TAG = "ABOUT"
 const val FIND_TAG = "FIND"
 const val GET_LOCATION = "LOCATION"
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), MessageFragmentListener {
     var firstLaunch = false
     private var mForecastFragment: ForecastFragment? = null
     private var mForecastSearchFragment: ForecastFragment? = null
     private var mAboutFragment: AboutFragment? = null
     private var mFindFragment: FindFragment? = null
-    private var mGroupieFragment: DetailFragment? = null
+//    private var mGroupieFragment: DetailFragment? = null
     private var mSettingsFragment: SettingsFragment? = null
     private var mIntroFragment: IntroFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,14 +97,14 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
                 .commitAllowingStateLoss()
     }
 
-    private fun startDetails(idForecast: String?, idWeather: String?, idAqi: String?, idCondition: String?, viewType: Int) {
-        mGroupieFragment = newInstance(idForecast!!, idWeather!!, idAqi!!, idCondition!!, viewType)
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.frame_list, mGroupieFragment!!)
-                .addToBackStack(null)
-                .commit()
-    }
+//    private fun startDetails(idForecast: String?, idWeather: String?, idAqi: String?, idCondition: String?, viewType: Int) {
+//        mGroupieFragment = newInstance(idForecast!!, idWeather!!, idAqi!!, idCondition!!, viewType)
+//        supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.frame_list, mGroupieFragment!!)
+//                .addToBackStack(null)
+//                .commit()
+//    }
 
     private fun startSettings() {
         if (mSettingsFragment == null) mSettingsFragment = SettingsFragment()
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity(), MessageFragmentListener {
     }
 
     override fun onListClicked(idF: String?, idW: String?, idA: String?, idC: String?, viewType: Int) {
-        startDetails(idF, idW, idA, idC, viewType)
+//        startDetails(idF, idW, idA, idC, viewType)
     }
 
     override fun onStationInfoShow(location: Location){

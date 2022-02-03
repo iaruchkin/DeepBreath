@@ -12,36 +12,18 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iaruchkin.deepbreath.R
-import com.iaruchkin.deepbreath.common.State
-import com.iaruchkin.deepbreath.network.dtos.findCityDTO.Data
 import com.iaruchkin.deepbreath.network.dtos.findCityDTO.Station
-import com.iaruchkin.deepbreath.presentation.presenter.FindPresenter
-import com.iaruchkin.deepbreath.presentation.view.FindView
-import com.iaruchkin.deepbreath.room.entities.FavoritesEntity
 import com.iaruchkin.deepbreath.ui.adapter.AutocompleteAdapter
 import com.iaruchkin.deepbreath.ui.adapter.FavoriteItemAdapter
 import kotlinx.android.synthetic.main.fragment_bookmarks.*
-import kotlinx.android.synthetic.main.layout_error.*
-import moxy.MvpAppCompatFragment
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
 
-class FindFragment : MvpAppCompatFragment(), FindView, FavoriteItemAdapter.AdapterOnClickHandler {
+class FindFragment : Fragment(), FavoriteItemAdapter.AdapterOnClickHandler {
 
     private var mListener: MessageFragmentListener? = null
     private var mAdapter: FavoriteItemAdapter? = null
-
-    @JvmField
-    @InjectPresenter
-    var presenter: FindPresenter? = null
-
-    @ProvidePresenter
-    fun providePresenter(): FindPresenter {
-        return FindPresenter()
-    }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,49 +46,49 @@ class FindFragment : MvpAppCompatFragment(), FindView, FavoriteItemAdapter.Adapt
         setupRecyclerView()
         setupView()
 
-        presenter?.update()
+//        presenter?.update()
     }
 
-    override fun showCityList(cityList: List<Data?>) {
-        val stations = cityList.map { it?.station!! }
-        setupSuggestions(stations)
-    }
+//    override fun showCityList(cityList: List<Data?>) {
+//        val stations = cityList.map { it?.station!! }
+//        setupSuggestions(stations)
+//    }
 
-    override fun showState(state: State) {
-        when (state) {
-            State.HasData -> {
-                rFavoritesRecyclerview?.visibility = View.VISIBLE
-                rEmptyFavorites?.visibility = View.GONE
-            }
-            State.HasNoData -> {
-                rFavoritesRecyclerview?.visibility = View.GONE
-                rEmptyFavorites?.visibility = View.VISIBLE
-            }
-            State.DbError -> {
-                rFavoritesRecyclerview?.visibility = View.GONE
-                rEmptyFavorites?.visibility = View.GONE
-                rErrorLayout?.visibility = View.VISIBLE
-            }
-            else -> throw IllegalArgumentException("Unknown state: $state")
-        }    }
-
-    override fun showFavorites(favorites: List<FavoritesEntity?>) {
-        mAdapter?.replaceItems(favorites)
-    }
+//    override fun showState(state: State) {
+//        when (state) {
+//            State.HasData -> {
+//                rFavoritesRecyclerview?.visibility = View.VISIBLE
+//                rEmptyFavorites?.visibility = View.GONE
+//            }
+//            State.HasNoData -> {
+//                rFavoritesRecyclerview?.visibility = View.GONE
+//                rEmptyFavorites?.visibility = View.VISIBLE
+//            }
+//            State.DbError -> {
+//                rFavoritesRecyclerview?.visibility = View.GONE
+//                rEmptyFavorites?.visibility = View.GONE
+//                rErrorLayout?.visibility = View.VISIBLE
+//            }
+//            else -> throw IllegalArgumentException("Unknown state: $state")
+//        }    }
+//
+//    override fun showFavorites(favorites: List<FavoritesEntity?>) {
+//        mAdapter?.replaceItems(favorites)
+//    }
 
     override fun onBookmarkOpen(location: Location) {
         mListener?.onStationInfoShow(location)
     }
 
     override fun onBookmarkRemove(id: String) {
-        presenter?.removeItem(id)
+//        presenter?.removeItem(id)
     }
 
     private fun setupView() {
         rFindCity?.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                if (s.length in 3..10) presenter?.loadCityList(s.toString())
+//                if (s.length in 3..10) presenter?.loadCityList(s.toString())
             }
 
             override fun beforeTextChanged(

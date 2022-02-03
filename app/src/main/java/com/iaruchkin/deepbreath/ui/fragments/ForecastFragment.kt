@@ -8,13 +8,11 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.google.android.material.snackbar.Snackbar
 import com.iaruchkin.deepbreath.R
-import com.iaruchkin.deepbreath.common.State
-import com.iaruchkin.deepbreath.presentation.presenter.ForecastPresenter
-import com.iaruchkin.deepbreath.presentation.view.ForecastView
 import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity
@@ -28,16 +26,9 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_weather_list.*
 import kotlinx.android.synthetic.main.layout_error.*
 import kotlinx.android.synthetic.main.toolbar.*
-import moxy.MvpAppCompatFragment
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
 import java.util.*
 
-class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, ForecastView, OnRefreshListener {
-
-    @JvmField
-    @InjectPresenter
-    var forecastPresenter: ForecastPresenter? = null
+class ForecastFragment : Fragment(), ForecastAdapterOnClickHandler, OnRefreshListener {
 
     private var mListener: MessageFragmentListener? = null
     private var mAdapter: ForecastAdapter? = null
@@ -47,23 +38,23 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     private var mAqiItem: AqiEntity? = null
     private val compositeDisposable = CompositeDisposable()
 
-    @ProvidePresenter
-    fun providePresenter(): ForecastPresenter {
-        val isGPS = requireArguments().getBoolean("GEO", false)
-        val isSearch = requireArguments().getBoolean("SEARCH", false)
-        val location = requireArguments().getParcelable<Location>("LOCATION")
-
-        mIsSearch = isSearch
-
-        return ForecastPresenter(
-                isGPS,
-                isSearch,
-                location
-        )
-    }
+//    @ProvidePresenter
+//    fun providePresenter(): ForecastPresenter {
+//        val isGPS = requireArguments().getBoolean("GEO", false)
+//        val isSearch = requireArguments().getBoolean("SEARCH", false)
+//        val location = requireArguments().getParcelable<Location>("LOCATION")
+//
+//        mIsSearch = isSearch
+//
+//        return ForecastPresenter(
+//                isGPS,
+//                isSearch,
+//                location
+//        )
+//    }
 
     fun update() {
-        forecastPresenter?.update()
+//        forecastPresenter?.update()
     }
 
     override fun onClickList(forecastItem: ForecastEntity, weatherEntity: WeatherEntity, aqiEntity: AqiEntity, conditionEntity: ConditionEntity, viewType: Int) {
@@ -102,7 +93,7 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.forecast, menu)
         if (mIsSearch) {
-            forecastPresenter?.inFavoritesCheck()
+//            forecastPresenter?.inFavoritesCheck()
             menu.removeItem(R.id.action_find)
             menu.findItem(R.id.action_favorite).setIcon(
                     if (mIsInFavorites) {
@@ -156,79 +147,79 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
         else update()
     }
 
-    override fun showWeather(forecastEntity: List<ForecastEntity>,
-                             weatherEntity: List<WeatherEntity>,
-                             conditionEntity: List<ConditionEntity>) {
-        if (forecastEntity.isNotEmpty() && weatherEntity.isNotEmpty() && conditionEntity.isNotEmpty()) {
-            mAdapter?.setWeather(forecastEntity, weatherEntity[0], conditionEntity)
-            nWeatherItem = weatherEntity[0]
-        }
-    }
-
-    override fun showAqi(aqiEntity: List<AqiEntity>) {
-        if (aqiEntity.isNotEmpty()) {
-            mAdapter!!.setAqi(aqiEntity[0], mIsSearch)
-            mAqiItem = aqiEntity[0]
-        }
-    }
-
-    override fun showState(state: State) {
-        when (state) {
-            State.HasData -> {
-                rRefresh?.visibility = View.VISIBLE
-                rProgressBar?.visibility = View.GONE
-                rForecastRecyclerView?.visibility = View.VISIBLE
-                rErrorLayout!!.visibility = View.GONE
-                showRefresher(false)
-            }
-            State.HasNoData -> {
-                rRefresh?.visibility = View.GONE
-                rProgressBar?.visibility = View.GONE
-                rErrorLayout?.visibility = View.VISIBLE
-                showRefresher(false)
-            }
-            State.NetworkError -> {
-                rRefresh?.visibility = View.GONE
-                rProgressBar?.visibility = View.GONE
-                rErrorLayout?.visibility = View.GONE
-                showRefresher(false)
-                showErrorSnack()
-            }
-            State.DbError -> {
-                rRefresh?.visibility = View.GONE
-                rProgressBar?.visibility = View.GONE
-                rErrorLayout?.visibility = View.VISIBLE
-                showRefresher(false)
-            }
-            State.Loading -> {
-                rRefresh?.visibility = View.VISIBLE
-                rProgressBar?.visibility = View.VISIBLE
-                rForecastRecyclerView?.visibility = View.VISIBLE
-                rErrorLayout?.visibility = View.GONE
-                showRefresher(true)
-            }
-            State.LoadingAqi -> {
-                rRefresh?.visibility = View.VISIBLE
-                rForecastRecyclerView?.visibility = View.VISIBLE
-                (rForecastRecyclerView?.findViewHolderForAdapterPosition(0)
-                        as? ForecastAdapter.WeatherViewHolder)?.showState(State.LoadingAqi)
-                rErrorLayout?.visibility = View.GONE
-                showRefresher(false)
-            }
-            else -> throw IllegalArgumentException("Unknown state: $state")
-        }
-    }
-
-    override fun updateIcon(inFavorites: Boolean) {
-        mIsInFavorites = inFavorites
-        rToolbar?.menu?.findItem(R.id.action_favorite)?.setIcon(
-                if (inFavorites) {
-                    R.drawable.ic_bookmark_added
-                } else {
-                    R.drawable.ic_bookmark_border
-                }
-        )
-    }
+//    override fun showWeather(forecastEntity: List<ForecastEntity>,
+//                             weatherEntity: List<WeatherEntity>,
+//                             conditionEntity: List<ConditionEntity>) {
+//        if (forecastEntity.isNotEmpty() && weatherEntity.isNotEmpty() && conditionEntity.isNotEmpty()) {
+//            mAdapter?.setWeather(forecastEntity, weatherEntity[0], conditionEntity)
+//            nWeatherItem = weatherEntity[0]
+//        }
+//    }
+//
+//    override fun showAqi(aqiEntity: List<AqiEntity>) {
+//        if (aqiEntity.isNotEmpty()) {
+//            mAdapter!!.setAqi(aqiEntity[0], mIsSearch)
+//            mAqiItem = aqiEntity[0]
+//        }
+//    }
+//
+//    override fun showState(state: State) {
+//        when (state) {
+//            State.HasData -> {
+//                rRefresh?.visibility = View.VISIBLE
+//                rProgressBar?.visibility = View.GONE
+//                rForecastRecyclerView?.visibility = View.VISIBLE
+//                rErrorLayout!!.visibility = View.GONE
+//                showRefresher(false)
+//            }
+//            State.HasNoData -> {
+//                rRefresh?.visibility = View.GONE
+//                rProgressBar?.visibility = View.GONE
+//                rErrorLayout?.visibility = View.VISIBLE
+//                showRefresher(false)
+//            }
+//            State.NetworkError -> {
+//                rRefresh?.visibility = View.GONE
+//                rProgressBar?.visibility = View.GONE
+//                rErrorLayout?.visibility = View.GONE
+//                showRefresher(false)
+//                showErrorSnack()
+//            }
+//            State.DbError -> {
+//                rRefresh?.visibility = View.GONE
+//                rProgressBar?.visibility = View.GONE
+//                rErrorLayout?.visibility = View.VISIBLE
+//                showRefresher(false)
+//            }
+//            State.Loading -> {
+//                rRefresh?.visibility = View.VISIBLE
+//                rProgressBar?.visibility = View.VISIBLE
+//                rForecastRecyclerView?.visibility = View.VISIBLE
+//                rErrorLayout?.visibility = View.GONE
+//                showRefresher(true)
+//            }
+//            State.LoadingAqi -> {
+//                rRefresh?.visibility = View.VISIBLE
+//                rForecastRecyclerView?.visibility = View.VISIBLE
+//                (rForecastRecyclerView?.findViewHolderForAdapterPosition(0)
+//                        as? ForecastAdapter.WeatherViewHolder)?.showState(State.LoadingAqi)
+//                rErrorLayout?.visibility = View.GONE
+//                showRefresher(false)
+//            }
+//            else -> throw IllegalArgumentException("Unknown state: $state")
+//        }
+//    }
+//
+//    override fun updateIcon(inFavorites: Boolean) {
+//        mIsInFavorites = inFavorites
+//        rToolbar?.menu?.findItem(R.id.action_favorite)?.setIcon(
+//                if (inFavorites) {
+//                    R.drawable.ic_bookmark_added
+//                } else {
+//                    R.drawable.ic_bookmark_border
+//                }
+//        )
+//    }
 
 
     private fun showRefresher(show: Boolean) {
@@ -261,11 +252,11 @@ class ForecastFragment : MvpAppCompatFragment(), ForecastAdapterOnClickHandler, 
     }
 
     private fun addToFavorites() {
-        forecastPresenter?.updateFavorites()
+//        forecastPresenter?.updateFavorites()
     }
 
     private fun removeFromFavorites() {
-        forecastPresenter?.updateFavorites(true)
+//        forecastPresenter?.updateFavorites(true)
     }
 
     @SuppressLint("StringFormatMatches")
