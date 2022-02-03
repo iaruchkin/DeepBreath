@@ -2,6 +2,8 @@ package com.iaruchkin.deepbreath.network.interceptors;
 
 import android.util.Log;
 
+import com.iaruchkin.deepbreath.BuildConfig;
+
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
@@ -9,7 +11,6 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.iaruchkin.deepbreath.common.ApiKeys.OPEN_WEATHER_API_KEY;
 
 public final class OpenWeatherApiKeyInterceptor implements Interceptor {
 
@@ -29,7 +30,7 @@ public final class OpenWeatherApiKeyInterceptor implements Interceptor {
 
         final HttpUrl url = requestWithoutApiKey.url()
                 .newBuilder()
-                .addQueryParameter(API_KEY_HEADER_NAME, OPEN_WEATHER_API_KEY)
+                .addQueryParameter(API_KEY_HEADER_NAME, BuildConfig.OPEN_WEATHER_API_KEY)
                 .build();
 
         final Request requestWithAttachedApiKey = requestWithoutApiKey.newBuilder()

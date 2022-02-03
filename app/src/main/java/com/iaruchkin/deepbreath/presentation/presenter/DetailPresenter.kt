@@ -25,6 +25,7 @@ class DetailPresenter(private val ID_FORECAST: String, private val ID_WEATHER: S
     private var conditionEntity: ConditionEntity? = null
     private var aqiEntity: AqiEntity? = null
     private val PRESENTER_WEATHER_TAG = "[detail - presenter]"
+
     override fun onFirstViewAttach() {
         setView()
     }
