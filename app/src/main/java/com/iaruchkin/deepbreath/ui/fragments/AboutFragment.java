@@ -1,5 +1,7 @@
 package com.iaruchkin.deepbreath.ui.fragments;
 
+import static com.iaruchkin.deepbreath.ui.MainActivityKt.ABOUT_TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,8 +23,6 @@ import com.iaruchkin.deepbreath.presentation.view.AboutView;
 import moxy.MvpAppCompatFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
-
-import static com.iaruchkin.deepbreath.ui.MainActivityKt.ABOUT_TAG;
 
 public class AboutFragment extends MvpAppCompatFragment implements AboutView {
 
@@ -63,11 +62,8 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
                 .addCategory(Intent.CATEGORY_BROWSABLE)
                 .setData(Uri.parse(url));
 
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Toast.makeText(getContext(), getString(R.string.error_no_browser), Toast.LENGTH_SHORT).show();
-        }    }
+        startActivity(intent);
+    }
 
     @Override
     public void composeEmail() {
@@ -77,11 +73,7 @@ public class AboutFragment extends MvpAppCompatFragment implements AboutView {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse(String.format("mailto:%s", getString(R.string.email_adress)))); // only email apps should handle this
         intent.putExtra(Intent.EXTRA_SUBJECT,  getString(R.string.subject_email));
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-            startActivity(intent);
-        } else {
-            Toast.makeText(getContext(), R.string.error_no_email_app, Toast.LENGTH_LONG).show();
-        }
+        startActivity(intent);
     }
 
     private void setupUx(){
