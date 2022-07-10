@@ -51,7 +51,18 @@ class WeatherRequestService(context: Context, workerParams: WorkerParameters) : 
     private fun makeNotification(aqi: Int, success: Boolean) {
         val intent = Intent(applicationContext, MainActivity::class.java)
 
-        val onClickPendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+        val onClickPendingIntent =
+            PendingIntent.getActivity(
+                applicationContext,
+                0,
+                intent,
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                } else {
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                }
+            )
+
         val message = applicationContext.getString(AqiUtils.getPollutionLevel(aqi))
         val notificationBuilder: NotificationCompat.Builder
         if (success) {
