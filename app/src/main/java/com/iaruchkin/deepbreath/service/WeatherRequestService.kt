@@ -16,7 +16,7 @@ import com.iaruchkin.deepbreath.network.dtos.AqiAvResponse
 import com.iaruchkin.deepbreath.network.dtos.AqiResponse
 import com.iaruchkin.deepbreath.network.parsers.AqiApi
 import com.iaruchkin.deepbreath.network.parsers.AqiAvApi
-import com.iaruchkin.deepbreath.ui.MainActivity
+import com.iaruchkin.deepbreath.screens.MainActivity
 import com.iaruchkin.deepbreath.utils.AqiUtils
 import com.iaruchkin.deepbreath.utils.LocationUtils
 import com.iaruchkin.deepbreath.utils.PreferencesHelper

@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.adapter
+package com.iaruchkin.deepbreath.screens.adapter
 
 import android.view.View
 import com.iaruchkin.deepbreath.App

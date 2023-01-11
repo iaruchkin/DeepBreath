@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.fragments
+package com.iaruchkin.deepbreath.screens.fragments
 
 import android.location.Location
 

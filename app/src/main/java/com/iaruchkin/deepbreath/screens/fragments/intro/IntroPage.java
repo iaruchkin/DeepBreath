@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.fragments.intro;
+package com.iaruchkin.deepbreath.screens.fragments.intro;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.iaruchkin.deepbreath.R;
-
 import androidx.fragment.app.Fragment;
+
+import com.iaruchkin.deepbreath.R;
 
 public class IntroPage extends Fragment {
 

@@ -23,7 +23,7 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="40dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:context=".ui.fragments.ForecastFragment"
+                tools:context=".screens.fragments.ForecastFragment"
                 tools:listitem="@layout/item_forecast"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

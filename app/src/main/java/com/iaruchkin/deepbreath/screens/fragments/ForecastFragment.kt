@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.fragments
+package com.iaruchkin.deepbreath.screens.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,9 +19,9 @@ import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity
-import com.iaruchkin.deepbreath.ui.*
-import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter
-import com.iaruchkin.deepbreath.ui.adapter.ForecastAdapter.ForecastAdapterOnClickHandler
+import com.iaruchkin.deepbreath.screens.*
+import com.iaruchkin.deepbreath.screens.adapter.ForecastAdapter
+import com.iaruchkin.deepbreath.screens.adapter.ForecastAdapter.ForecastAdapterOnClickHandler
 import com.iaruchkin.deepbreath.utils.AqiUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import io.reactivex.disposables.CompositeDisposable

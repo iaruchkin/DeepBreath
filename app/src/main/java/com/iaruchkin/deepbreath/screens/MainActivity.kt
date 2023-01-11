@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui
+package com.iaruchkin.deepbreath.screens
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,10 +15,11 @@ import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.AppConstants
 import com.iaruchkin.deepbreath.common.AppPreferences
 import com.iaruchkin.deepbreath.common.GpsUtils
-import com.iaruchkin.deepbreath.ui.fragments.*
-import com.iaruchkin.deepbreath.ui.fragments.DetailFragment.Companion.newInstance
-import com.iaruchkin.deepbreath.ui.fragments.ForecastFragment.Companion.newInstance
-import com.iaruchkin.deepbreath.ui.fragments.intro.IntroFragment
+import com.iaruchkin.deepbreath.screens.about.AboutFragment
+import com.iaruchkin.deepbreath.screens.fragments.*
+import com.iaruchkin.deepbreath.screens.fragments.DetailFragment.Companion.newInstance
+import com.iaruchkin.deepbreath.screens.fragments.ForecastFragment.Companion.newInstance
+import com.iaruchkin.deepbreath.screens.fragments.intro.IntroFragment
 
 const val WEATHER_LIST_TAG = "WEATHER_LIST"
 const val SEARCH_LIST_TAG = "SEARCH_LIST"

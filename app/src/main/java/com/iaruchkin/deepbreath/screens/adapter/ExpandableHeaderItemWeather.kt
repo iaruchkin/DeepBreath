@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.adapter
+package com.iaruchkin.deepbreath.screens.adapter
 
 import com.iaruchkin.deepbreath.App
 import com.iaruchkin.deepbreath.R

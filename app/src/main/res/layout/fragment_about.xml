@@ -14,7 +14,7 @@ android:fillViewport="true">
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:fillViewport="true"
-    tools:context=".ui.fragments.AboutFragment">
+    tools:context=".screens.about.AboutFragment">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.adapter
+package com.iaruchkin.deepbreath.screens.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.network.dtos.findCityDTO.Station
 import com.iaruchkin.deepbreath.utils.LocationUtils
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class AutocompleteAdapter(context: Context, items: List<Station>) :

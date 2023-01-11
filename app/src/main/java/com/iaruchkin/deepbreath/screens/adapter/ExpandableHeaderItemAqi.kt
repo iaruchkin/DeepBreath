@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.adapter
+package com.iaruchkin.deepbreath.screens.adapter
 
 import android.text.method.ScrollingMovementMethod
 import android.view.MotionEvent

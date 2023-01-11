@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.fragments
+package com.iaruchkin.deepbreath.screens.fragments
 
 import android.content.Context
 import android.location.Location
@@ -20,8 +20,8 @@ import com.iaruchkin.deepbreath.network.dtos.findCityDTO.Station
 import com.iaruchkin.deepbreath.presentation.presenter.FindPresenter
 import com.iaruchkin.deepbreath.presentation.view.FindView
 import com.iaruchkin.deepbreath.room.entities.FavoritesEntity
-import com.iaruchkin.deepbreath.ui.adapter.AutocompleteAdapter
-import com.iaruchkin.deepbreath.ui.adapter.FavoriteItemAdapter
+import com.iaruchkin.deepbreath.screens.adapter.AutocompleteAdapter
+import com.iaruchkin.deepbreath.screens.adapter.FavoriteItemAdapter
 import kotlinx.android.synthetic.main.fragment_bookmarks.*
 import kotlinx.android.synthetic.main.layout_error.*
 import moxy.MvpAppCompatFragment

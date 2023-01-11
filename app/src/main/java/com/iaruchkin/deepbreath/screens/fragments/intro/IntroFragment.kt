@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.fragments.intro
+package com.iaruchkin.deepbreath.screens.fragments.intro
 
 import android.content.Context
 import android.os.Bundle
@@ -15,9 +15,9 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.common.AppPreferences
-import com.iaruchkin.deepbreath.ui.GET_LOCATION
-import com.iaruchkin.deepbreath.ui.WEATHER_LIST_TAG
-import com.iaruchkin.deepbreath.ui.fragments.MessageFragmentListener
+import com.iaruchkin.deepbreath.screens.GET_LOCATION
+import com.iaruchkin.deepbreath.screens.WEATHER_LIST_TAG
+import com.iaruchkin.deepbreath.screens.fragments.MessageFragmentListener
 import me.relex.circleindicator.CircleIndicator
 
 class IntroFragment : Fragment() {

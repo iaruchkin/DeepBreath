@@ -1,4 +1,4 @@
-package com.iaruchkin.deepbreath.ui.fragments
+package com.iaruchkin.deepbreath.screens.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -14,9 +14,9 @@ import com.iaruchkin.deepbreath.room.entities.AqiEntity
 import com.iaruchkin.deepbreath.room.entities.ConditionEntity
 import com.iaruchkin.deepbreath.room.entities.ForecastEntity
 import com.iaruchkin.deepbreath.room.entities.WeatherEntity
-import com.iaruchkin.deepbreath.ui.ABOUT_TAG
-import com.iaruchkin.deepbreath.ui.SETTINGS_TAG
-import com.iaruchkin.deepbreath.ui.adapter.*
+import com.iaruchkin.deepbreath.screens.ABOUT_TAG
+import com.iaruchkin.deepbreath.screens.SETTINGS_TAG
+import com.iaruchkin.deepbreath.screens.adapter.*
 import com.iaruchkin.deepbreath.utils.LocationUtils
 import com.iaruchkin.deepbreath.utils.StringUtils
 import com.iaruchkin.deepbreath.utils.WeatherUtils
