@@ -1,0 +1,104 @@
+package com.iaruchkin.deepbreath.ui.components
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+@Composable
+fun ForecastCard(aqiValue: String, aqiLabel: String, aqiDescription: String, isLoading: Boolean, isInvalidData: Boolean) {
+    Card(
+        modifier = Modifier
+            .wrapContentHeight()
+            .width(100.dp),
+        elevation = 8.dp,
+//        contentColor = Color(R.color.good)
+        contentColor = Color.Green //todo set color
+    ) {
+//            tools:cardBackgroundColor="@color/moderate"
+        if (isLoading) {
+            CircularProgressIndicator(
+                color = Color.Gray,
+                modifier = Modifier.wrapContentSize()
+            )
+        } else Column(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(6.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (isInvalidData) {
+                Text(
+                    text = "Invalid Data",
+                    color = Color.Gray,
+                )
+            }
+
+            Text(
+                text = aqiLabel,
+                color = Color.Gray,
+                fontSize = 18.sp,
+                style = TextStyle(
+                    platformStyle = PlatformTextStyle(
+                        includeFontPadding = false
+                    )
+                )
+            )
+
+            Text(
+                text = aqiValue,
+                color = Color.Black,
+                fontSize = 54.sp,
+                fontFamily = FontFamily.SansSerif,
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    platformStyle = PlatformTextStyle(
+                        includeFontPadding = false
+                    )
+                )
+            )
+
+            Text(
+                text = aqiDescription,
+                color = Color.Gray,
+                fontSize = 14.sp,
+                maxLines = 2,
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    platformStyle = PlatformTextStyle(
+                        includeFontPadding = false
+                    )
+                )
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ForecastCardPreview() {
+        ForecastCard(
+            aqiValue = "36",
+            aqiLabel = "aqi",
+            aqiDescription = "pre unhealthy",
+            isLoading = false,
+            isInvalidData = false
+        )
+}

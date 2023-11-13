@@ -1,0 +1,79 @@
+package com.iaruchkin.deepbreath.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+val Purple200 = Color(0xFFBB86FC)
+val Purple500 = Color(0xFF6200EE)
+val Purple700 = Color(0xFF3700B3)
+val Teal200 = Color(0xFF03DAC5)
+val FontColor = Color(0xFF212121)
+val SecondaryFontColor = Color(0xFF757575)
+
+
+val SecondaryTextColor = Color(0xFF727272)
+val DefaultBackgroundColor = Color(0xFFFAFAFA)
+val Blue = Color(0xff76a9ff)
+val FloatingActionBackground = Color(0xffFBC02D)
+val LinkColor = Color(0xff64B5F6)
+
+
+
+//aqi number color
+val Good = Color(0xffB9F6CA)
+//<color name="good_transparent">#8DB9F6CA</color>
+//<color name="moderate">#FFEA98</color>
+//<color name="moderate_transparent">#8DFFEA98</color>
+//<color name="pre_unhealthy">#FFD180</color>
+//<color name="pre_unhealthy_transparent">#8DFFD180</color>
+//<color name="unhealthy">#FF8A80</color>
+//<color name="unhealthy_transparent">#8DFF8A80</color>
+//<color name="very_unhealthy">#FF80AB</color>
+//<color name="very_unhealthy_transparent">#8DFF80AB</color>
+//<color name="hazardous">#8C9EFF</color>
+//<color name="hazardous_transparent">#8D8C9EFF</color>
+
+/*
+
+    <color name="colorPrimary">#7CA397</color>
+    <color name="colorPrimaryDark">#324A5E</color>
+    <color name="colorAccent">#7CA397</color>
+    <color name="colorBackground">#D9E5F0</color>
+    <color name="colorPrimaryLight">#1A80D8FF</color>
+    <color name="colorPrimaryLight2">#B2D9E5F0</color>
+
+    <color name="white">#FFFFFF</color>
+
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+
+    <!--our detail accent colors -->
+    <color name="detail_accent_pane_background">#455A64</color>
+    <color name="detail_accent_label">#90A4AE</color>
+
+    <!-- the activated state color for a forecast list item -->
+    <color name="activated">#E0E0E0</color>
+
+    <!-- Screens background color-->
+    <color name="bg_screen1">#448AFF</color>
+    <color name="bg_screen2">#FFAB40</color>
+    <color name="bg_screen3">#4DB6AC</color>
+    <color name="bg_screen4">#69F0AE</color>
+
+    <!--aqi number color-->
+    <color name="good">#B9F6CA</color>
+    <color name="good_transparent">#8DB9F6CA</color>
+    <color name="moderate">#FFEA98</color>
+    <color name="moderate_transparent">#8DFFEA98</color>
+    <color name="pre_unhealthy">#FFD180</color>
+    <color name="pre_unhealthy_transparent">#8DFFD180</color>
+    <color name="unhealthy">#FF8A80</color>
+    <color name="unhealthy_transparent">#8DFF8A80</color>
+    <color name="very_unhealthy">#FF80AB</color>
+    <color name="very_unhealthy_transparent">#8DFF80AB</color>
+    <color name="hazardous">#8C9EFF</color>
+    <color name="hazardous_transparent">#8D8C9EFF</color>
+
+    <color name="error_snack">#C9FF1744</color>
+
+
+ */
