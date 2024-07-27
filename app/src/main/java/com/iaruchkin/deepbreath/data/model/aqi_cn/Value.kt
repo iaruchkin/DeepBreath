@@ -1,5 +1,5 @@
 package com.iaruchkin.deepbreath.data.model.aqi_cn
 
-data class H(
+data class Value(
     val v: Double
 )

@@ -20,7 +20,9 @@ fun Navigation(
 ) {
     NavHost(navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
-            AqiScreen(navController)
+            AqiScreen {
+                navController.navigate(Screen.Detail.route.plus("/iaqi"))
+            }
         }
         composable(Screen.Settings.route) {
             SettingsScreen(navController)

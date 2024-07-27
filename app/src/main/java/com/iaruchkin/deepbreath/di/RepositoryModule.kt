@@ -16,7 +16,7 @@ object RepositoryModule {
      */
     @Singleton
     @Provides
-    fun provideMovieRepository(
+    fun provideAqiRepository(
         apiService: ApiService,
     ): AqiRepository {
         return AqiRepository(

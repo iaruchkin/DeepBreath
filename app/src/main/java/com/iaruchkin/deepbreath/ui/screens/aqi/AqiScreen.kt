@@ -10,16 +10,25 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.iaruchkin.deepbreath.data.DataState
 import com.iaruchkin.deepbreath.data.model.AqiCn
-import com.iaruchkin.deepbreath.navigation.Screen
+import com.iaruchkin.deepbreath.data.model.aqi_cn.City
+import com.iaruchkin.deepbreath.data.model.aqi_cn.Daily
+import com.iaruchkin.deepbreath.data.model.aqi_cn.Data
+import com.iaruchkin.deepbreath.data.model.aqi_cn.Debug
+import com.iaruchkin.deepbreath.data.model.aqi_cn.Forecast
+import com.iaruchkin.deepbreath.data.model.aqi_cn.Iaqi
+import com.iaruchkin.deepbreath.data.model.aqi_cn.Time
+import com.iaruchkin.deepbreath.data.model.aqi_cn.Value
+import com.iaruchkin.deepbreath.data.wrapSuccess
 import com.iaruchkin.deepbreath.ui.components.WeatherItem
 import com.iaruchkin.deepbreath.ui.theme.DeepBreathTheme
 
 
 @Composable
-fun AqiScreen(navController: NavController?) {
+fun AqiScreen(
+    onItemClick: () -> Unit
+) {
     val aqiViewModel = hiltViewModel<AqiViewModel>()
     val aqiDetail = aqiViewModel.aqiDetailState.value
     val scaffoldState = rememberScaffoldState()
@@ -29,19 +38,32 @@ fun AqiScreen(navController: NavController?) {
         aqiViewModel.aqiDetailApi()
     }
 
+    AqiContent(
+        aqiDetail = aqiDetail,
+        onItemClick = onItemClick
+    )
+}
+
+@Composable
+private fun AqiContent(
+    aqiDetail: DataState<AqiCn>?,
+    onItemClick: () -> Unit = {},
+) {
     var isLoading = true
     var isValid = true
     var data: AqiCn? = null
 
-    when(aqiDetail){
+    when (aqiDetail) {
         DataState.Loading -> {
             isLoading = true
         }
+
         is DataState.Success -> {
             data = aqiDetail.data
             isValid = true
             isLoading = false
         }
+
         is DataState.Error, null -> {
             isLoading = false
             isValid = false
@@ -57,17 +79,58 @@ fun AqiScreen(navController: NavController?) {
                 aqiDescription = "pre unhealthy",
                 isLoading = isLoading,
                 isInvalidData = isValid,
-            ) {
-                navController?.navigate(Screen.Detail.route.plus("/iaqi"))
-            }
+                onItemClick = onItemClick
+            )
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun Preview() {
     DeepBreathTheme(false) {
-        AqiScreen(null)
+        AqiContent(
+            AqiCn(
+                data = Data(
+                    aqi = 50,
+                    attributions = listOf(),
+                    city = City(
+                        geo = listOf(),
+                        location = "",
+                        name = "",
+                        url = "",
+                    ),
+                    debug = Debug(""),
+                    dominentpol = "",
+                    forecast = Forecast(
+                        daily = Daily(
+                            listOf(),
+                            listOf(),
+                            listOf(),
+                            listOf(),
+                        )
+                    ),
+                    iaqi = Iaqi(
+                        Value(0.0),
+                        Value(0.0),
+                        Value(0.0),
+                        Value(0.0),
+                        Value(0.0),
+                        Value(0.0),
+                        Value(0.0),
+                        Value(0.0),
+                        Value(0.0),
+                    ),
+                    idx = 12,
+                    time = Time(
+                        "",
+                        "",
+                        "",
+                        0,
+                    ),
+                ),
+                status = ""
+            ).wrapSuccess()
+        )
     }
 }

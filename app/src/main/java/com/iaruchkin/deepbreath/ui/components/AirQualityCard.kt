@@ -74,7 +74,7 @@ fun AirQualityCard(
             Text(
                 text = aqiValue,
                 color = Color.Black,
-                fontSize = 54.sp,
+                fontSize = 50.sp,
                 fontFamily = FontFamily.SansSerif,
                 textAlign = TextAlign.Center,
                 style = TextStyle(
