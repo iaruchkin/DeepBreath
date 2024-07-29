@@ -22,22 +22,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.iaruchkin.deepbreath.R
+import com.iaruchkin.deepbreath.data.model.aqi_cn.AqiData
 import com.iaruchkin.deepbreath.ui.theme.SecondaryTextColor
 
 @Composable
 fun WeatherItem(
-    city: String,
-    date: String,
-    aqiLevel: String,
-    aqiDescription: String,
+    aqiData: AqiData?,
     isLoading: Boolean,
     isInvalidData: Boolean,
     onItemClick: () -> Unit,
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,14 +56,14 @@ fun WeatherItem(
                 contentDescription = null
             )
             Text(
-                text = city,
+                text = aqiData?.city?.name ?: stringResource(id = R.string.ellipses),
                 color = SecondaryTextColor,
                 fontSize = 20.sp,
             )
         }
 
         Text(
-            text = date,
+            text = aqiData?.time?.s ?: stringResource(id = R.string.ellipses),
             color = SecondaryTextColor,
             fontSize = 14.sp,
         )
@@ -99,9 +97,7 @@ fun WeatherItem(
             }
 
             AirQualityCard(
-                aqiValue = aqiLevel,
-                aqiLabel = "aqi",
-                aqiDescription = aqiDescription,
+                aqiValue = aqiData?.aqi,
                 isLoading = isLoading,
                 isInvalidData = false,
                 onCardClick = onItemClick
@@ -147,17 +143,4 @@ fun WeatherItem(
         )
 
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun WeatherItemPreview() {
-    WeatherItem(
-        city = "Moscow",
-        date = "Today, April 03",
-        aqiLevel = "36",
-        aqiDescription = "pre unhealthy",
-        isLoading = false,
-        isInvalidData = false,
-    ) {}
 }

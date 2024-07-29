@@ -1,9 +1,5 @@
 package com.iaruchkin.deepbreath.ui.screens.aqi
 
-//import com.iaruchkin.deepbreath.data.model.BaseModel
-//import com.piashcse.hilt_mvvm_compose_movie.data.model.Genres
-//import com.iaruchkin.deepbreath.data.repository.AqiRepository
-//import com.piashcse.hilt_mvvm_compose_movie.utils.network.DataState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

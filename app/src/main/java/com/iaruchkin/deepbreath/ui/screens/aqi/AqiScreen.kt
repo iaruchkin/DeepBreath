@@ -12,9 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.iaruchkin.deepbreath.data.DataState
 import com.iaruchkin.deepbreath.data.model.AqiCn
+import com.iaruchkin.deepbreath.data.model.aqi_cn.AqiData
 import com.iaruchkin.deepbreath.data.model.aqi_cn.City
 import com.iaruchkin.deepbreath.data.model.aqi_cn.Daily
-import com.iaruchkin.deepbreath.data.model.aqi_cn.Data
 import com.iaruchkin.deepbreath.data.model.aqi_cn.Debug
 import com.iaruchkin.deepbreath.data.model.aqi_cn.Forecast
 import com.iaruchkin.deepbreath.data.model.aqi_cn.Iaqi
@@ -51,7 +51,7 @@ private fun AqiContent(
 ) {
     var isLoading = true
     var isValid = true
-    var data: AqiCn? = null
+    var aqiCn: AqiCn? = null
 
     when (aqiDetail) {
         DataState.Loading -> {
@@ -59,7 +59,7 @@ private fun AqiContent(
         }
 
         is DataState.Success -> {
-            data = aqiDetail.data
+            aqiCn = aqiDetail.data
             isValid = true
             isLoading = false
         }
@@ -73,10 +73,7 @@ private fun AqiContent(
     Box(modifier = Modifier.fillMaxWidth()) {
         Column {
             WeatherItem(
-                city = data?.data?.city?.name.toString(),
-                date = data?.data?.time?.s.toString(),
-                aqiLevel = data?.data?.aqi.toString(),
-                aqiDescription = "pre unhealthy",
+                aqiData = aqiCn?.data,
                 isLoading = isLoading,
                 isInvalidData = isValid,
                 onItemClick = onItemClick
@@ -91,13 +88,13 @@ fun Preview() {
     DeepBreathTheme(false) {
         AqiContent(
             AqiCn(
-                data = Data(
-                    aqi = 50,
+                data = AqiData(
+                    aqi = 30,
                     attributions = listOf(),
                     city = City(
                         geo = listOf(),
                         location = "",
-                        name = "",
+                        name = "Amsterdam",
                         url = "",
                     ),
                     debug = Debug(""),

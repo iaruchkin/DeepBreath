@@ -580,4 +580,5 @@
     <string name="empty_favorites">Your favorites list is empty</string>
     <string name="type_address">Type address</string>
     <string name="station_search">Station search</string>
+    <string name="ellipses" translatable="false">...</string>
 </resources>
