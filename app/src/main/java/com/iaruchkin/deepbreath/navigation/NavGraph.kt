@@ -11,6 +11,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.iaruchkin.deepbreath.R
 import com.iaruchkin.deepbreath.ui.screens.aqi.AqiScreen
 import com.iaruchkin.deepbreath.ui.screens.detail.DetailScreen
+import com.iaruchkin.deepbreath.ui.screens.entry.WelcomeScreen
 import com.iaruchkin.deepbreath.ui.screens.search.SearchScreen
 import com.iaruchkin.deepbreath.ui.screens.settings.SettingsScreen
 
@@ -18,7 +19,14 @@ import com.iaruchkin.deepbreath.ui.screens.settings.SettingsScreen
 fun Navigation(
     navController: NavHostController
 ) {
-    NavHost(navController, startDestination = Screen.Home.route) {
+    val firstOpen = true //todo create preferences service
+    NavHost(
+        navController,
+        startDestination = if (firstOpen) Screen.Welcome.route else Screen.Home.route
+    ) {
+        composable(Screen.Welcome.route) {
+            WelcomeScreen()
+        }
         composable(Screen.Home.route) {
             AqiScreen {
                 navController.navigate(Screen.Detail.route.plus("/iaqi"))
@@ -39,9 +47,9 @@ fun Navigation(
             label = stringResource(R.string.title_activity_detail)
 //            val movieId = it.arguments?.getInt(Screen.Detail.objectName)
 //            movieId?.let {
-                DetailScreen(
-                    navController = navController, 0
-                )
+            DetailScreen(
+                navController = navController, 0
+            )
 //            }
         }
     }

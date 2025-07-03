@@ -134,4 +134,8 @@ dependencies {
     // splash screen
     implementation "androidx.core:core-splashscreen:1.0.1"
 
+    //location
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation "com.google.accompanist:accompanist-permissions:0.25.0"
+
 }
